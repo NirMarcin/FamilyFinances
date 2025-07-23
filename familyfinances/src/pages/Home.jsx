@@ -3,26 +3,26 @@ import Button from '../components/Button';
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-transparent">
-      <div className="w-full max-w-3xl bg-white shadow-xl rounded-xl p-10 mx-4 text-center">
-        <h1 className="text-4xl font-bold text-orange-600 mb-4">
+    <div className="min-h-screen flex items-center justify-center bg-transparent px-4">
+      <div className="w-full max-w-3xl bg-white bg-opacity-90 shadow-xl rounded-xl p-6 sm:p-8 lg:p-10 text-center">
+        <h1 className="text-3xl sm:text-4xl font-bold text-orange-600 mb-4">
           Family Finances
         </h1>
 
-        <p className="text-orange-700 text-lg mb-6">
-          Zadbaj o finanse swojej rodziny w jednym miejscu.
+        <p className="text-base sm:text-lg text-orange-700 mb-6 leading-relaxed">
+          Zadbaj o finanse swojej rodziny w jednym miejscu. <br className="hidden sm:block" />
           Twórz budżet, śledź wydatki i oszczędzaj mądrze 💰
         </p>
 
-        <ul className="text-left text-orange-800 mb-8 space-y-2 list-disc list-inside">
-          <li>🔍 Monitoruj przychody i wydatki w czasie rzeczywistym</li>
+        <ul className="text-left text-orange-800 mb-8 space-y-2 list-disc list-inside text-sm sm:text-base">
+          <li>🔍 Monitoruj przychody i wydatki</li>
           <li>📊 Generuj miesięczne i roczne raporty</li>
           <li>👨‍👩‍👧‍👦 Zarządzaj finansami całej rodziny z jednego konta</li>
           <li>🔔 Ustawiaj przypomnienia o płatnościach</li>
           <li>🔐 Bezpieczne logowanie i pełna prywatność danych</li>
         </ul>
 
-         <div className="flex justify-center gap-4">
+        <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Link to="/login">
             <Button variant="primary">Zaloguj się</Button>
           </Link>

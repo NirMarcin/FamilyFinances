@@ -1,4 +1,4 @@
-import InputField from "./ InputField"
+import InputField from "./InputField"
 export default function PasswordField({ label, id, register, error, placeholder }) {
   return (
     <InputField

@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import Button from '../components/Button';
+import { Link } from "react-router-dom";
+import Button from "../components/Button";
 
 export default function Home() {
   return (
@@ -10,7 +10,8 @@ export default function Home() {
         </h1>
 
         <p className="text-base sm:text-lg text-orange-700 mb-6 leading-relaxed">
-          Zadbaj o finanse swojej rodziny w jednym miejscu. <br className="hidden sm:block" />
+          Zadbaj o finanse swojej rodziny w jednym miejscu.{" "}
+          <br className="hidden sm:block" />
           Twórz budżet, śledź wydatki i oszczędzaj mądrze 💰
         </p>
 

@@ -1,9 +1,14 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+
 import Button from "../components/Button";
 import FormWrapper from "../components/FormWrapper";
-import InputField from "../components/fields/ InputField";
+import InputField from "../components/fields/InputField";
 import PasswordField from "../components/fields/PasswordField";
+import SuccessMessage from "../components/SuccessMessage";
+
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Login() {
   const {
@@ -13,18 +18,33 @@ export default function Login() {
   } = useForm();
 
   const navigate = useNavigate();
+  const { login, user, authError, setAuthError } = useAuth();
+  const [localError, setLocalError] = useState("");
+  const [localStatus, setLocalStatus] = useState(null);
 
   const onSubmit = async (data) => {
-    try {
-      // Tutaj wstaw logikę uwierzytelniania (np. Firebase, API)
-      // Przykładowo po pomyślnym zalogowaniu:
-      console.log("Zalogowano:", data);
-      navigate("/dashboard"); // przekierowanie do dashboardu
-    } catch (error) {
-      console.error("Błąd logowania:", error);
-      // obsłuż błąd np. pokaż komunikat
+    setLocalStatus(null);
+    setLocalError("");
+    setAuthError(null);
+
+    const { success, message } = await login(data.email, data.password);
+
+    if (success) {
+      setLocalStatus("success");
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1500);
+    } else {
+      setLocalError(message || "Wystąpił błąd podczas logowania.");
     }
   };
+  useEffect(() => {
+    if (user) {
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1500);
+    }
+  }, [user, navigate]);
 
   return (
     <FormWrapper title="Zaloguj się">
@@ -62,6 +82,16 @@ export default function Login() {
           {isSubmitting ? "Logowanie..." : "Zaloguj się"}
         </Button>
       </form>
+
+      {/* Komunikat z błędem logowania */}
+      {(localError || authError) && (
+        <p className="mt-4 text-red-700 text-center">
+          {localError || authError}
+        </p>
+      )}
+      {localStatus === "success" && (
+        <SuccessMessage message="Logowanie zakończone sukcesem!" />
+      )}
 
       <p className="mt-6 text-center text-orange-700">
         Nie masz konta?{" "}

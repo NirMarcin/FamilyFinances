@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Button from "../Buttons/Button";
+import Button from "../buttons/Button";
 
 const categoriesList = ["Streaming", "Telefon", "Internet", "Software", "Inne"];
 

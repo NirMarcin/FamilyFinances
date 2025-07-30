@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { useState } from "react";
-import LogoutButton from "../components/Buttons/LogoutButton";
+import LogoutButton from "./buttons/LogoutButton";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,10 +26,10 @@ export default function Navbar() {
           {/* Desktop menu */}
           <div className="hidden md:flex space-x-6">
             <NavLink to="/dashboard" className={linkClass}>
-              Dashboard
+              Podsumowanie
             </NavLink>
             <NavLink to="/expenses" className={linkClass}>
-              Wydatki
+              Zarządzanie wydatkami
             </NavLink>
             <NavLink to="/charts" className={linkClass}>
               Wykresy i statystki
@@ -91,14 +91,14 @@ export default function Navbar() {
             to="/dashboard"
             className="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600"
           >
-            Dashboard
+            Podsumowanie
           </NavLink>
           <NavLink
             onClick={() => setIsOpen(false)}
             to="/expenses"
             className="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600"
           >
-            Wydatki
+            Zarządzanie wydatkami
           </NavLink>
           <NavLink
             onClick={() => setIsOpen(false)}

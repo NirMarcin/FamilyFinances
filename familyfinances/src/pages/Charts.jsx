@@ -2,10 +2,10 @@ import React, { useContext, useState, useMemo } from "react";
 import ReceiptsContext from "../contexts/ReceiptsContext";
 import InvoiceContext from "../contexts/InvoiceContext";
 import IncomeContext from "../contexts/IncomeContext"; // <-- dodaj import
-import ChartsFilters from "../components/ChartsManager/ChartsFilters";
-import ChartsNav from "../components/ChartsManager/ChartsBanner";
+import ChartsFilters from "../components/chartsManager/ChartsFilters";
+import PagesBanner from "../components/PagesBanner";
 import Navbar from "../components/Navbar";
-import ChartsMain from "../components/ChartsManager/ChartsMain";
+import ChartsMain from "../components/chartsManager/ChartsMain";
 import calcTotal from "../utils/calcTotal";
 
 export default function Charts() {
@@ -225,7 +225,11 @@ export default function Charts() {
   return (
     <>
       <Navbar />
-      <ChartsNav />
+      <PagesBanner
+        title="Wykresy i statystyki"
+      >
+        Przeglądaj swoje wydatki i przychody w formie wykresów. Możesz filtrować dane według kategorii, sklepu i zakresu dat.
+      </PagesBanner>
       <ChartsFilters
         dateRange={dateRange}
         setDateRange={setDateRange}

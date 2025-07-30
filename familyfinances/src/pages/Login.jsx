@@ -2,10 +2,10 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-import Button from "../components/Buttons/Button";
+import Button from "../components/buttons/Button";
 import FormWrapper from "../components/FormWrapper";
-import InputField from "../components/Fields/InputField";
-import PasswordField from "../components/Fields/PasswordField";
+import InputField from "../components/fields/InputField";
+import PasswordField from "../components/fields/PasswordField";
 import SuccessMessage from "../components/SuccessMessage";
 
 import { useAuth } from "../contexts/AuthContext";

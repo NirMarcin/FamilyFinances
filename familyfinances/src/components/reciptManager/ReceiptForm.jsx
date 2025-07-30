@@ -1,5 +1,5 @@
-import Button from "../Buttons/Button";
-import InputField from "../Fields/InputField";
+import Button from "../buttons/Button";
+import InputField from "../fields/InputField";
 
 export function ReceiptForm({
   currentProduct,

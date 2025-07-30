@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Button from "../Buttons/Button";
-import ModalConfirm from "../ModalConfirm";
+import Button from "../buttons/Button";
+import ModalConfirm from "../modals/ModalConfirm";
 
 export default function SubsList({ subs, onDelete }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -30,8 +30,12 @@ export default function SubsList({ subs, onDelete }) {
           <tr>
             <th className="border border-orange-300 p-3 text-left">Data</th>
             <th className="border border-orange-300 p-3 text-left">Nazwa</th>
-            <th className="border border-orange-300 p-3 text-left">Kategoria</th>
-            <th className="border border-orange-300 p-3 text-right">Kwota (zł)</th>
+            <th className="border border-orange-300 p-3 text-left">
+              Kategoria
+            </th>
+            <th className="border border-orange-300 p-3 text-right">
+              Kwota (zł)
+            </th>
             <th className="border border-orange-300 p-3 text-center">Akcje</th>
           </tr>
         </thead>
@@ -39,11 +43,16 @@ export default function SubsList({ subs, onDelete }) {
           {subs
             .sort((a, b) => a.date.localeCompare(b.date))
             .map((p, idx) => (
-              <tr key={p.id || idx} className="hover:bg-orange-100 transition-colors">
+              <tr
+                key={p.id || idx}
+                className="hover:bg-orange-100 transition-colors"
+              >
                 <td className="border border-orange-300 p-3">{p.date}</td>
                 <td className="border border-orange-300 p-3">{p.name}</td>
                 <td className="border border-orange-300 p-3">{p.category}</td>
-                <td className="border border-orange-300 p-3 text-right">{Number(p.amount).toFixed(2)}</td>
+                <td className="border border-orange-300 p-3 text-right">
+                  {Number(p.amount).toFixed(2)}
+                </td>
                 <td className="border border-orange-300 p-3 text-center">
                   <Button
                     variant="secondary"

@@ -5,6 +5,20 @@ export default function ExpansesMenu({ activeTab, setActiveTab }) {
         <button
           type="button"
           onClick={() => {
+            setActiveTab("income");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          className={`text-lg py-2 px-4 rounded transition font-medium text-right ${
+            activeTab === "income"
+              ? "bg-orange-500 text-white shadow"
+              : "hover:bg-gray-200 text-gray-700"
+          }`}
+        >
+          Dodaj przychód
+        </button>
+        <button
+          type="button"
+          onClick={() => {
             setActiveTab("expenses");
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
@@ -29,20 +43,6 @@ export default function ExpansesMenu({ activeTab, setActiveTab }) {
           }`}
         >
           Dodaj paragon
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setActiveTab("income");
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-          className={`text-lg py-2 px-4 rounded transition font-medium text-right ${
-            activeTab === "income"
-              ? "bg-orange-500 text-white shadow"
-              : "hover:bg-gray-200 text-gray-700"
-          }`}
-        >
-          Dodaj przychód
         </button>
         <button
           type="button"

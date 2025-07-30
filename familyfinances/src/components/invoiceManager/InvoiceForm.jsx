@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import CategorySelector from "./InvoiceCatSelector";
-import Button from "../Buttons/Button";
-import AmountInput from "../Fields/AmountInput";
-import DescriptionInput from "../Fields/DescriptionInput";
+import Button from "../buttons/Button";
+import AmountInput from "../fields/AmountInput";
+import DescriptionInput from "../fields/DescriptionInput";
 
 export default function InvoiceForm({
   categories,
@@ -126,8 +126,8 @@ export default function InvoiceForm({
 
       {/* Przycisk */}
       <div className="flex gap-3">
-        <Button 
-        variant="primary"
+        <Button
+          variant="primary"
           type="submit"
           className="bg-green-600 hover:bg-green-700 transition-colors text-white font-semibold py-2 px-8 rounded-md shadow-md"
         >
@@ -135,7 +135,7 @@ export default function InvoiceForm({
         </Button>
         {isEditing && (
           <Button
-          variant="primary"
+            variant="primary"
             type="button"
             onClick={onCancel}
             className="bg-gray-400 hover:bg-gray-500 transition-colors text-white font-semibold py-2 px-8 rounded-md shadow-md"

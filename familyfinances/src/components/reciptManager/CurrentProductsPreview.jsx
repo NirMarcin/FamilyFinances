@@ -1,4 +1,4 @@
-import Button from "../Buttons/Button";
+import Button from "../buttons/Button";
 
 export function CurrentProductsPreview({ products, onRemoveProduct }) {
   const calcTotal = (products) =>

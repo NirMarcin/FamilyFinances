@@ -2,9 +2,9 @@ import React, { useContext, useState } from "react";
 import { ReceiptForm } from "./ReceiptForm";
 import { CurrentProductsPreview } from "./CurrentProductsPreview";
 import { ReceiptsList } from "./ReceiptsList";
-import ReceiptModal from "./ReceiptsModal";
 import ReceiptsContext from "../../contexts/ReceiptsContext";
 import calcTotal from "../../utils/calcTotal";
+import ModalDetails from "../modals/ModalDetails";
 
 export default function ReceiptManager() {
   const {
@@ -64,7 +64,7 @@ export default function ReceiptManager() {
     } else {
       saveReceiptToDB();
     }
- 
+
     setCurrentProducts([]);
     setStoreName("");
   }
@@ -119,7 +119,7 @@ export default function ReceiptManager() {
         />
       </section>
 
-      <ReceiptModal
+      <ModalDetails
         receipt={selectedReceipt}
         onClose={() => setSelectedReceipt(null)}
         calcTotal={calcTotal}

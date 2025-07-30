@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Button from "../Buttons/Button";
-import ModalConfirm from "../ModalConfirm";
+import Button from "../buttons/Button";
+import ModalConfirm from "../modals/ModalConfirm";
 
 export default function InvoiceList({ transactions, onEdit, onDelete }) {
   const [modalOpen, setModalOpen] = useState(false);

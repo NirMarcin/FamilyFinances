@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import ModalConfirm from "../ModalConfirm";
-import Button from "../Buttons/Button";
+import ModalConfirm from "../modals/ModalConfirm";
+import Button from "../buttons/Button";
 import { capitalizeWords } from "../../utils/stringUtils";
-import InputField from "../Fields/InputField";
+import InputField from "../fields/InputField";
 
 export default function CategorySelector({
   categories,

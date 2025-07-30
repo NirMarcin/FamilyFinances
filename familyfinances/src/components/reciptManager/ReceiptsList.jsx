@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { capitalizeWords } from "../../utils/stringUtils";
-import Button from "../Buttons/Button";
-import ModalConfirm from "../ModalConfirm";
+import Button from "../buttons/Button";
+import ModalConfirm from "../modals/ModalConfirm";
 
 export function ReceiptsList({
   receipts,

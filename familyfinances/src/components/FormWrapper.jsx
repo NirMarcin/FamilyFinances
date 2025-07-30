@@ -10,3 +10,4 @@ export default function FormWrapper({ title, children }) {
     </div>
   );
 }
+//used in LOGIN / REGISTER

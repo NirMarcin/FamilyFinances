@@ -5,10 +5,11 @@ export default function InputField({
   register,
   error,
   placeholder,
+  wrapperClassName = "",
   ...rest
 }) {
   return (
-    <div className="mb-4">
+    <div className={wrapperClassName}>
       <label htmlFor={id} className="block mb-1 font-semibold text-orange-700">
         {label}
       </label>

@@ -17,7 +17,9 @@
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.60.0",
     "react-router-dom": "^7.7.0",
-    "tailwindcss": "^4.1.11"
+    "recharts": "^3.1.0",
+    "tailwindcss": "^4.1.11",
+    "xregexp": "^5.1.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",

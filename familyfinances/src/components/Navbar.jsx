@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { useState } from "react";
-import LogoutButton from "./LogoutButton";
+import LogoutButton from "../components/Buttons/LogoutButton";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,8 +31,8 @@ export default function Navbar() {
             <NavLink to="/expenses" className={linkClass}>
               Wydatki
             </NavLink>
-            <NavLink to="/income" className={linkClass}>
-              Przychody
+            <NavLink to="/charts" className={linkClass}>
+              Wykresy i statystki
             </NavLink>
             <NavLink to="/budget" className={linkClass}>
               Budżet

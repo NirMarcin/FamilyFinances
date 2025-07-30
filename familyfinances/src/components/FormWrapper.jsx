@@ -8,5 +8,5 @@ export default function FormWrapper({ title, children }) {
         {children}
       </div>
     </div>
-  )
+  );
 }

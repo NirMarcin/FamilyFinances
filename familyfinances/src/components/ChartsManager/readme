@@ -1,0 +1,57 @@
+### Propozycja widoku "Charts" (Wykresy):
+
+1. **Nagłówek strony**
+
+   - Duży tytuł, np. "Wykresy i statystyki"
+   - Krótki opis: "Analizuj swoje wydatki i przychody w formie wykresów"
+
+2. **Panel filtrów**
+
+   - Wybór zakresu dat (np. miesiąc, rok, własny zakres)
+   - Wybór kategorii (np. wszystkie, spożywcze, rachunki, rozrywka)
+   - Wybór typu danych: paragony, rachunki, wszystko
+
+3. **Wykresy główne**
+
+   - **Wykres kołowy**: udział wydatków według kategorii (np. ile % wydano na jedzenie, ile na rachunki)
+   - **Wykres słupkowy**: suma wydatków/przychodów w kolejnych miesiącach (np. wydatki w każdym miesiącu roku)
+   - **Wykres liniowy**: trend wydatków/przychodów w czasie
+
+4. **Podsumowania liczbowe**
+
+   - Całkowita suma wydatków/przychodów w wybranym okresie
+   - Największa kategoria wydatków
+   - Średnia miesięczna wydatków/przychodów
+
+5. **Interaktywność**
+
+   - Kliknięcie na fragment wykresu filtruje dane (np. kliknięcie na kategorię pokazuje tylko tę kategorię)
+   - Możliwość eksportu wykresu do PNG/PDF
+
+6. **Responsywność**
+   - Wykresy i filtry dostosowują się do ekranu (mobile/desktop)
+
+---
+
+### Logika działania:
+
+- **Pobieranie danych**:  
+  Po wejściu na stronę pobierane są wszystkie paragony i rachunki użytkownika z bazy (np. Firestore).
+
+- **Filtrowanie**:  
+  Użytkownik wybiera zakres dat, kategorię i typ danych. Dane są filtrowane w pamięci lub przez zapytania do bazy.
+
+- **Agregacja danych**:  
+  Dane są grupowane według wybranych kryteriów (np. suma wydatków na kategorię, suma miesięczna).
+
+- **Generowanie wykresów**:  
+  Przefiltrowane i zgrupowane dane są przekazywane do komponentów wykresów (np. Chart.js, Recharts).
+
+- **Aktualizacja wykresów**:  
+  Każda zmiana filtrów powoduje przeliczenie i odświeżenie wykresów.
+
+- **Podsumowania**:  
+  Wyliczane są sumy, średnie, największe wartości na podstawie aktualnie widocznych danych.
+
+- **Interaktywność**:  
+  Kliknięcie na element wykresu może ustawić dodatkowy filtr lub wyświetlić szczegóły.

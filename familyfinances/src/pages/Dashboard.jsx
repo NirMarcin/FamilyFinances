@@ -1,21 +1,32 @@
-import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import ReadOnlyTable from "../components/ReadOnlyTable";
-import ReceiptManager from "../components/ReceiptManager";
+import InvoiceTable from "../components/ReadOnlyTable/InvoiceTable";
+import ReceiptsTable from "../components/ReadOnlyTable/ReceiptsTable";
+import IncomeTable from "../components/ReadOnlyTable/IncomeTable";
+import SubsTable from "../components/ReadOnlyTable/SubsTable";
 
 export default function Dashboard() {
-  const columns = [
-    { header: "Data", accessor: "date" },
-    { header: "Nazwa wydatku", accessor: "title" },
-    { header: "Kwota (zł)", accessor: "amount" },
-    // dodaj inne kolumny, jeśli chcesz, np. data, kategoria...
-  ];
   return (
     <>
       <Navbar />
-      <div className="max-w-md mx-auto p-4">
-        <ReadOnlyTable columns={columns} />
-      </div>
+      <main className="max-w-6xl mx-auto px-4 py-8">
+        <h1 className="text-3xl font-extrabold text-orange-700 mb-8 text-center">
+          Podsumowanie miesiąca
+        </h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <section className="bg-white rounded-lg shadow-lg p-4 border border-orange-200">
+            <InvoiceTable />
+          </section>
+          <section className="bg-white rounded-lg shadow-lg p-4 border border-orange-200">
+            <ReceiptsTable />
+          </section>
+          <section className="bg-white rounded-lg shadow-lg p-4 border border-orange-200">
+            <IncomeTable />
+          </section>
+          <section className="bg-white rounded-lg shadow-lg p-4 border border-orange-200">
+            <SubsTable />
+          </section>
+        </div>
+      </main>
     </>
   );
 }

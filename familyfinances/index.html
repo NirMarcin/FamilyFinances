@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="pl">
   <head>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+    </style>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -14,8 +22,11 @@
       href="https://fonts.bunny.net/css?family=inter:400,600,700&display=swap"
       rel="stylesheet"
     />
+    <script src="https://unpkg.com/xregexp/xregexp-all.js"></script>
   </head>
- <body class="min-h-screen bg-gradient-to-br from-orange-200 via-orange-300 to-orange-500 text-gray-900 font-sans antialiased">
+  <body
+    class="min-h-screen bg-gradient-to-br from-orange-200 via-orange-300 to-orange-500 text-gray-900 font-sans antialiased"
+  >
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

@@ -23,7 +23,8 @@ export default function Dashboard() {
         <span className="block mb-2 font-semibold text-orange-900">
           Witaj w panelu podsumowania!
         </span>
-        Na tej stronie znajdziesz po 10 ostatnich transakcji z bieżącego miesiąca: rachunki, paragony, przychody oraz subskrypcje.
+        Na tej stronie znajdziesz po 10 ostatnich transakcji z bieżącego
+        miesiąca: rachunki, paragony, przychody oraz subskrypcje.
         <br />
         <span className="block mt-2">
           Kliknij wybraną pozycję w tabeli, aby zobaczyć szczegóły.

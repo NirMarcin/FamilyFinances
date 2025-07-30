@@ -3,9 +3,9 @@ import Navbar from "../components/Navbar";
 import ReceiptManager from "../components/reciptManager/ReceiptManager";
 import ExpansesMenu from "../components/ExpansesMenu";
 import InvoiceManager from "../components/invoiceManager/InvoiceManager";
-import IncomeManager from "../components/incomeManager/IncomeManager";
 import SubsManager from "../components/subsManager/SubsManager";
 import PagesBanner from "../components/PagesBanner";
+import IncomeManager from "../components/incomeManager/IncomeManager";
 
 export default function Expenses() {
   const [activeTab, setActiveTab] = useState("expenses");
@@ -14,8 +14,8 @@ export default function Expenses() {
     <>
       <Navbar />
       <PagesBanner title="Zarządzanie finansami">
-        W tej zakładce możesz dodawać, edytować i usuwać swoje rachunki, paragony,
-        przychody oraz subskrypcje.
+        W tej zakładce możesz dodawać, edytować i usuwać swoje rachunki,
+        paragony, przychody oraz subskrypcje.
         <br />
         Wybierz odpowiednią kategorię z menu po prawej, aby zarządzać danymi.
       </PagesBanner>

@@ -225,10 +225,9 @@ export default function Charts() {
   return (
     <>
       <Navbar />
-      <PagesBanner
-        title="Wykresy i statystyki"
-      >
-        Przeglądaj swoje wydatki i przychody w formie wykresów. Możesz filtrować dane według kategorii, sklepu i zakresu dat.
+      <PagesBanner title="Wykresy i statystyki">
+        Przeglądaj swoje wydatki i przychody w formie wykresów. Możesz filtrować
+        dane według kategorii, sklepu i zakresu dat.
       </PagesBanner>
       <ChartsFilters
         dateRange={dateRange}
@@ -242,7 +241,7 @@ export default function Charts() {
         shop={shop}
         setShop={setShop}
       />
-      <ChartsMain pieData={pieData} barData={barData} lineData={lineData} />
+      <ChartsMain data={dataSource} pieData={pieData} barData={barData} lineData={lineData} />
     </>
   );
 }

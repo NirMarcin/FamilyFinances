@@ -69,7 +69,7 @@ export function ReceiptsList({
                 {capitalizeWords(storeName)}
               </td>
               <td className="border border-orange-300 p-3 text-right">
-                {calcTotal(products)}
+                {-Math.abs(calcTotal(products)).toFixed(2)}
               </td>
               <td
                 className="border border-orange-300 p-3 text-center"

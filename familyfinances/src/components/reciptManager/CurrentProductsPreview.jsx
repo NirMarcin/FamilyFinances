@@ -1,8 +1,8 @@
 import Button from "../buttons/Button";
+import calcTotal from "../../utils/calcTotal";
 
 export function CurrentProductsPreview({ products, onRemoveProduct }) {
-  const calcTotal = (products) =>
-    products.reduce((sum, p) => sum + p.price, 0).toFixed(2);
+  
 
   if (products.length === 0) {
     return <p className="text-gray-600 italic">Brak dodanych produktów.</p>;
@@ -43,7 +43,7 @@ export function CurrentProductsPreview({ products, onRemoveProduct }) {
             Suma:
           </td>
           <td className="border border-orange-300 p-3 text-right">
-            {calcTotal(products)}
+            {-Math.abs(calcTotal(products)).toFixed(2)}
           </td>
           <td className="border border-orange-300 p-3"></td>
         </tr>

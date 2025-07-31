@@ -58,7 +58,7 @@ function InvoiceTable() {
             label: <span className="text-orange-900">Kwota</span>,
             key: "amount",
             className: "text-red-600 font-semibold",
-            render: (row) => `-${Number(row.amount).toFixed(2)} zł`,
+            render: (row) => `${Number(row.amount).toFixed(2)} zł`,
           },
         ]}
         data={visibleTransactions}
@@ -71,7 +71,7 @@ function InvoiceTable() {
               Razem:
             </td>
             <td className="px-4 py-2 text-right text-red-600 font-semibold">
-              -{totalAmount.toFixed(2)} zł
+              {totalAmount.toFixed(2)} zł
             </td>
           </tr>
         }
@@ -91,7 +91,7 @@ function InvoiceTable() {
               <div>
                 <span className="font-semibold">Kwota: </span>
                 <span className="text-red-600">
-                  -{Number(selectedInvoice.amount).toFixed(2)} zł
+                  {Number(selectedInvoice.amount).toFixed(2)} zł
                 </span>
               </div>
               <div>

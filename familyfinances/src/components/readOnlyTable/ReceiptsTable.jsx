@@ -59,7 +59,7 @@ function ReceiptsTable() {
             label: <span className="text-orange-900">Kwota</span>,
             key: "products",
             className: "text-red-600 font-semibold",
-            render: (row) => `-${calcTotal(row.products).toFixed(2)} zł`,
+            render: (row) => `${(-Math.abs(calcTotal(row.products))).toFixed(2)} zł`,
           },
         ]}
         data={visibleReceipts}
@@ -72,7 +72,7 @@ function ReceiptsTable() {
               Razem:
             </td>
             <td className="px-4 py-2 text-right text-red-600 font-semibold">
-              -{totalSum.toFixed(2)} zł
+              {(-Math.abs(totalSum)).toFixed(2)} zł
             </td>
           </tr>
         }
@@ -81,6 +81,7 @@ function ReceiptsTable() {
         receipt={selectedReceipt}
         onClose={() => setSelectedReceipt(null)}
         calcTotal={calcTotal}
+        forceNegativeTotal={true} // lub false, jeśli nie chcesz wymuszać minusa
       />
     </div>
   );

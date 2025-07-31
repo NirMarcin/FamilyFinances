@@ -7,6 +7,7 @@ export default function ModalDetails({
   title = null,
   showProducts = true,
   extraInfo = null,
+  forceNegativeTotal = false,
 }) {
   if (!receipt) return null;
 
@@ -77,7 +78,11 @@ export default function ModalDetails({
                   Suma:
                 </td>
                 <td className="border border-orange-300 p-3 text-right">
-                  {calcTotal ? calcTotal(receipt.products) : "-"}
+                  {calcTotal
+                    ? forceNegativeTotal
+                      ? -Math.abs(calcTotal(receipt.products).toFixed(2))
+                      : calcTotal(receipt.products).toFixed(2)
+                    : "-"}
                 </td>
               </tr>
             </tbody>

@@ -123,6 +123,7 @@ export default function ReceiptManager() {
         receipt={selectedReceipt}
         onClose={() => setSelectedReceipt(null)}
         calcTotal={calcTotal}
+        forceNegativeTotal={true}
       />
     </div>
   );

@@ -56,7 +56,7 @@ function SubsTable() {
             label: <span className="text-orange-900">Kwota</span>,
             key: "amount",
             className: "text-red-700 font-semibold",
-            render: (row) => `-${Number(row.amount).toFixed(2)} zł`,
+            render: (row) => `${Number(row.amount).toFixed(2)} zł`,
           },
         ]}
         data={visibleSubs}
@@ -69,7 +69,7 @@ function SubsTable() {
               Razem:
             </td>
             <td className="px-4 py-2 text-right text-red-700 font-semibold">
-              -{totalSum.toFixed(2)} zł
+              {totalSum.toFixed(2)} zł
             </td>
           </tr>
         }

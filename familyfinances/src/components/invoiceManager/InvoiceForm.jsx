@@ -74,7 +74,7 @@ export default function InvoiceForm({
       id: initialData?.id || null,
       date,
       category,
-      amount: Number(amount),
+      amount:-Math.abs(Number(amount)),
       description,
     });
 

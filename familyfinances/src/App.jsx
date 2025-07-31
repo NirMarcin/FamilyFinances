@@ -5,6 +5,10 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Expenses from "./pages/Expenses";
+import Charts from "./pages/Charts";
+import Budget from "./pages/Budget";
+import Reports from "./pages/Reports";
+import Settings from "./pages/Settings";
 
 import { AuthProvider } from "./contexts/AuthContext";
 import { ReceiptsProvider } from "./contexts/ReceiptsContext";
@@ -13,7 +17,6 @@ import { IncomeProvider } from "./contexts/IncomeContext";
 import { SubsProvider } from "./contexts/SubsContext";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
-import Charts from "./pages/Charts";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -66,6 +69,18 @@ function App() {
                   <Route
                     path="/charts"
                     element={user ? <Charts /> : <Navigate to="/login" />}
+                  />
+                  <Route
+                    path="/budget"
+                    element={user ? <Budget /> : <Navigate to="/login" />}
+                  />
+                  <Route
+                    path="/reports"
+                    element={user ? <Reports /> : <Navigate to="/login" />}
+                  />
+                  <Route
+                    path="/settings"
+                    element={user ? <Settings /> : <Navigate to="/login" />}
                   />
                   {/* Możesz dodać też Route na 404 */}
                   <Route

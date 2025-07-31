@@ -1,5 +1,6 @@
 import Navbar from "../components/Navbar";
 import PagesBanner from "../components/PagesBanner";
+import AccountSettings from "../components/settings/AccountSettings";
 
 export default function Settings() {
   return (
@@ -10,10 +11,7 @@ export default function Settings() {
         <br />
         W przyszłości pojawią się tu dodatkowe opcje personalizacji i bezpieczeństwa.
       </PagesBanner>
-      <div className="flex-1 overflow-y-auto p-4">
-        <h2 className="text-2xl font-bold mb-4">Strona ustawień</h2>
-        <p>Wkrótce dostępne!</p>
-      </div>
+      <AccountSettings />
     </div>
   );
 }

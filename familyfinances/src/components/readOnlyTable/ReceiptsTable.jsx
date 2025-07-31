@@ -2,7 +2,7 @@ import React, { useContext, useMemo, useState } from "react";
 import ReceiptsContext from "../../contexts/ReceiptsContext";
 import ModalDetails from "../modals/ModalDetails";
 import calcTotal from "../../utils/calcTotal";
-import UniversalTable from "./UniversalTable";
+import UniversalTable from "../common/UniversalTable";
 
 function ReceiptsTable() {
   const { receipts } = useContext(ReceiptsContext);
@@ -59,7 +59,8 @@ function ReceiptsTable() {
             label: <span className="text-orange-900">Kwota</span>,
             key: "products",
             className: "text-red-600 font-semibold",
-            render: (row) => `${(-Math.abs(calcTotal(row.products))).toFixed(2)} zł`,
+            render: (row) =>
+              `${(-Math.abs(calcTotal(row.products))).toFixed(2)} zł`,
           },
         ]}
         data={visibleReceipts}

@@ -1,7 +1,7 @@
 import React, { useContext, useMemo, useState } from "react";
 import InvoiceContext from "../../contexts/InvoiceContext";
 import ModalDetails from "../modals/ModalDetails";
-import UniversalTable from "./UniversalTable";
+import UniversalTable from "../common/UniversalTable";
 
 function InvoiceTable() {
   const { transactions } = useContext(InvoiceContext);

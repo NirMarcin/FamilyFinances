@@ -1,6 +1,6 @@
 import React, { useContext, useMemo, useState } from "react";
 import IncomeContext from "../../contexts/IncomeContext";
-import UniversalTable from "./UniversalTable";
+import UniversalTable from "../common/UniversalTable";
 import ModalDetails from "../modals/ModalDetails";
 
 function IncomeTable() {

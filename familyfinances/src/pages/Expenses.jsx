@@ -8,7 +8,7 @@ import PagesBanner from "../components/PagesBanner";
 import IncomeManager from "../components/incomeManager/IncomeManager";
 
 export default function Expenses() {
-  const [activeTab, setActiveTab] = useState("expenses");
+  const [activeTab, setActiveTab] = useState("income");
 
   return (
     <>

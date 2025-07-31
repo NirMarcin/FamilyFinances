@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import InvoiceContext from "../../contexts/InvoiceContext";
 import InvoiceForm from "./InvoiceForm";
 import InvoiceList from "./InvoiceList";
@@ -15,6 +15,7 @@ export default function InvoiceManager() {
   } = useContext(InvoiceContext);
 
   const [editTransaction, setEditTransaction] = useState(null);
+  const formRef = useRef(null);
 
   function handleFormSubmit(data) {
     if (!editTransaction) {
@@ -29,7 +30,11 @@ export default function InvoiceManager() {
 
   function handleEdit(tx) {
     setEditTransaction(tx);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    setTimeout(() => {
+      if (formRef.current) {
+        formRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 0);
   }
 
   function handleCancelEdit() {
@@ -46,18 +51,19 @@ export default function InvoiceManager() {
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-8">
-      <h1 className="text-3xl font-extrabold mb-6 text-center text-orange-700">
-        {editTransaction ? "Edytuj rachunek" : "Dodaj rachunek"}
-      </h1>
-
-      <InvoiceForm
-        categories={categories}
-        addCategory={addCategory}
-        removeCategory={removeCategory}
-        onSubmit={handleFormSubmit}
-        initialData={editTransaction}
-        onCancel={handleCancelEdit}
-      />
+      <div ref={formRef}>
+        <h1 className="text-3xl font-extrabold mb-6 text-center text-orange-700">
+          {editTransaction ? "Edytuj rachunek" : "Dodaj rachunek"}
+        </h1>
+        <InvoiceForm
+          categories={categories}
+          addCategory={addCategory}
+          removeCategory={removeCategory}
+          onSubmit={handleFormSubmit}
+          initialData={editTransaction}
+          onCancel={handleCancelEdit}
+        />
+      </div>
 
       <h2 className="text-2xl font-extrabold mb-6 text-orange-700">
         Tabela rachunków

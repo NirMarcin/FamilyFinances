@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Button from "../buttons/Button";
+import { capitalizeWords } from "../../utils/stringUtils";
 
 export default function UniversalForm({
   fields,
@@ -20,9 +21,17 @@ export default function UniversalForm({
 
   function handleChange(e) {
     const { name, value, type, checked } = e.target;
+    let newValue = type === "checkbox" ? checked : value;
+
+    // Automatyczne kapitalizowanie dla pól tekstowych
+    const fieldDef = fields.find((f) => f.name === name);
+    if (fieldDef && fieldDef.type === "text") {
+      newValue = capitalizeWords(newValue);
+    }
+
     setForm((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: newValue,
     }));
   }
 
@@ -61,15 +70,28 @@ export default function UniversalForm({
                   className="w-full px-4 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white transition"
                   required={field.required}
                 >
-                  {field.options.map((opt) => (
-                    <option key={opt} value={opt}>
-                      {opt}
-                    </option>
-                  ))}
+                  {Array.isArray(field.options) && field.options.length > 0 ? (
+                    [...field.options]
+                      .sort((a, b) =>
+                        a.localeCompare
+                          ? a.localeCompare(b, "pl", { sensitivity: "base" })
+                          : String(a).localeCompare(String(b), "pl", {
+                              sensitivity: "base",
+                            })
+                      )
+                      .map((opt) => (
+                        <option key={opt} value={opt}>
+                          {opt}
+                        </option>
+                      ))
+                  ) : (
+                    <option value="">Brak kategorii</option>
+                  )}
                 </select>
                 {showOptionControls && field.name === optionFieldName && (
                   <div className="flex flex-wrap gap-2 items-center mt-1">
-                    <button
+                    <Button
+                      variant="deleted"
                       type="button"
                       onClick={() => {
                         if (
@@ -83,21 +105,25 @@ export default function UniversalForm({
                           }));
                         }
                       }}
-                      className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded shadow transition disabled:opacity-50"
+                      className="!px-4 !py-2"
                       disabled={!form[field.name]}
                       title="Usuń wybraną kategorię"
                     >
                       Usuń wybraną
-                    </button>
+                    </Button>
                     <input
                       type="text"
                       value={newOption}
-                      onChange={(e) => setNewOption(e.target.value)}
+                      onChange={(e) =>
+                        setNewOption(capitalizeWords(e.target.value))
+                      }
                       placeholder={optionInputPlaceholder}
                       className="px-4 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white transition"
                       maxLength={32}
                     />
-                    <button
+                    <Button
+                      className="!px-4 !py-2"
+                      variant="primary"
                       type="button"
                       onClick={() => {
                         if (
@@ -112,11 +138,10 @@ export default function UniversalForm({
                           }));
                         }
                       }}
-                      className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded shadow transition"
                       title="Dodaj nową kategorię"
                     >
                       Dodaj
-                    </button>
+                    </Button>
                   </div>
                 )}
               </div>
@@ -153,12 +178,11 @@ export default function UniversalForm({
       {extraContent && (
         <div className="flex justify-end items-center mt-2">{extraContent}</div>
       )}
-      <Button
-        type="submit"
-        className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-8 rounded shadow transition"
-      >
-        {submitLabel}
-      </Button>
+      {submitLabel && (
+        <Button variant="primary" type="submit">
+          {submitLabel}
+        </Button>
+      )}
     </form>
   );
 }

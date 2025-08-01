@@ -115,7 +115,7 @@ export function IncomeProvider({ children, user }) {
       const categoriesData = categoriesSnap.docs.map((doc) => doc.data().name);
 
       dispatch({ type: "SET_INCOMES", payload: incomesData });
-      dispatch({ type: "SET_CATEGORIES", payload: categoriesData });
+      dispatch({ type: "SET_CATEGORIES", payload: categoriesData.length ? categoriesData : initialState.categories });
     };
     fetchAll();
   }, [user]);

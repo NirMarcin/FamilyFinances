@@ -1,6 +1,18 @@
+import { useContext } from "react";
 import UniversalList from "../common/UniversalList";
+import IncomeEditForm from "./IncomeEditForm";
+import IncomeContext from "../../contexts/IncomeContext";
 
-export default function IncomeList({ incomes, onEditIncome, onDeleteIncome }) {
+export default function IncomeList({
+  incomes,
+  onEditIncome,
+  onDeleteIncome,
+  categories = [],
+  addCategory,
+  removeCategory,
+}) {
+  const { editIncome } = useContext(IncomeContext);
+
   if (!incomes.length) {
     return (
       <section className="mt-10 p-5 border border-gray-300 rounded-lg bg-orange-50 shadow-inner">
@@ -42,6 +54,17 @@ export default function IncomeList({ incomes, onEditIncome, onDeleteIncome }) {
             ),
           },
         ]}
+        editForm={(props) => (
+          <IncomeEditForm
+            {...props}
+            categories={categories}
+            onAddCategory={addCategory}
+            onRemoveCategory={removeCategory}
+            onSubmit={(data) => {
+              editIncome(data);
+            }}
+          />
+        )}
         onEdit={onEditIncome}
         onDelete={(item) => onDeleteIncome(item.id)}
         deleteConfirmTitle="Potwierdź usunięcie"

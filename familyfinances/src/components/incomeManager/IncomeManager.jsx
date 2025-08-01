@@ -11,6 +11,7 @@ export default function IncomeManager() {
     editIncome,
     deleteIncome,
     addCategory,
+    removeCategory,
   } = useContext(IncomeContext);
 
   const [editIncomeData, setEditIncomeData] = useState(null);
@@ -43,28 +44,24 @@ export default function IncomeManager() {
       <h1 className="text-3xl font-extrabold mb-6 text-center text-orange-700">
         {editIncomeData ? "Edytuj przychód" : "Dodaj przychód"}
       </h1>
-      <section
-        ref={formRef}
-        className="mb-10 p-5 border border-gray-300 rounded-lg bg-orange-50 shadow-inner"
-      >
-        <IncomeForm
-          categories={categories}
-          onAddCategory={addCategory}
-          onAddIncome={handleAddOrEditIncome}
-          initialData={editIncomeData}
-          onCancel={editIncomeData ? handleCancelEdit : undefined}
-        />
-      </section>
-      <section>
-        <h2 className="text-2xl font-extrabold mb-6 text-orange-700">
-          Ostatnie przychody
-        </h2>
-        <IncomeList
-          incomes={incomes}
-          onEditIncome={handleEditIncome}
-          onDeleteIncome={deleteIncome}
-        />
-      </section>
+
+      <IncomeForm
+        categories={categories}
+        onRemoveCategory={removeCategory}
+        onAddCategory={addCategory}
+        onAddIncome={handleAddOrEditIncome}
+        initialData={editIncomeData}
+        onCancel={editIncomeData ? handleCancelEdit : undefined}
+      />
+
+      <IncomeList
+        incomes={incomes}
+        categories={categories}
+        onEditIncome={handleEditIncome}
+        onDeleteIncome={deleteIncome}
+        addCategory={addCategory}
+        removeCategory={removeCategory}
+      />
     </div>
   );
 }

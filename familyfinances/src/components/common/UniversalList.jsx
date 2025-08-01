@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import Button from "../buttons/Button";
 import ModalConfirm from "../modals/ModalConfirm";
+import ModalEdit from "../modals/ModalEdit";
 
 export default function UniversalList({
   data = [],
   columns = [],
   onEdit,
   onDelete,
+  editForm: EditForm, // przekaz komponent formularza do edycji
   deleteConfirmTitle = "Potwierdź usunięcie",
   deleteConfirmMessage = "Czy na pewno chcesz usunąć ten element?",
   emptyText = "Brak danych.",
@@ -14,6 +16,9 @@ export default function UniversalList({
 }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [toDelete, setToDelete] = useState(null);
+
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [toEdit, setToEdit] = useState(null);
 
   const handleDeleteClick = (item) => {
     setToDelete(item);
@@ -31,19 +36,35 @@ export default function UniversalList({
     setToDelete(null);
   };
 
+  const handleEditClick = (item) => {
+    setToEdit(item);
+    setEditModalOpen(true);
+  };
+
+  const handleEditConfirm = (editedData) => {
+    if (editedData && onEdit) onEdit(editedData);
+    setEditModalOpen(false);
+    setToEdit(null);
+  };
+
+  const handleEditCancel = () => {
+    setEditModalOpen(false);
+    setToEdit(null);
+  };
+
   if (!data.length) {
     return <p className="text-gray-600 italic text-center">{emptyText}</p>;
   }
 
   return (
     <div className="border border-orange-300 rounded-lg shadow-md bg-white overflow-x-auto">
-      <table className="w-full">
+      <table className="w-full text-sm">
         <thead className="bg-orange-200 text-orange-900 font-semibold">
           <tr>
             {columns.map((col) => (
               <th
                 key={col.key}
-                className={`border border-orange-300 p-3 ${
+                className={`border border-orange-300 p-2 ${
                   col.align || "text-left"
                 }`}
               >
@@ -51,7 +72,7 @@ export default function UniversalList({
               </th>
             ))}
             {actions.length > 0 && (
-              <th className="border border-orange-300 p-3 text-center">
+              <th className="border border-orange-300 p-2 text-center">
                 Akcje
               </th>
             )}
@@ -66,7 +87,7 @@ export default function UniversalList({
               {columns.map((col) => (
                 <td
                   key={col.key}
-                  className={`border border-orange-300 p-3 ${
+                  className={`border border-orange-300 p-2 ${
                     col.align || "text-left"
                   }`}
                 >
@@ -74,13 +95,13 @@ export default function UniversalList({
                 </td>
               ))}
               {actions.length > 0 && (
-                <td className="border border-orange-300 p-3 text-center">
-                  <div className="flex gap-2 justify-center">
-                    {actions.includes("edit") && onEdit && (
+                <td className="border border-orange-300 p-2 text-center">
+                  <div className="flex gap-1 justify-center">
+                    {actions.includes("edit") && EditForm && (
                       <Button
-                        variant="primary"
-                        onClick={() => onEdit(item)}
-                        className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded transition"
+                        variant="secondary"
+                        onClick={() => handleEditClick(item)}
+                        className="hover:bg-orange-500 hover:text-white px-2 py-1 rounded transition text-xs"
                         aria-label="Edytuj"
                       >
                         Edytuj
@@ -88,9 +109,9 @@ export default function UniversalList({
                     )}
                     {actions.includes("delete") && onDelete && (
                       <Button
-                        variant="secondary"
+                        variant="deleted"
                         onClick={() => handleDeleteClick(item)}
-                        className="hover:bg-red-600 rounded px-3 py-1 transition text-red-500"
+                        className="px-2 py-1 text-xs"
                         aria-label="Usuń"
                       >
                         Usuń
@@ -110,6 +131,23 @@ export default function UniversalList({
         onConfirm={handleConfirm}
         onCancel={handleCancel}
       />
+      {EditForm && (
+        <ModalEdit
+          isOpen={editModalOpen}
+          title="Edytuj dane"
+          onConfirm={() => {}}
+          onCancel={handleEditCancel}
+          confirmLabel="Zapisz"
+          cancelLabel="Anuluj"
+          disabled={false}
+        >
+          <EditForm
+            initialData={toEdit}
+            onSubmit={handleEditConfirm}
+            onCancel={handleEditCancel}
+          />
+        </ModalEdit>
+      )}
     </div>
   );
 }

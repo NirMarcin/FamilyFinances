@@ -1,7 +1,9 @@
-import XRegExp from "xregexp";
-
-export function capitalizeWords(str = "") {
-  return XRegExp.replace(str, XRegExp("\\p{L}+", "g"), (word) =>
-    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-  );
+export function capitalizeWords(str) {
+  if (!str) return "";
+  return str
+    .split(" ")
+    .map((word) =>
+      word.length > 0 ? word[0].toUpperCase() + word.slice(1) : ""
+    )
+    .join(" ");
 }

@@ -4,16 +4,15 @@ import React, {
   useCallback,
   useEffect,
 } from "react";
-import { useAuth } from "./AuthContext";
 import {
   collection,
   addDoc,
   getDocs,
-  updateDoc,
   deleteDoc,
   doc,
   query,
   where,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebase"; // <-- importuj swój obiekt db
 
@@ -53,35 +52,20 @@ function reducer(state, action) {
         };
       }
       return state;
+    case "REMOVE_CATEGORY":
+      return {
+        ...state,
+        categories: state.categories.filter((cat) => cat !== action.category),
+      };
+    case "SET_CATEGORIES":
+      return { ...state, categories: action.payload };
     default:
       return state;
   }
 }
 
-export function IncomeProvider({ children }) {
+export function IncomeProvider({ children, user }) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { user } = useAuth();
-
-  // Pobierz przychody z Firestore po zalogowaniu
-  useEffect(() => {
-    if (!user) {
-      dispatch({ type: "SET_INCOMES", payload: [] });
-      return;
-    }
-    const fetchIncomes = async () => {
-      const q = query(
-        collection(db, "incomes"),
-        where("userId", "==", user.uid)
-      );
-      const snapshot = await getDocs(q);
-      const data = snapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      dispatch({ type: "SET_INCOMES", payload: data });
-    };
-    fetchIncomes();
-  }, [user]);
 
   // Dodaj przychód do Firestore
   const addIncome = useCallback(
@@ -95,18 +79,46 @@ export function IncomeProvider({ children }) {
         alert("Nieprawidłowa kategoria!");
         return;
       }
-      const docRef = await addDoc(collection(db, "incomes"), {
-        ...income,
-        userId: user.uid,
-        createdAt: new Date().toISOString(),
-      });
+      // Dodaj przychód do Firestore w ścieżce users/{user.uid}/incomes
+      const docRef = await addDoc(
+        collection(db, "users", user.uid, "incomes"),
+        {
+          ...income,
+          createdAt: new Date().toISOString(),
+        }
+      );
       dispatch({
         type: "ADD_INCOME",
-        payload: { ...income, userId: user.uid, id: docRef.id },
+        payload: { ...income, id: docRef.id },
       });
     },
     [user, state.categories]
   );
+
+  // Pobierz przychody z Firestore po zalogowaniu
+  useEffect(() => {
+    if (!user) {
+      dispatch({ type: "SET_INCOMES", payload: [] });
+      dispatch({ type: "SET_CATEGORIES", payload: initialState.categories });
+      return;
+    }
+    const fetchAll = async () => {
+      // Zapytania równoległe
+      const [incomesSnap, categoriesSnap] = await Promise.all([
+        getDocs(query(collection(db, "users", user.uid, "incomes"))),
+        getDocs(query(collection(db, "users", user.uid, "incomeCategories"))),
+      ]);
+      const incomesData = incomesSnap.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      const categoriesData = categoriesSnap.docs.map((doc) => doc.data().name);
+
+      dispatch({ type: "SET_INCOMES", payload: incomesData });
+      dispatch({ type: "SET_CATEGORIES", payload: categoriesData });
+    };
+    fetchAll();
+  }, [user]);
 
   // Edytuj przychód w Firestore
   const editIncome = useCallback(
@@ -120,33 +132,69 @@ export function IncomeProvider({ children }) {
         alert("Nieprawidłowa kategoria!");
         return;
       }
-      const docRef = doc(db, "incomes", income.id);
-      await updateDoc(docRef, { ...income, userId: user.uid });
+      // Edytuj przychód w Firestore w ścieżce users/{user.uid}/incomes
+      const docRef = doc(db, "users", user.uid, "incomes", income.id);
+      await updateDoc(docRef, { ...income });
       dispatch({
         type: "EDIT_INCOME",
-        payload: { ...income, userId: user.uid },
+        payload: { ...income },
       });
     },
     [user, state.categories]
   );
 
   // Usuń przychód z Firestore
-  const deleteIncome = useCallback(async (id) => {
-    await deleteDoc(doc(db, "incomes", id));
-    dispatch({ type: "DELETE_INCOME", id });
-  }, []);
+  const deleteIncome = useCallback(
+    async (id) => {
+      if (!user) return;
+      // Usuń przychód z Firestore w ścieżce users/{user.uid}/incomes
+      await deleteDoc(doc(db, "users", user.uid, "incomes", id));
+      dispatch({ type: "DELETE_INCOME", id });
+    },
+    [user]
+  );
 
-  // Dodaj kategorię (tylko lokalnie, ale możesz dodać do bazy jeśli chcesz)
+  // Dodaj kategorię do Firestore i lokalnie
   const addCategory = useCallback(
-    (category) => {
-      if (category && !state.categories.includes(category.trim())) {
-        dispatch({ type: "ADD_CATEGORY", category: category.trim() });
+    async (category) => {
+      const trimmed = category.trim();
+      if (trimmed && !state.categories.includes(trimmed)) {
+        // Dodaj kategorię do Firestore w ścieżce users/{user.uid}/incomeCategories
+        await addDoc(collection(db, "users", user.uid, "incomeCategories"), {
+          name: trimmed,
+        });
+        dispatch({ type: "ADD_CATEGORY", category: trimmed });
         return true;
       }
       alert("Taka kategoria już istnieje lub jest nieprawidłowa!");
       return false;
     },
-    [state.categories]
+    [state.categories, user]
+  );
+
+  // Usuń kategorię z Firestore i lokalnie
+  const removeCategory = useCallback(
+    async (category) => {
+      const trimmed = category.trim();
+      if (trimmed && state.categories.includes(trimmed)) {
+        // Usuń kategorię z Firestore w ścieżce users/{user.uid}/incomeCategories
+        const q = query(
+          collection(db, "users", user.uid, "incomeCategories"),
+          where("name", "==", trimmed)
+        );
+        const snapshot = await getDocs(q);
+        if (!snapshot.empty) {
+          await Promise.all(
+            snapshot.docs.map((docRef) => deleteDoc(docRef.ref))
+          );
+        }
+        dispatch({ type: "REMOVE_CATEGORY", category: trimmed });
+        return true;
+      }
+      alert("Nie można usunąć tej kategorii!");
+      return false;
+    },
+    [state.categories, user]
   );
 
   return (
@@ -158,6 +206,7 @@ export function IncomeProvider({ children }) {
         editIncome,
         deleteIncome,
         addCategory,
+        removeCategory, // dodaj do value
       }}
     >
       {children}

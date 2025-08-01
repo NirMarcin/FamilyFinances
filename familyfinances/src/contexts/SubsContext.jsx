@@ -75,7 +75,7 @@ export function SubsProvider({ children, user }) {
       return;
     }
     const fetchSubs = async () => {
-      const q = query(collection(db, "subs"), where("userId", "==", user.uid));
+      const q = query(collection(db, "users", user.uid, "subs"));
       const snapshot = await getDocs(q);
       const data = snapshot.docs.map((doc) => ({
         ...doc.data(),
@@ -98,10 +98,13 @@ export function SubsProvider({ children, user }) {
         interval,
         userId: user.uid,
       });
-      // Zapisz każdą płatność jako osobny dokument
+      // Zapisz każdą płatność jako osobny dokument w users/{user.uid}/subs
       const added = [];
       for (const payment of payments) {
-        const docRef = await addDoc(collection(db, "subs"), payment);
+        const docRef = await addDoc(
+          collection(db, "users", user.uid, "subs"),
+          payment
+        );
         added.push({ ...payment, id: docRef.id });
       }
       dispatch({ type: "ADD_SUBS", payload: added });
@@ -110,10 +113,14 @@ export function SubsProvider({ children, user }) {
   );
 
   // Usuń subskrypcję (po id dokumentu)
-  const deleteSub = useCallback(async (id) => {
-    await deleteDoc(doc(db, "subs", id));
-    dispatch({ type: "DELETE_SUB", id });
-  }, []);
+  const deleteSub = useCallback(
+    async (id) => {
+      if (!user) return;
+      await deleteDoc(doc(db, "users", user.uid, "subs", id));
+      dispatch({ type: "DELETE_SUB", id });
+    },
+    [user]
+  );
 
   return (
     <SubsContext.Provider

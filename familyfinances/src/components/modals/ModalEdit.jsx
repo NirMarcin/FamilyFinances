@@ -4,40 +4,27 @@ export default function ModalEdit({
   isOpen,
   title = "Edytuj dane",
   children,
-  onConfirm,
   onCancel,
-  confirmLabel = "Zapisz",
-  cancelLabel = "Anuluj",
-  disabled = false,
 }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-      <div className="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 relative">
-        <h2 className="text-xl font-bold text-orange-700 mb-4 text-center">
+    <div className="fixed inset-0 bg-transparent backdrop-blur-sm flex justify-center items-center z-50">
+      <div
+        className="bg-white rounded-xl max-w-lg w-full p-8 shadow-2xl relative"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={onCancel}
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-900 text-3xl font-bold leading-none focus:outline-none"
+          aria-label="Zamknij modal"
+        >
+          &times;
+        </button>
+        <h2 className="text-2xl font-bold mb-6 text-orange-700 text-center">
           {title}
         </h2>
-        <div className="mb-6">{children}</div>
-        <div className="flex justify-end gap-4">
-          <button
-            type="button"
-            onClick={onCancel}
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded shadow transition"
-          >
-            {cancelLabel}
-          </button>
-          <button
-            type="button"
-            onClick={onConfirm}
-            disabled={disabled}
-            className={`bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded shadow transition ${
-              disabled ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-          >
-            {confirmLabel}
-          </button>
-        </div>
+        <div>{children}</div>
       </div>
     </div>
   );

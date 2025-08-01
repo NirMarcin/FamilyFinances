@@ -16,18 +16,10 @@ export default function ModalConfirm({
         <h2 className="text-lg font-semibold mb-4 text-orange-700">{title}</h2>
         <p className="mb-6 text-gray-700">{message}</p>
         <div className="flex justify-end gap-4">
-          <Button
-            variant="secondary"
-            onClick={onCancel}
-            className="px-4 py-2 rounded bg-orange-200 text-orange-800 hover:bg-orange-300 transition"
-          >
+          <Button variant="secondary" onClick={onCancel}>
             Nie
           </Button>
-          <Button
-            variant="primary"
-            onClick={onConfirm}
-            className="px-4 py-2 rounded bg-orange-600 text-white hover:bg-orange-700 transition"
-          >
+          <Button variant="primary" onClick={onConfirm}>
             Tak
           </Button>
         </div>

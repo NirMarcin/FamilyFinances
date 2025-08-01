@@ -1,2 +1,0 @@
-# FamilyFinances
-App FamilyFinances

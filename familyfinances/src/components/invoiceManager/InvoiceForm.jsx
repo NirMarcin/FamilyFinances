@@ -1,149 +1,114 @@
-import React, { useState, useEffect } from "react";
-import CategorySelector from "./InvoiceCatSelector";
-import Button from "../buttons/Button";
-import AmountInput from "../fields/AmountInput";
-import DescriptionInput from "../fields/DescriptionInput";
+import React from "react";
+import UniversalForm from "../common/UniversalForm";
+
+const intervalOptions = ["Miesięcznie", "Kwartalnie", "Co pół roku", "Rocznie"];
 
 export default function InvoiceForm({
   categories,
   addCategory,
   removeCategory,
   onSubmit,
-  initialData = null,
+  initialData,
   onCancel,
 }) {
-  const [date, setDate] = useState(
-    initialData?.date || new Date().toISOString().slice(0, 10)
-  );
-  const [category, setCategory] = useState(() => {
-    if (initialData?.category) return initialData.category;
-    if (categories.length === 0) return "";
-    return typeof categories[0] === "string"
-      ? categories[0]
-      : categories[0].name;
-  });
-  const [amount, setAmount] = useState(initialData?.amount?.toString() || "");
-  const [description, setDescription] = useState(
-    initialData?.description || ""
+  const categoryNames = categories.map((cat) =>
+    typeof cat === "string" ? cat : cat.name
   );
 
-  const isEditing = initialData !== null;
+  const fields = [
+    {
+      name: "date",
+      label: "Data",
+      type: "date",
+      required: true,
+    },
+    {
+      name: "category",
+      label: "Kategoria",
+      type: "select",
+      options: categoryNames,
+      required: true,
+    },
+    {
+      name: "amount",
+      label: "Kwota",
+      type: "number",
+      min: 0,
+      step: 0.01,
+      required: true,
+    },
+    {
+      name: "description",
+      label: "Opis",
+      type: "text",
+      placeholder: "np. faktura za prąd, czynsz, zakupy",
+    },
+    {
+      name: "isRecurring",
+      label: "Płatność cykliczna",
+      type: "checkbox",
+    },
+    {
+      name: "recurringInterval",
+      label: "Interwał płatności",
+      type: "select",
+      options: intervalOptions,
+      showIf: (form) => form.isRecurring,
+      required: false,
+    },
+  ];
 
-  useEffect(() => {
-    if (categories.length === 0) return;
-    const exists = categories.some((c) =>
-      typeof c === "string" ? c === category : c.name === category
-    );
-    if (!exists) {
-      setCategory(
-        typeof categories[0] === "string" ? categories[0] : categories[0].name
-      );
+  function validate(form) {
+    const errors = {};
+    if (!form.amount || isNaN(form.amount) || Number(form.amount) <= 0) {
+      errors.amount = "Podaj poprawną wartość kwoty!";
     }
-  }, [categories, category]);
-
-  function isAmountValid() {
-    return amount !== "" && !isNaN(amount) && Number(amount) > 0;
+    if (!form.category) {
+      errors.category = "Wybierz kategorię!";
+    }
+    if (form.isRecurring && !form.recurringInterval) {
+      errors.recurringInterval = "Wybierz interwał płatności!";
+    }
+    return errors;
   }
 
-  function resetForm() {
-    setDate(new Date().toISOString().slice(0, 10));
-    setCategory(
-      categories.length > 0
-        ? typeof categories[0] === "string"
-          ? categories[0]
-          : categories[0].name
-        : ""
-    );
-    setAmount("");
-    setDescription("");
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    if (!isAmountValid()) {
-      alert("Podaj poprawną wartość kwoty!");
-      return;
-    }
-    if (!category) {
-      alert("Wybierz kategorię!");
-      return;
-    }
-
-    onSubmit({
-      id: initialData?.id || null,
-      date,
-      category,
-      amount:-Math.abs(Number(amount)),
-      description,
-    });
-
-    if (!isEditing) {
-      resetForm();
-    }
-  }
+  const initialValues = initialData || {
+    date: new Date().toISOString().slice(0, 10),
+    category: categoryNames[0],
+    amount: "",
+    description: "",
+    isRecurring: false,
+    recurringInterval: intervalOptions[0],
+  };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-6 mb-10 p-5 border border-gray-300 rounded-lg bg-orange-50 shadow-inner"
-    >
-      {/* Data */}
-      <div>
-        <label
-          htmlFor="date"
-          className="block mb-1 font-semibold text-orange-700"
-        >
-          Data
-        </label>
-        <input
-          id="date"
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          className="w-full px-4 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white"
-          required
-        />
-      </div>
-
-      {/* Kategoria */}
-      <CategorySelector
-        categories={categories}
-        category={category}
-        setCategory={setCategory}
-        addCategory={addCategory}
-        removeCategory={removeCategory}
-      />
-
-      {/* Kwota */}
-      <AmountInput amount={amount} setAmount={setAmount} />
-
-      {/* Opis */}
-      <DescriptionInput
-        description={description}
-        setDescription={setDescription}
-      />
-
-      {/* Przycisk */}
-      <div className="flex gap-3">
-        <Button
-          variant="primary"
-          type="submit"
-          className="bg-green-600 hover:bg-green-700 transition-colors text-white font-semibold py-2 px-8 rounded-md shadow-md"
-        >
-          {isEditing ? "Zapisz" : "Dodaj"}
-        </Button>
-        {isEditing && (
-          <Button
-            variant="primary"
+    <UniversalForm
+      fields={fields}
+      initialValues={initialValues}
+      onSubmit={(data) =>
+        onSubmit({
+          ...data,
+          amount: -Math.abs(Number(data.amount)), // kwota zawsze ujemna
+        })
+      }
+      submitLabel={initialData ? "Edytuj fakturę" : "Dodaj fakturę"}
+      validate={validate}
+      options={categoryNames}
+      onAddOption={addCategory}
+      onRemoveOption={removeCategory}
+      optionFieldName="category"
+      optionInputPlaceholder="Dodaj kategorię"
+      extraContent={
+        onCancel && (
+          <button
             type="button"
             onClick={onCancel}
-            className="bg-gray-400 hover:bg-gray-500 transition-colors text-white font-semibold py-2 px-8 rounded-md shadow-md"
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-8 rounded shadow ml-4"
           >
             Anuluj
-          </Button>
-        )}
-      </div>
-    </form>
+          </button>
+        )
+      }
+    />
   );
 }

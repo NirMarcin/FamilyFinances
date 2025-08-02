@@ -10,7 +10,6 @@ import {
   addDoc,
   getDocs,
   query,
-  
   doc,
   deleteDoc,
 } from "firebase/firestore";
@@ -121,6 +120,54 @@ export function SubsProvider({ children, user }) {
     },
     [user]
   );
+
+  // Dodaj przyszłe płatności
+  useEffect(() => {
+    if (!user || !state.subs.length) return;
+
+    const addFuturePayments = async () => {
+      const now = new Date();
+      for (const sub of state.subs) {
+        // Oblicz datę następnej płatności
+        let lastDate = new Date(sub.date);
+        let nextDate = new Date(lastDate);
+        nextDate.setMonth(nextDate.getMonth() + Number(sub.interval));
+
+        // Jeśli następna płatność jest w przeszłości lub dziś, dodaj ją
+        while (nextDate <= now) {
+          // Sprawdź czy taka płatność już istnieje
+          const exists = state.subs.some(
+            (s) =>
+              s.name === sub.name &&
+              s.category === sub.category &&
+              s.amount === sub.amount &&
+              s.date === nextDate.toISOString().slice(0, 10)
+          );
+          if (!exists) {
+            const payment = {
+              name: sub.name,
+              category: sub.category,
+              amount: sub.amount,
+              date: nextDate.toISOString().slice(0, 10),
+              interval: sub.interval,
+              userId: user.uid,
+            };
+            const docRef = await addDoc(
+              collection(db, "users", user.uid, "subs"),
+              payment
+            );
+            dispatch({
+              type: "ADD_SUBS",
+              payload: [{ ...payment, id: docRef.id }],
+            });
+          }
+          nextDate.setMonth(nextDate.getMonth() + Number(sub.interval));
+        }
+      }
+    };
+
+    addFuturePayments();
+  }, [user, state.subs]);
 
   return (
     <SubsContext.Provider

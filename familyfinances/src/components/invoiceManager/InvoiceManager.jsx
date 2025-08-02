@@ -64,11 +64,10 @@ export default function InvoiceManager() {
           onCancel={handleCancelEdit}
         />
       </div>
-
-      <h2 className="text-2xl font-extrabold mb-6 text-orange-700">
-        Tabela rachunków
-      </h2>
       <InvoiceList
+        categories={categories.map((cat) =>
+          typeof cat === "string" ? cat : cat.name
+        )}
         transactions={transactions}
         onEdit={handleEdit}
         onDelete={handleDelete}

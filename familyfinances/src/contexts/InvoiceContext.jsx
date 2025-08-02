@@ -10,7 +10,7 @@ import {
   query,
   onSnapshot,
   addDoc,
-  updateDoc,
+  setDoc,
   doc,
   deleteDoc,
   orderBy,
@@ -48,20 +48,7 @@ export function InvoiceProvider({ children, user }) {
         name: doc.data().name,
       }));
 
-      if (cats.length === 0) {
-        const defaultCats = [
-          "Jedzenie",
-          "Transport",
-          "Mieszkanie",
-          "Rozrywka",
-          "Inne",
-        ];
-        defaultCats.forEach(async (name) => {
-          await addDoc(categoriesRef, { name });
-        });
-      } else {
-        dispatch({ type: "SET_CATEGORIES", categories: cats });
-      }
+      dispatch({ type: "SET_CATEGORIES", categories: cats });
     });
 
     const transactionsRef = collection(db, "users", user.uid, "transactions");
@@ -139,9 +126,10 @@ export function InvoiceProvider({ children, user }) {
         return;
       }
       try {
-        await updateDoc(
+        await setDoc(
           doc(db, "users", user.uid, "transactions", transaction.id),
-          transaction
+          transaction,
+          { merge: false } // nadpisuje cały dokument
         );
       } catch (e) {
         console.error("Błąd aktualizacji transakcji:", e);

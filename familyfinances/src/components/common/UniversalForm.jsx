@@ -9,15 +9,14 @@ export default function UniversalForm({
   submitLabel = "Zapisz",
   validate,
   extraContent = null,
-  onAddOption,
-  onRemoveOption,
-  optionInputPlaceholder = "Dodaj kategorię",
-  optionFieldName = "category",
-  options = [],
+  onAddOption = {},
+  onRemoveOption = {},
+  optionInputPlaceholder = {},
+  options = {},
 }) {
   const [form, setForm] = useState(initialValues);
   const [errors, setErrors] = useState({});
-  const [newOption, setNewOption] = useState("");
+  const [newOptions, setNewOptions] = useState({});
 
   function handleChange(e) {
     const { name, value, type, checked } = e.target;
@@ -47,9 +46,6 @@ export default function UniversalForm({
     setErrors({});
   }
 
-  const showOptionControls =
-    typeof onAddOption === "function" && typeof onRemoveOption === "function";
-
   return (
     <form
       onSubmit={handleSubmit}
@@ -72,15 +68,11 @@ export default function UniversalForm({
                     className="w-full px-4 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white transition"
                     required={field.required}
                   >
-                    {Array.isArray(field.options) &&
-                    field.options.length > 0 ? (
-                      [...field.options]
+                    {Array.isArray(options[field.name]) &&
+                    options[field.name].length > 0 ? (
+                      [...options[field.name]]
                         .sort((a, b) =>
-                          a.localeCompare
-                            ? a.localeCompare(b, "pl", { sensitivity: "base" })
-                            : String(a).localeCompare(String(b), "pl", {
-                                sensitivity: "base",
-                              })
+                          a.localeCompare(b, "pl", { sensitivity: "base" })
                         )
                         .map((opt) => (
                           <option key={opt} value={opt}>
@@ -91,43 +83,50 @@ export default function UniversalForm({
                       <option value="">Brak kategorii</option>
                     )}
                   </select>
-                  {showOptionControls && field.name === optionFieldName && (
+                  {onAddOption[field.name] && onRemoveOption[field.name] && (
                     <div className="flex flex-wrap gap-2 items-center mt-1">
+                      {/* Jeden przycisk do usuwania aktualnie wybranej opcji */}
                       <Button
                         variant="deleted"
                         type="button"
+                        disabled={
+                          !Array.isArray(options[field.name]) ||
+                          options[field.name].length === 0
+                        }
                         onClick={() => {
                           if (
-                            form[field.name] &&
-                            options.includes(form[field.name])
+                            Array.isArray(options[field.name]) &&
+                            options[field.name].length > 0
                           ) {
-                            onRemoveOption(form[field.name]);
-                            setForm((prev) => ({
-                              ...prev,
-                              [field.name]: "",
-                            }));
-                          } else if (options.length === 1) {
-                            // Usuwanie ostatniej kategorii nawet gdy nie jest wybrana
-                            onRemoveOption(options[0]);
-                            setForm((prev) => ({
-                              ...prev,
-                              [field.name]: "",
-                            }));
+                            const last =
+                              options[field.name][
+                                options[field.name].length - 1
+                              ];
+                            onRemoveOption[field.name](last);
+                            // Jeśli usuwasz wybraną opcję, wyczyść pole w formularzu
+                            if (form[field.name] === last) {
+                              setForm((prev) => ({
+                                ...prev,
+                                [field.name]: "",
+                              }));
+                            }
                           }
                         }}
                         className="!px-4 !py-2"
-                        disabled={options.length === 0}
-                        title="Usuń wybraną kategorię"
+                        title={`Usuń ${field.label.toLowerCase()}`}
                       >
-                        Usuń wybraną
+                        Usuń
                       </Button>
                       <input
                         type="text"
-                        value={newOption}
+                        value={newOptions[field.name] || ""}
                         onChange={(e) =>
-                          setNewOption(capitalizeWords(e.target.value))
+                          setNewOptions((prev) => ({
+                            ...prev,
+                            [field.name]: capitalizeWords(e.target.value),
+                          }))
                         }
-                        placeholder={optionInputPlaceholder}
+                        placeholder={optionInputPlaceholder[field.name] || ""}
                         className="px-4 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white transition"
                         maxLength={32}
                       />
@@ -136,19 +135,20 @@ export default function UniversalForm({
                         variant="primary"
                         type="button"
                         onClick={() => {
-                          if (
-                            newOption.trim() &&
-                            !options.includes(newOption.trim())
-                          ) {
-                            onAddOption(newOption.trim());
-                            setNewOption("");
+                          const val = newOptions[field.name]?.trim();
+                          if (val && !options[field.name].includes(val)) {
+                            onAddOption[field.name](val);
+                            setNewOptions((prev) => ({
+                              ...prev,
+                              [field.name]: "",
+                            }));
                             setForm((prev) => ({
                               ...prev,
-                              [field.name]: newOption.trim(),
+                              [field.name]: val,
                             }));
                           }
                         }}
-                        title="Dodaj nową kategorię"
+                        title={`Dodaj nową ${field.label.toLowerCase()}`}
                       >
                         Dodaj
                       </Button>

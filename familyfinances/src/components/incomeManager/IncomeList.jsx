@@ -30,7 +30,9 @@ export default function IncomeList({
         Ostatnie przychody
       </h2>
       <UniversalList
-        data={incomes.slice(-10).reverse()}
+        data={[...incomes]
+          .sort((a, b) => new Date(b.date) - new Date(a.date))
+          .slice(0, 10)}
         columns={[
           { key: "date", label: "Data" },
           { key: "category", label: "Kategoria" },

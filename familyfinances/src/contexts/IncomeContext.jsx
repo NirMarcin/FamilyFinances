@@ -19,7 +19,7 @@ import { db } from "../firebase"; // <-- importuj swój obiekt db
 const IncomeContext = createContext();
 
 const initialState = {
-  categories: ["Wynagrodzenie", "Premia", "Inne"],
+  categories: [],
   incomes: [],
 };
 
@@ -206,7 +206,7 @@ export function IncomeProvider({ children, user }) {
         editIncome,
         deleteIncome,
         addCategory,
-        removeCategory, // dodaj do value
+        removeCategory,
       }}
     >
       {children}

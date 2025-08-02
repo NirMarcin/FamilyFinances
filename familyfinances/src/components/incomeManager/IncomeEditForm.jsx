@@ -13,7 +13,7 @@ export default function IncomeEditForm({
         name: "category",
         label: "Kategoria",
         type: "select",
-        options: categories, // zawsze aktualne!
+        options: categories,
         required: true,
       },
       {

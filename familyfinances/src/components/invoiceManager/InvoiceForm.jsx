@@ -87,11 +87,11 @@ export default function InvoiceForm({ initialData, onCancel }) {
       }}
       submitLabel={initialData ? "Edytuj fakturę" : "Dodaj fakturę"}
       validate={validate}
-      options={categoryNames}
-      onAddOption={addCategory}
-      onRemoveOption={removeCategory}
-      optionFieldName="category"
-      optionInputPlaceholder="Dodaj kategorię"
+      options={{ category: categoryNames }}
+      onAddOption={{ category: addCategory }}
+      onRemoveOption={{ category: removeCategory }}
+      optionFieldName={{ category: "category" }}
+      optionInputPlaceholder={{ category: "Dodaj kategorię" }}
       extraContent={
         onCancel && (
           <button

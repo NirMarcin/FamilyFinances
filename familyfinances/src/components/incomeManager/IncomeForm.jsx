@@ -58,11 +58,11 @@ export default function IncomeForm({ initialData, onCancel }) {
       onSubmit={(data) => addIncome({ ...data, amount: Number(data.amount) })}
       submitLabel={initialData ? "Edytuj przychód" : "Dodaj przychód"}
       validate={validate}
-      options={categories}
-      onAddOption={addCategory}
-      onRemoveOption={removeCategory}
-      optionFieldName="category"
-      optionInputPlaceholder="Dodaj kategorię"
+      options={{ category: categories }}
+      onAddOption={{ category: addCategory }}
+      onRemoveOption={{ category: removeCategory }}
+      optionFieldName={{ category: "category" }}
+      optionInputPlaceholder={{ category: "Dodaj kategorię" }}
       extraContent={
         onCancel && (
           <button

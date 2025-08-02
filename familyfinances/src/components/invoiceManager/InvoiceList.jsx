@@ -3,15 +3,16 @@ import UniversalList from "../common/UniversalList";
 import InvoiceEditForm from "./InvoiceEditForm";
 import InvoiceContext from "../../contexts/InvoiceContext";
 
-export default function InvoiceList({
-  transactions,
-  categories = [],
-  addCategory,
-  removeCategory,
-}) {
-  const { updateTransaction, deleteTransaction } = useContext(InvoiceContext);
+export default function InvoiceList() {
+  const {
+    invoices,
+    categories,
 
-  if (!transactions.length) {
+    editInvoice,
+    deleteInvoice,
+  } = useContext(InvoiceContext);
+
+  if (!invoices.length) {
     return (
       <section className="mt-10 p-5 border border-gray-300 rounded-lg bg-orange-50 shadow-inner">
         <h2 className="text-2xl font-extrabold mb-6 text-orange-700 text-center">
@@ -28,7 +29,7 @@ export default function InvoiceList({
         Ostatnie rachunki
       </h2>
       <UniversalList
-        data={[...transactions]
+        data={[...invoices]
           .sort((a, b) => new Date(b.date) - new Date(a.date))
           .slice(0, 10)}
         columns={[
@@ -74,13 +75,11 @@ export default function InvoiceList({
             categories={categories.map((cat) =>
               typeof cat === "string" ? cat : cat.name
             )}
-            onAddCategory={addCategory}
-            onRemoveCategory={removeCategory}
-            onSubmit={updateTransaction}
+            onSubmit={editInvoice}
           />
         )}
-        onEdit={updateTransaction}
-        onDelete={(item) => deleteTransaction(item.id)}
+        onEdit={editInvoice}
+        onDelete={(item) => deleteInvoice(item.id)}
         deleteConfirmTitle="Potwierdź usunięcie"
         deleteConfirmMessage="Czy na pewno chcesz usunąć ten rachunek?"
       />

@@ -1,16 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import UniversalForm from "../common/UniversalForm";
+import InvoiceContext from "../../contexts/InvoiceContext";
 
-const intervalOptions = ["Miesięcznie", "Kwartalnie", "Co pół roku", "Rocznie"];
+export default function InvoiceForm({ initialData, onCancel }) {
+  const { categories, addCategory, removeCategory, addInvoice } =
+    useContext(InvoiceContext);
 
-export default function InvoiceForm({
-  categories,
-  addCategory,
-  removeCategory,
-  onSubmit,
-  initialData,
-  onCancel,
-}) {
   const categoryNames = categories.map((cat) =>
     typeof cat === "string" ? cat : cat.name
   );
@@ -49,12 +44,12 @@ export default function InvoiceForm({
       type: "checkbox",
     },
     {
-      name: "recurringInterval",
-      label: "Interwał płatności",
-      type: "select",
-      options: intervalOptions,
+      name: "interval",
+      label: "Co ile miesięcy",
+      type: "number",
+      min: 1,
+      required: true,
       showIf: (form) => form.isRecurring,
-      required: false,
     },
   ];
 
@@ -66,9 +61,6 @@ export default function InvoiceForm({
     if (!form.category) {
       errors.category = "Wybierz kategorię!";
     }
-    if (form.isRecurring && !form.recurringInterval) {
-      errors.recurringInterval = "Wybierz interwał płatności!";
-    }
     return errors;
   }
 
@@ -78,19 +70,21 @@ export default function InvoiceForm({
     amount: "",
     description: "",
     isRecurring: false,
-    recurringInterval: intervalOptions[0],
+    interval: 1,
   };
 
   return (
     <UniversalForm
       fields={fields}
       initialValues={initialValues}
-      onSubmit={(data) =>
-        onSubmit({
+      onSubmit={(data) => {
+        addInvoice({
           ...data,
-          amount: -Math.abs(Number(data.amount)), // kwota zawsze ujemna
-        })
-      }
+          amount: -Math.abs(Number(data.amount)),
+          recurringInterval: data.isRecurring ? data.recurringInterval : null,
+        });
+        if (onCancel) onCancel();
+      }}
       submitLabel={initialData ? "Edytuj fakturę" : "Dodaj fakturę"}
       validate={validate}
       options={categoryNames}

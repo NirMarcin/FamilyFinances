@@ -63,7 +63,7 @@ export default function InvoiceEditForm({
 
   const initialValues = {
     category: initialData?.category || categories[0] || "",
-    amount: initialData?.amount || "",
+    amount: initialData?.amount ? Math.abs(Number(initialData.amount)) : "",
     description: initialData?.description || "",
     isRecurring: initialData?.isRecurring || false,
     recurringInterval: initialData?.recurringInterval || "Miesięcznie",

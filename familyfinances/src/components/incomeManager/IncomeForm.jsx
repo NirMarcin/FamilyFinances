@@ -1,14 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import UniversalForm from "../common/UniversalForm";
+import IncomeContext from "../../contexts/IncomeContext";
 
-export default function IncomeForm({
-  categories,
-  onAddCategory,
-  onRemoveCategory,
-  onAddIncome,
-  initialData,
-  onCancel,
-}) {
+export default function IncomeForm({ initialData, onCancel }) {
+  const { categories, addCategory, removeCategory, addIncome } =
+    useContext(IncomeContext);
+
   const fields = [
     {
       name: "date",
@@ -58,12 +55,12 @@ export default function IncomeForm({
     <UniversalForm
       fields={fields}
       initialValues={initialValues}
-      onSubmit={(data) => onAddIncome({ ...data, amount: Number(data.amount) })}
+      onSubmit={(data) => addIncome({ ...data, amount: Number(data.amount) })}
       submitLabel={initialData ? "Edytuj przychód" : "Dodaj przychód"}
       validate={validate}
       options={categories}
-      onAddOption={onAddCategory}
-      onRemoveOption={onRemoveCategory}
+      onAddOption={addCategory}
+      onRemoveOption={removeCategory}
       optionFieldName="category"
       optionInputPlaceholder="Dodaj kategorię"
       extraContent={

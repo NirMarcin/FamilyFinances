@@ -3,15 +3,15 @@ import UniversalList from "../common/UniversalList";
 import IncomeEditForm from "./IncomeEditForm";
 import IncomeContext from "../../contexts/IncomeContext";
 
-export default function IncomeList({
-  incomes,
-  onEditIncome,
-  onDeleteIncome,
-  categories = [],
-  addCategory,
-  removeCategory,
-}) {
-  const { editIncome } = useContext(IncomeContext);
+export default function IncomeList({ onEditIncome }) {
+  const {
+    incomes,
+    categories,
+    addCategory,
+    removeCategory,
+    editIncome,
+    deleteIncome,
+  } = useContext(IncomeContext);
 
   if (!incomes.length) {
     return (
@@ -62,13 +62,11 @@ export default function IncomeList({
             categories={categories}
             onAddCategory={addCategory}
             onRemoveCategory={removeCategory}
-            onSubmit={(data) => {
-              editIncome(data);
-            }}
+            onSubmit={editIncome}
           />
         )}
         onEdit={onEditIncome}
-        onDelete={(item) => onDeleteIncome(item.id)}
+        onDelete={(item) => deleteIncome(item.id)}
         deleteConfirmTitle="Potwierdź usunięcie"
         deleteConfirmMessage="Czy na pewno chcesz usunąć ten przychód?"
       />

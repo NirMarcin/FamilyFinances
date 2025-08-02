@@ -4,13 +4,8 @@ import InvoiceEditForm from "./InvoiceEditForm";
 import InvoiceContext from "../../contexts/InvoiceContext";
 
 export default function InvoiceList() {
-  const {
-    invoices,
-    categories,
-
-    editInvoice,
-    deleteInvoice,
-  } = useContext(InvoiceContext);
+  const { invoices, categories, editInvoice, deleteInvoice } =
+    useContext(InvoiceContext);
 
   if (!invoices.length) {
     return (

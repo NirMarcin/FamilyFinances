@@ -1,127 +1,64 @@
-import React, {
-  createContext,
-  useReducer,
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-} from "react";
-import { db } from "../firebase";
+import React, { createContext, useReducer, useCallback, useEffect } from "react";
 import {
   collection,
+  addDoc,
   getDocs,
+  deleteDoc,
+  doc,
   query,
   where,
-  onSnapshot,
-  addDoc,
-  doc,
-  deleteDoc,
+  updateDoc,
 } from "firebase/firestore";
+import { db } from "../firebase";
 import { capitalizeWords } from "../utils/stringUtils";
 
 const ReceiptsContext = createContext();
 
 const initialState = {
-  storeName: "",
-  currentProduct: { name: "", category: "", price: "" },
-  currentProducts: [],
+  receiptsCategories: [],
+  shops: [],
   receipts: [],
-  shops: [], // dynamiczna lista sklepów
 };
 
 function reducer(state, action) {
   switch (action.type) {
-    case "SET_STORE_NAME":
-      return { ...state, storeName: action.payload };
-
-    case "SET_CURRENT_PRODUCT_FIELD":
-      return {
-        ...state,
-        currentProduct: {
-          ...state.currentProduct,
-          [action.field]: action.value,
-        },
-      };
-
-    case "ADD_CURRENT_PRODUCT": {
-      const { name, category, price } = state.currentProduct;
-      if (!name.trim() || !category.trim() || !price.trim()) {
-        alert("Proszę wypełnić wszystkie pola produktu.");
-        return state;
-      }
-      const priceNum = parseFloat(price);
-      if (isNaN(priceNum) || priceNum <= 0) {
-        alert("Cena musi być liczbą większą od 0.");
-        return state;
-      }
-      const newProduct = {
-        name: capitalizeWords(name.trim()),
-        category: capitalizeWords(category.trim()),
-        price: priceNum,
-      };
-      return {
-        ...state,
-        currentProducts: [...state.currentProducts, newProduct],
-        currentProduct: { name: "", category: "", price: "" },
-      };
-    }
-
-    case "REMOVE_PRODUCT":
-      return {
-        ...state,
-        currentProducts: state.currentProducts.filter(
-          (_, i) => i !== action.index
-        ),
-      };
-
-    case "SAVE":
-      return {
-        ...state,
-        storeName: "",
-        currentProduct: { name: "", category: "", price: "" },
-        currentProducts: [],
-      };
-
     case "SET_RECEIPTS":
-      return {
-        ...state,
-        receipts: action.payload.map((receipt) => ({
-          ...receipt,
-          storeName: capitalizeWords(receipt.storeName),
-          products: receipt.products.map((p) => ({
-            ...p,
-            name: capitalizeWords(p.name),
-            category: capitalizeWords(p.category),
-          })),
-        })),
-      };
-
-    case "SET_SHOPS": {
-      const uniqueShops = Array.from(new Set(action.payload));
-      return {
-        ...state,
-        shops: uniqueShops
-          .map((shop) => capitalizeWords(shop))
-          .sort((a, b) =>
-            a.localeCompare(b, undefined, { sensitivity: "base" })
-          ),
-      };
-    }
-
-    case "SET_CURRENT_PRODUCTS":
-      return {
-        ...state,
-        currentProducts: action.payload,
-      };
-
-    case "UPDATE_RECEIPT":
+      return { ...state, receipts: action.payload };
+    case "ADD_RECEIPT":
+      return { ...state, receipts: [...state.receipts, action.payload] };
+    case "EDIT_RECEIPT":
       return {
         ...state,
         receipts: state.receipts.map((r) =>
-          r.id === action.payload.id ? { ...r, ...action.payload } : r
+          r.id === action.payload.id ? { ...action.payload } : r
         ),
       };
-
+    case "DELETE_RECEIPT":
+      return {
+        ...state,
+        receipts: state.receipts.filter((r) => r.id !== action.id),
+      };
+    case "SET_RECEIPTS_CATEGORIES":
+      return { ...state, receiptsCategories: action.payload };
+    case "ADD_RECEIPTS_CATEGORY":
+      return state.receiptsCategories.includes(action.category.trim())
+        ? state
+        : {
+            ...state,
+            receiptsCategories: [
+              ...state.receiptsCategories,
+              action.category.trim(),
+            ],
+          };
+    case "REMOVE_RECEIPTS_CATEGORY":
+      return {
+        ...state,
+        receiptsCategories: state.receiptsCategories.filter(
+          (cat) => cat !== action.category
+        ),
+      };
+    case "SET_SHOPS":
+      return { ...state, shops: action.payload };
     default:
       return state;
   }
@@ -129,180 +66,196 @@ function reducer(state, action) {
 
 export function ReceiptsProvider({ children, user }) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [selectedReceipt, setSelectedReceipt] = useState(null);
 
-  // Usuń produkt po indeksie
-  const removeProduct = useCallback((indexToRemove) => {
-    dispatch({ type: "REMOVE_PRODUCT", index: indexToRemove });
-  }, []);
-
-  // Usuń pojedynczy paragon z Firestore
-  const deleteReceipt = useCallback(
-    async (id) => {
-      if (!user?.uid) return;
-      try {
-        await deleteDoc(doc(db, "users", user.uid, "receipts", id));
-        // onSnapshot automatycznie zaktualizuje lokalny stan
-      } catch (error) {
-        console.error("Błąd podczas usuwania paragonu:", error);
-        alert("Nie udało się usunąć paragonu.");
-      }
+  // Dodaj paragon
+  const addReceipt = useCallback(
+    async (receipt) => {
+      if (!user) return;
+      const docRef = await addDoc(
+        collection(db, "users", user.uid, "receipts"),
+        { ...receipt, createdAt: new Date().toISOString() }
+      );
+      dispatch({ type: "ADD_RECEIPT", payload: { ...receipt, id: docRef.id } });
     },
     [user]
   );
 
-  // Subskrypcja paragonów użytkownika
-  useEffect(() => {
-    if (!user?.uid) return;
-
-    const receiptsRef = collection(db, "users", user.uid, "receipts");
-    const unsubscribe = onSnapshot(receiptsRef, (snapshot) => {
-      const receiptsData = snapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-        date:
-          doc.data().date && typeof doc.data().date.toDate === "function"
-            ? doc.data().date.toDate()
-            : new Date(),
-      }));
-      dispatch({ type: "SET_RECEIPTS", payload: receiptsData });
-    });
-
-    return () => unsubscribe();
-  }, [user]);
-
-  // Subskrypcja sklepów użytkownika
-  useEffect(() => {
-    if (!user?.uid) return;
-
-    const shopsRef = collection(db, "users", user.uid, "shopLists");
-    const unsubscribe = onSnapshot(shopsRef, (snapshot) => {
-      const shopsData = snapshot.docs.map((doc) => doc.data().name);
-      dispatch({ type: "SET_SHOPS", payload: shopsData });
-    });
-
-    return () => unsubscribe();
-  }, [user]);
-
-  // Dodanie nowego sklepu, jeśli go nie ma
-  const addShopIfNotExists = useCallback(async () => {
-    const shopName = state.storeName.trim();
-    if (!shopName) return;
-    console.log("Sprawdzam czy sklep istnieje:", shopName);
-
-    try {
-      const shopsRef = collection(db, "users", user.uid, "shopLists");
-      const q = query(shopsRef, where("name", "==", shopName.toLowerCase()));
-      const querySnapshot = await getDocs(q);
-
-      if (querySnapshot.empty) {
-        console.log("Sklep nie istnieje, dodaję:", shopName);
-        await addDoc(shopsRef, { name: shopName.toLowerCase() });
-      } else {
-        console.log("Sklep już istnieje:", shopName);
-      }
-    } catch (error) {
-      console.error("Błąd dodawania sklepu:", error);
-    }
-  }, [state.storeName, user]);
-
-  // Zapisywanie paragonu w Firestore w ścieżce użytkownika
-  const save = useCallback(async () => {
-    if (!user?.uid) {
-      alert("Brak zalogowanego użytkownika");
-      return;
-    }
-    if (!state.storeName.trim()) {
-      alert("Podaj nazwę sklepu.");
-      return;
-    }
-    if (!state.currentProducts.length) {
-      alert("Dodaj przynajmniej jeden produkt.");
-      return;
-    }
-
-    try {
-      await addShopIfNotExists();
-
-      const receiptsRef = collection(db, "users", user.uid, "receipts");
-      await addDoc(receiptsRef, {
-        storeName: state.storeName.trim(),
-        date: new Date(),
-        products: state.currentProducts,
+  // Edytuj paragon
+  const editReceipt = useCallback(
+    async (receipt) => {
+      if (!user || !receipt.id) return;
+      await updateDoc(doc(db, "users", user.uid, "receipts", receipt.id), {
+        ...receipt,
       });
+      dispatch({ type: "EDIT_RECEIPT", payload: { ...receipt } });
+    },
+    [user]
+  );
 
-      dispatch({ type: "SAVE" });
-    } catch (error) {
-      console.error("Błąd podczas zapisu paragonu:", error);
-      alert("Wystąpił błąd podczas zapisu paragonu.");
+  // Usuń paragon
+  const deleteReceipt = useCallback(
+    async (id) => {
+      if (!user) return;
+      await deleteDoc(doc(db, "users", user.uid, "receipts", id));
+      dispatch({ type: "DELETE_RECEIPT", id });
+    },
+    [user]
+  );
+
+  // Dodaj kategorię
+  const addReceiptsCategory = useCallback(
+    async (category) => {
+      const trimmed = category.trim();
+      if (trimmed && !state.receiptsCategories.includes(trimmed)) {
+        await addDoc(collection(db, "users", user.uid, "receiptsCategories"), {
+          name: trimmed,
+        });
+        // Pobierz aktualne kategorie po dodaniu
+        const categoriesSnap = await getDocs(collection(db, "users", user.uid, "receiptsCategories"));
+        dispatch({
+          type: "SET_RECEIPTS_CATEGORIES",
+          payload: categoriesSnap.docs.map((doc) => doc.data().name),
+        });
+        return true;
+      }
+      alert("Taka kategoria już istnieje lub jest nieprawidłowa!");
+      return false;
+    },
+    [state.receiptsCategories, user]
+  );
+
+  // Usuń kategorię
+  const removeReceiptsCategory = useCallback(
+    async (category) => {
+      const trimmed = category.trim();
+      if (trimmed && state.receiptsCategories.includes(trimmed)) {
+        const q = query(
+          collection(db, "users", user.uid, "receiptsCategories"),
+          where("name", "==", trimmed)
+        );
+        const snapshot = await getDocs(q);
+        await Promise.all(snapshot.docs.map((docRef) => deleteDoc(docRef.ref)));
+        // Pobierz aktualne kategorie po usunięciu
+        const categoriesSnap = await getDocs(collection(db, "users", user.uid, "receiptsCategories"));
+        dispatch({
+          type: "SET_RECEIPTS_CATEGORIES",
+          payload: categoriesSnap.docs.map((doc) => doc.data().name),
+        });
+        return true;
+      }
+      alert("Nie można usunąć tej kategorii!");
+      return false;
+    },
+    [state.receiptsCategories, user]
+  );
+
+  // Dodaj sklep
+  const addShop = useCallback(
+    async (shop) => {
+      const trimmed = capitalizeWords(shop.trim());
+      if (trimmed && !state.shops.includes(trimmed)) {
+        await addDoc(collection(db, "users", user.uid, "shopLists"), {
+          name: trimmed,
+        });
+        // Pobierz aktualną listę sklepów po dodaniu
+        const shopsSnap = await getDocs(collection(db, "users", user.uid, "shopLists"));
+        dispatch({
+          type: "SET_SHOPS",
+          payload: Array.from(
+            new Set(shopsSnap.docs.map((doc) => capitalizeWords(doc.data().name)))
+          ),
+        });
+        return true;
+      }
+      alert("Taki sklep już istnieje lub jest nieprawidłowy!");
+      return false;
+    },
+    [state.shops, user]
+  );
+
+  // Usuń sklep
+  const removeShop = useCallback(
+    async (shop) => {
+      const trimmed = capitalizeWords(shop.trim());
+      if (trimmed && state.shops.includes(trimmed)) {
+        const q = query(
+          collection(db, "users", user.uid, "shopLists"),
+          where("name", "==", trimmed)
+        );
+        const snapshot = await getDocs(q);
+        await Promise.all(snapshot.docs.map((docRef) => deleteDoc(docRef.ref)));
+        // Pobierz aktualną listę sklepów po usunięciu
+        const shopsSnap = await getDocs(collection(db, "users", user.uid, "shopLists"));
+        dispatch({
+          type: "SET_SHOPS",
+          payload: Array.from(
+            new Set(shopsSnap.docs.map((doc) => capitalizeWords(doc.data().name)))
+          ),
+        });
+        return true;
+      }
+      alert("Nie można usunąć tego sklepu!");
+      return false;
+    },
+    [state.shops, user]
+  );
+
+  // Pobierz dane z Firestore po zalogowaniu
+  useEffect(() => {
+    if (!user) {
+      dispatch({ type: "SET_RECEIPTS", payload: [] });
+      dispatch({ type: "SET_SHOPS", payload: initialState.shops });
+      dispatch({
+        type: "SET_RECEIPTS_CATEGORIES",
+        payload: initialState.receiptsCategories,
+      });
+      return;
     }
-  }, [state, addShopIfNotExists, user]);
-
-  // Kalkulacja sumy cen produktów (callback dla optymalizacji)
-  const calcTotal = useCallback(
-    (products) => products.reduce((sum, p) => sum + p.price, 0).toFixed(2),
-    []
-  );
-
-  const setStoreName = useCallback(
-    (name) => dispatch({ type: "SET_STORE_NAME", payload: name }),
-    []
-  );
-
-  const setCurrentProductField = useCallback(
-    (field, value) =>
-      dispatch({ type: "SET_CURRENT_PRODUCT_FIELD", field, value }),
-    []
-  );
-
-  const addCurrentProduct = useCallback(
-    () => dispatch({ type: "ADD_CURRENT_PRODUCT" }),
-    []
-  );
-
-  const setCurrentProducts = useCallback(
-    (products) => dispatch({ type: "SET_CURRENT_PRODUCTS", payload: products }),
-    []
-  );
-
-  const updateReceipt = useCallback((updated) => {
-    dispatch({ type: "UPDATE_RECEIPT", payload: updated });
-  }, []);
-
-  const contextValue = useMemo(
-    () => ({
-      ...state,
-      selectedReceipt,
-      setSelectedReceipt,
-      removeProduct,
-      deleteReceipt,
-      saveReceiptToDB: save,
-      calcTotal,
-      setStoreName,
-      setCurrentProductField,
-      addCurrentProduct,
-      setCurrentProducts,
-      updateReceipt,
-    }),
-    [
-      state,
-      selectedReceipt,
-      removeProduct,
-      deleteReceipt,
-      save,
-      calcTotal,
-      setStoreName,
-      setCurrentProductField,
-      addCurrentProduct,
-      setCurrentProducts,
-      updateReceipt,
-    ]
-  );
+    const fetchAll = async () => {
+      const [receiptsSnap, shopsSnap, categoriesSnap] = await Promise.all([
+        getDocs(collection(db, "users", user.uid, "receipts")),
+        getDocs(collection(db, "users", user.uid, "shopLists")),
+        getDocs(collection(db, "users", user.uid, "receiptsCategories")),
+      ]);
+      dispatch({
+        type: "SET_RECEIPTS",
+        payload: receiptsSnap.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        })),
+      });
+      dispatch({
+        type: "SET_SHOPS",
+        payload: Array.from(
+          new Set(shopsSnap.docs.map((doc) => capitalizeWords(doc.data().name)))
+        ),
+      });
+      dispatch({
+        type: "SET_RECEIPTS_CATEGORIES",
+        payload: categoriesSnap.docs.map((doc) => doc.data().name),
+      });
+    };
+    fetchAll();
+  }, [user]);
 
   return (
-    <ReceiptsContext.Provider value={contextValue}>
+    <ReceiptsContext.Provider
+      value={{
+        receiptsCategories: state.receiptsCategories,
+        shops: state.shops,
+        receipts: state.receipts,
+        addReceipt,
+        editReceipt,
+        deleteReceipt,
+        addReceiptsCategory,
+        removeReceiptsCategory,
+        addShop,
+        removeShop,
+      }}
+    >
       {children}
     </ReceiptsContext.Provider>
   );
 }
+
 export default ReceiptsContext;

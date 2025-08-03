@@ -13,6 +13,7 @@ export default function UniversalList({
   deleteConfirmMessage = "Czy na pewno chcesz usunąć ten element?",
   emptyText = "Brak danych.",
   actions = ["edit", "delete"], // ["edit", "delete"] lub []
+  onRowClick,
 }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [toDelete, setToDelete] = useState(null);
@@ -79,9 +80,10 @@ export default function UniversalList({
           </tr>
         </thead>
         <tbody>
-          {data.map((item, idx) => (
+          {data.map((row) => (
             <tr
-              key={item.id || idx}
+              key={row.id}
+              onClick={() => onRowClick && onRowClick(row)}
               className="hover:bg-orange-100 transition-colors"
             >
               {columns.map((col) => (
@@ -91,7 +93,7 @@ export default function UniversalList({
                     col.align || "text-left"
                   }`}
                 >
-                  {col.render ? col.render(item) : item[col.key]}
+                  {col.render ? col.render(row) : row[col.key]}
                 </td>
               ))}
               {actions.length > 0 && (
@@ -100,7 +102,10 @@ export default function UniversalList({
                     {actions.includes("edit") && EditForm && (
                       <Button
                         variant="secondary"
-                        onClick={() => handleEditClick(item)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEditClick(row);
+                        }}
                         className="hover:bg-orange-500 hover:text-white px-2 py-1 rounded transition text-xs"
                         aria-label="Edytuj"
                       >
@@ -110,7 +115,10 @@ export default function UniversalList({
                     {actions.includes("delete") && onDelete && (
                       <Button
                         variant="deleted"
-                        onClick={() => handleDeleteClick(item)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteClick(row);
+                        }}
                         className="px-2 py-1 text-xs"
                         aria-label="Usuń"
                       >

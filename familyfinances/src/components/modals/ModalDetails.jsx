@@ -10,7 +10,7 @@ export default function ModalDetails({ title, children, onClose }) {
       aria-labelledby="modal-title"
     >
       <div
-        className="bg-white rounded-xl max-w-3xl w-full max-h-[80vh] overflow-y-auto shadow-2xl p-8 relative"
+        className="bg-white rounded-xl max-w-3xl w-full max-h-screen overflow-y-auto shadow-2xl p-8 relative"
         onClick={(e) => e.stopPropagation()}
       >
         <button

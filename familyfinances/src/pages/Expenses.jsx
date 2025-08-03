@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
-import ReceiptManager from "../components/reciptManager/ReceiptManager";
+import ReceiptManager from "../components/receiptsManager/ReceiptsManager";
 import ExpansesMenu from "../components/ExpansesMenu";
 import InvoiceManager from "../components/invoiceManager/InvoiceManager";
 import SubsManager from "../components/subsManager/SubsManager";

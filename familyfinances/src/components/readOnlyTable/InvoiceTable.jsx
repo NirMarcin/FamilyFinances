@@ -76,32 +76,31 @@ function InvoiceTable() {
           </tr>
         }
       />
-      <ModalDetails
-        receipt={selectedInvoice}
-        onClose={() => setSelectedInvoice(null)}
-        showProducts={false}
-        title={
-          selectedInvoice
-            ? `Rachunek: ${selectedInvoice.category || "-"}`
-            : undefined
-        }
-        extraInfo={
-          selectedInvoice && (
-            <div className="mb-4 text-gray-700">
-              <div>
-                <span className="font-semibold">Kwota: </span>
-                <span className="text-red-600">
-                  {Number(selectedInvoice.amount).toFixed(2)} zł
-                </span>
-              </div>
-              <div>
-                <span className="font-semibold">Opis: </span>
-                {selectedInvoice.description || "-"}
-              </div>
+      {selectedInvoice && (
+        <ModalDetails
+          title={`Rachunek: ${selectedInvoice.category || "-"}`}
+          onClose={() => setSelectedInvoice(null)}
+        >
+          <div className="mb-4 text-gray-700">
+            <div>
+              <span className="font-semibold">Kwota: </span>
+              <span className="text-red-600">
+                {Number(selectedInvoice.amount).toFixed(2)} zł
+              </span>
             </div>
-          )
-        }
-      />
+            <div>
+              <span className="font-semibold">Opis: </span>
+              {selectedInvoice.description || "-"}
+            </div>
+            <div>
+              <span className="font-semibold">Data: </span>
+              {selectedInvoice.date
+                ? new Date(selectedInvoice.date).toLocaleDateString("pl-PL")
+                : "-"}
+            </div>
+          </div>
+        </ModalDetails>
+      )}
     </div>
   );
 }

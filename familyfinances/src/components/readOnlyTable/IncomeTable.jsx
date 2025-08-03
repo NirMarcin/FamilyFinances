@@ -75,32 +75,31 @@ function IncomeTable() {
           </tr>
         }
       />
-      <ModalDetails
-        receipt={selectedIncome}
-        onClose={() => setSelectedIncome(null)}
-        showProducts={false}
-        title={
-          selectedIncome
-            ? `Przychód: ${selectedIncome.source || "-"}`
-            : undefined
-        }
-        extraInfo={
-          selectedIncome && (
-            <div className="mb-4 text-gray-700">
-              <div>
-                <span className="font-semibold">Kwota: </span>
-                <span className="text-green-700">
-                  {Number(selectedIncome.amount).toFixed(2)} zł
-                </span>
-              </div>
-              <div>
-                <span className="font-semibold">Opis: </span>
-                {selectedIncome.description || "-"}
-              </div>
+      {selectedIncome && (
+        <ModalDetails
+          title={`Przychód: ${selectedIncome.source || "-"}`}
+          onClose={() => setSelectedIncome(null)}
+        >
+          <div className="mb-4 text-gray-700">
+            <div>
+              <span className="font-semibold">Kwota: </span>
+              <span className="text-green-700">
+                {Number(selectedIncome.amount).toFixed(2)} zł
+              </span>
             </div>
-          )
-        }
-      />
+            <div>
+              <span className="font-semibold">Opis: </span>
+              {selectedIncome.description || "-"}
+            </div>
+            <div>
+              <span className="font-semibold">Data: </span>
+              {selectedIncome.date
+                ? new Date(selectedIncome.date).toLocaleDateString("pl-PL")
+                : "-"}
+            </div>
+          </div>
+        </ModalDetails>
+      )}
     </div>
   );
 }

@@ -74,30 +74,31 @@ function SubsTable() {
           </tr>
         }
       />
-      <ModalDetails
-        receipt={selectedSub}
-        onClose={() => setSelectedSub(null)}
-        showProducts={false}
-        title={
-          selectedSub ? `Subskrypcja: ${selectedSub.name || "-"}` : undefined
-        }
-        extraInfo={
-          selectedSub && (
-            <div className="mb-4 text-gray-700">
-              <div>
-                <span className="font-semibold">Kwota: </span>
-                <span className="text-red-700">
-                  {Number(selectedSub.amount).toFixed(2)} zł
-                </span>
-              </div>
-              <div>
-                <span className="font-semibold">Opis: </span>
-                {selectedSub.description || "-"}
-              </div>
+      {selectedSub && (
+        <ModalDetails
+          title={`Subskrypcja: ${selectedSub.name || "-"}`}
+          onClose={() => setSelectedSub(null)}
+        >
+          <div className="mb-4 text-gray-700">
+            <div>
+              <span className="font-semibold">Kwota: </span>
+              <span className="text-red-700">
+                {Number(selectedSub.amount).toFixed(2)} zł
+              </span>
             </div>
-          )
-        }
-      />
+            <div>
+              <span className="font-semibold">Opis: </span>
+              {selectedSub.description || "-"}
+            </div>
+            <div>
+              <span className="font-semibold">Data: </span>
+              {selectedSub.date
+                ? new Date(selectedSub.date).toLocaleDateString("pl-PL")
+                : "-"}
+            </div>
+          </div>
+        </ModalDetails>
+      )}
     </div>
   );
 }

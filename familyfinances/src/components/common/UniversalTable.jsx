@@ -1,17 +1,5 @@
 import React from "react";
 
-/**
- * UniversalTable
- *
- * Props:
- * - columns: [{ label: string, key: string, className?: string, render?: (row) => ReactNode }]
- * - data: array of objects (rows)
- * - emptyText: string (text for empty row)
- * - rowsCount: number (default 10)
- * - onRowClick: function(row) (optional)
- * - getRowKey: function(row, idx) (default: row.id or idx)
- * - footer: ReactNode (optional, e.g. sum row)
- */
 function UniversalTable({
   columns,
   data,

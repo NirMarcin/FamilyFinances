@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import React, {
   createContext,
   useReducer,
@@ -12,6 +13,8 @@ import {
   query,
   doc,
   deleteDoc,
+  updateDoc,
+  where,
 } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -31,6 +34,13 @@ function reducer(state, action) {
       return {
         ...state,
         subs: state.subs.filter((sub) => sub.id !== action.id),
+      };
+    case "DISABLE_SUB":
+      return {
+        ...state,
+        subs: state.subs.map((sub) =>
+          sub.id === action.id ? { ...sub, active: false } : sub
+        ),
       };
     default:
       return state;
@@ -54,7 +64,7 @@ function generatePayments({
     payments.push({
       name,
       category,
-      amount: Number(amount),
+      amount: -Math.abs(Number(amount)),
       date: date.toISOString().slice(0, 10),
       interval: Number(interval),
       userId,
@@ -89,6 +99,7 @@ export function SubsProvider({ children, user }) {
   const addSubs = useCallback(
     async ({ name, category, amount, startDate, interval }) => {
       if (!user) return;
+      const subscriptionId = uuidv4(); // lub Date.now().toString()
       const payments = generatePayments({
         name,
         category,
@@ -96,8 +107,12 @@ export function SubsProvider({ children, user }) {
         startDate,
         interval,
         userId: user.uid,
-      });
-      // Zapisz każdą płatność jako osobny dokument w users/{user.uid}/subs
+      }).map((payment) => ({
+        ...payment,
+        subscriptionId,
+        active: true,
+        startDate, // dodaj pole startDate do każdego payment
+      }));
       const added = [];
       for (const payment of payments) {
         const docRef = await addDoc(
@@ -121,6 +136,39 @@ export function SubsProvider({ children, user }) {
     [user]
   );
 
+  // Wyłącz subskrypcję (zmień active na false)
+  const disableSub = useCallback(
+    async (subscriptionId) => {
+      if (!user) return;
+      // Pobierz wszystkie płatności z tym subscriptionId
+      const q = query(
+        collection(db, "users", user.uid, "subs"),
+        where("subscriptionId", "==", subscriptionId)
+      );
+      const snapshot = await getDocs(q);
+      // Ustaw active: false dla każdej płatności tej subskrypcji
+      const batch = [];
+      snapshot.forEach((docSnap) => {
+        batch.push(
+          updateDoc(doc(db, "users", user.uid, "subs", docSnap.id), {
+            active: false,
+          })
+        );
+      });
+      await Promise.all(batch);
+      // Zaktualizuj stan lokalny
+      dispatch({
+        type: "SET_SUBS",
+        payload: state.subs.map((sub) =>
+          sub.subscriptionId === subscriptionId
+            ? { ...sub, active: false }
+            : sub
+        ),
+      });
+    },
+    [user, state.subs]
+  );
+
   // Dodaj przyszłe płatności
   useEffect(() => {
     if (!user || !state.subs.length) return;
@@ -128,6 +176,7 @@ export function SubsProvider({ children, user }) {
     const addFuturePayments = async () => {
       const now = new Date();
       for (const sub of state.subs) {
+        if (sub.active === false) continue;
         // Oblicz datę następnej płatności
         let lastDate = new Date(sub.date);
         let nextDate = new Date(lastDate);
@@ -138,9 +187,7 @@ export function SubsProvider({ children, user }) {
           // Sprawdź czy taka płatność już istnieje
           const exists = state.subs.some(
             (s) =>
-              s.name === sub.name &&
-              s.category === sub.category &&
-              s.amount === sub.amount &&
+              s.subscriptionId === sub.subscriptionId &&
               s.date === nextDate.toISOString().slice(0, 10)
           );
           if (!exists) {
@@ -151,6 +198,8 @@ export function SubsProvider({ children, user }) {
               date: nextDate.toISOString().slice(0, 10),
               interval: sub.interval,
               userId: user.uid,
+              subscriptionId: sub.subscriptionId,
+              active: true,
             };
             const docRef = await addDoc(
               collection(db, "users", user.uid, "subs"),
@@ -175,6 +224,7 @@ export function SubsProvider({ children, user }) {
         subs: state.subs,
         addSubs,
         deleteSub,
+        disableSub,
       }}
     >
       {children}

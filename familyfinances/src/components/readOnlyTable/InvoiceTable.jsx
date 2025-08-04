@@ -4,7 +4,7 @@ import ModalDetails from "../modals/ModalDetails";
 import UniversalTable from "../common/UniversalTable";
 
 function InvoiceTable() {
-  const { transactions } = useContext(InvoiceContext);
+  const { invoices } = useContext(InvoiceContext);
   const [selectedInvoice, setSelectedInvoice] = useState(null);
 
   // Bieżący miesiąc i rok
@@ -13,9 +13,9 @@ function InvoiceTable() {
   const currentYear = now.getFullYear();
 
   // Filtrowanie: tylko bieżący miesiąc i rok, sortowanie malejąco po dacie, max 10
-  const visibleTransactions = useMemo(() => {
-    if (!transactions) return [];
-    return transactions
+  const visibleInvoices = useMemo(() => {
+    if (!invoices) return [];
+    return invoices
       .filter((tx) => {
         const dt = new Date(tx.date);
         return (
@@ -24,11 +24,11 @@ function InvoiceTable() {
       })
       .sort((a, b) => new Date(b.date) - new Date(a.date))
       .slice(0, 10);
-  }, [transactions, currentMonth, currentYear]);
+  }, [invoices, currentMonth, currentYear]);
 
   const totalAmount = useMemo(
-    () => visibleTransactions.reduce((sum, tx) => sum + Number(tx.amount), 0),
-    [visibleTransactions]
+    () => visibleInvoices.reduce((sum, tx) => sum + Number(tx.amount), 0),
+    [visibleInvoices]
   );
 
   const monthName = now.toLocaleString("pl-PL", {
@@ -61,7 +61,7 @@ function InvoiceTable() {
             render: (row) => `${Number(row.amount).toFixed(2)} zł`,
           },
         ]}
-        data={visibleTransactions}
+        data={visibleInvoices}
         emptyText="Brak wydatku"
         rowsCount={10}
         onRowClick={setSelectedInvoice}

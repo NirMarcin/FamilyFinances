@@ -5,7 +5,6 @@ import React, {
   useCallback,
   useEffect,
 } from "react";
-// import { useAuth } from "./AuthContext"; // USUŃ to!
 import {
   collection,
   addDoc,
@@ -60,7 +59,7 @@ function generatePayments({
   const today = new Date();
   let date = new Date(startDate);
 
-  while (date <= today) {
+  while (date <= today || payments.length === 0) {
     payments.push({
       name,
       category,
@@ -68,6 +67,7 @@ function generatePayments({
       date: date.toISOString().slice(0, 10),
       interval: Number(interval),
       userId,
+      startDate, // dodaj pole startDate do każdego payment
     });
     date.setMonth(date.getMonth() + Number(interval));
   }
@@ -99,7 +99,7 @@ export function SubsProvider({ children, user }) {
   const addSubs = useCallback(
     async ({ name, category, amount, startDate, interval }) => {
       if (!user) return;
-      const subscriptionId = uuidv4(); // lub Date.now().toString()
+      const subscriptionId = uuidv4();
       const payments = generatePayments({
         name,
         category,
@@ -111,7 +111,6 @@ export function SubsProvider({ children, user }) {
         ...payment,
         subscriptionId,
         active: true,
-        startDate, // dodaj pole startDate do każdego payment
       }));
       const added = [];
       for (const payment of payments) {
@@ -140,13 +139,11 @@ export function SubsProvider({ children, user }) {
   const disableSub = useCallback(
     async (subscriptionId) => {
       if (!user) return;
-      // Pobierz wszystkie płatności z tym subscriptionId
       const q = query(
         collection(db, "users", user.uid, "subs"),
         where("subscriptionId", "==", subscriptionId)
       );
       const snapshot = await getDocs(q);
-      // Ustaw active: false dla każdej płatności tej subskrypcji
       const batch = [];
       snapshot.forEach((docSnap) => {
         batch.push(
@@ -156,7 +153,6 @@ export function SubsProvider({ children, user }) {
         );
       });
       await Promise.all(batch);
-      // Zaktualizuj stan lokalny
       dispatch({
         type: "SET_SUBS",
         payload: state.subs.map((sub) =>
@@ -169,28 +165,41 @@ export function SubsProvider({ children, user }) {
     [user, state.subs]
   );
 
-  // Dodaj przyszłe płatności
+  // Dodaj przyszłą płatność tylko raz dla każdej subskrypcji
   useEffect(() => {
     if (!user || !state.subs.length) return;
 
-    const addFuturePayments = async () => {
-      const now = new Date();
-      for (const sub of state.subs) {
-        if (sub.active === false) continue;
-        // Oblicz datę następnej płatności
-        let lastDate = new Date(sub.date);
-        let nextDate = new Date(lastDate);
-        nextDate.setMonth(nextDate.getMonth() + Number(sub.interval));
+    const now = new Date();
+    const lastPayments = {};
+    for (const sub of state.subs) {
+      if (sub.active === false) continue;
+      const sid = sub.subscriptionId;
+      // Zawsze wybierz płatność z najpóźniejszym polem date
+      if (
+        !lastPayments[sid] ||
+        new Date(sub.date) > new Date(lastPayments[sid].date)
+      ) {
+        lastPayments[sid] = sub;
+      }
+    }
 
-        // Jeśli następna płatność jest w przeszłości lub dziś, dodaj ją
-        while (nextDate <= now) {
-          // Sprawdź czy taka płatność już istnieje
-          const exists = state.subs.some(
-            (s) =>
-              s.subscriptionId === sub.subscriptionId &&
-              s.date === nextDate.toISOString().slice(0, 10)
-          );
-          if (!exists) {
+    Object.values(lastPayments).forEach((sub) => {
+      let lastDate = new Date(sub.date);
+      // Jeśli ostatnia płatność jest w przyszłości, nie dodawaj kolejnej!
+      if (lastDate > now) return;
+
+      let nextDate = new Date(lastDate);
+      nextDate.setMonth(nextDate.getMonth() + Number(sub.interval));
+
+      // Dodaj tylko jeśli data jest w przyszłości i nie istnieje już taka płatność
+      if (nextDate > now) {
+        const exists = state.subs.some(
+          (s) =>
+            s.subscriptionId === sub.subscriptionId &&
+            s.date === nextDate.toISOString().slice(0, 10)
+        );
+        if (!exists) {
+          (async () => {
             const payment = {
               name: sub.name,
               category: sub.category,
@@ -200,6 +209,7 @@ export function SubsProvider({ children, user }) {
               userId: user.uid,
               subscriptionId: sub.subscriptionId,
               active: true,
+              startDate: sub.startDate,
             };
             const docRef = await addDoc(
               collection(db, "users", user.uid, "subs"),
@@ -209,13 +219,10 @@ export function SubsProvider({ children, user }) {
               type: "ADD_SUBS",
               payload: [{ ...payment, id: docRef.id }],
             });
-          }
-          nextDate.setMonth(nextDate.getMonth() + Number(sub.interval));
+          })();
         }
       }
-    };
-
-    addFuturePayments();
+    });
   }, [user, state.subs]);
 
   return (

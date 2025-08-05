@@ -49,8 +49,8 @@ function IncomeTable() {
               row.date ? new Date(row.date).toLocaleDateString("pl-PL") : "-",
           },
           {
-            label: <span className="text-orange-900">Źródło</span>,
-            key: "source",
+            label: <span className="text-orange-900">Kategoria</span>,
+            key: "category",
             className: "text-orange-700 font-medium",
           },
           {
@@ -77,25 +77,29 @@ function IncomeTable() {
       />
       {selectedIncome && (
         <ModalDetails
-          title={`Przychód: ${selectedIncome.source || "-"}`}
+          title={`Przychód: ${selectedIncome.category || "-"}`}
           onClose={() => setSelectedIncome(null)}
         >
           <div className="mb-4 text-gray-700">
             <div>
-              <span className="font-semibold">Kwota: </span>
-              <span className="text-green-700">
-                {Number(selectedIncome.amount).toFixed(2)} zł
-              </span>
-            </div>
-            <div>
-              <span className="font-semibold">Opis: </span>
-              {selectedIncome.description || "-"}
+              <span className="font-semibold">Kategoria: </span>
+              {selectedIncome.category || "-"}
             </div>
             <div>
               <span className="font-semibold">Data: </span>
               {selectedIncome.date
                 ? new Date(selectedIncome.date).toLocaleDateString("pl-PL")
                 : "-"}
+            </div>
+            <div>
+              <span className="font-semibold">Opis: </span>
+              {selectedIncome.description || "-"}
+            </div>
+            <div className="text-right font-bold text-green-700 mt-4">
+              Kwota:{" "}
+              <span className="text-green-700">
+                {Number(selectedIncome.amount).toFixed(2)} zł
+              </span>
             </div>
           </div>
         </ModalDetails>

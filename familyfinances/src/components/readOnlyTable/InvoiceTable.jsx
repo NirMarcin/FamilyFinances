@@ -83,20 +83,24 @@ function InvoiceTable() {
         >
           <div className="mb-4 text-gray-700">
             <div>
-              <span className="font-semibold">Kwota: </span>
-              <span className="text-red-600">
-                {Number(selectedInvoice.amount).toFixed(2)} zł
-              </span>
-            </div>
-            <div>
-              <span className="font-semibold">Opis: </span>
-              {selectedInvoice.description || "-"}
+              <span className="font-semibold">Kategoria: </span>
+              {selectedInvoice.category || "-"}
             </div>
             <div>
               <span className="font-semibold">Data: </span>
               {selectedInvoice.date
                 ? new Date(selectedInvoice.date).toLocaleDateString("pl-PL")
                 : "-"}
+            </div>
+            <div>
+              <span className="font-semibold">Opis: </span>
+              {selectedInvoice.description || "-"}
+            </div>
+            <div className="text-right font-bold text-red-600 mt-4">
+              Kwota:{" "}
+              <span className="text-red-600">
+                {Number(selectedInvoice.amount).toFixed(2)} zł
+              </span>
             </div>
           </div>
         </ModalDetails>

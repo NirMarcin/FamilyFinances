@@ -81,20 +81,28 @@ function SubsTable() {
         >
           <div className="mb-4 text-gray-700">
             <div>
-              <span className="font-semibold">Kwota: </span>
-              <span className="text-red-600">
-                {Number(selectedSub.amount).toFixed(2)} zł
-              </span>
+              <span className="font-semibold">Nazwa: </span>
+              {selectedSub.name || "-"}
             </div>
             <div>
-              <span className="font-semibold">Opis: </span>
-              {selectedSub.description || "-"}
+              <span className="font-semibold">Kategoria: </span>
+              {selectedSub.category || "-"}
             </div>
             <div>
               <span className="font-semibold">Data: </span>
               {selectedSub.date
                 ? new Date(selectedSub.date).toLocaleDateString("pl-PL")
                 : "-"}
+            </div>
+            <div>
+              <span className="font-semibold">Opis: </span>
+              {selectedSub.description || "-"}
+            </div>
+            <div className="text-right font-bold text-red-600 mt-4">
+              Kwota:{" "}
+              <span className="text-red-600">
+                {Number(selectedSub.amount).toFixed(2)} zł
+              </span>
             </div>
           </div>
         </ModalDetails>

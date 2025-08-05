@@ -68,7 +68,7 @@ function InvoiceTable() {
         footer={
           <tr>
             <td colSpan={3} className="px-4 py-2 text-right">
-              Razem:
+              Suma ostatnich 10 rachunków:
             </td>
             <td className="px-4 py-2 text-right text-red-600 font-semibold">
               {totalAmount.toFixed(2)} zł

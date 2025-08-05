@@ -66,7 +66,7 @@ function SubsTable() {
         footer={
           <tr>
             <td colSpan={3} className="px-4 py-2 text-right">
-              Razem:
+              Suma ostatnich 10 opłat za subskrypcje:
             </td>
             <td className="px-4 py-2 text-right text-red-600 font-semibold">
               {totalSum.toFixed(2)} zł

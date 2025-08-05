@@ -4,10 +4,13 @@ function UniversalTable({
   columns,
   data,
   emptyText = "Brak danych",
-  rowsCount = 10,
+  rowsCount,
   onRowClick,
   getRowKey,
   footer,
+  onSort,
+  sortKey,
+  sortOrder,
 }) {
   // Helper for row key
   const getKey = (row, idx) =>
@@ -81,10 +84,19 @@ function UniversalTable({
                 key={col.key}
                 className={
                   "px-4 py-2 border-b border-orange-300 text-right " +
-                  (col.className || "")
+                  (col.className || "") +
+                  (col.sortable ? " cursor-pointer select-none" : "")
+                }
+                onClick={
+                  col.sortable && onSort
+                    ? () => onSort(col.key)
+                    : undefined
                 }
               >
                 {col.label}
+                {col.sortable && sortKey === col.key && (
+                  <span>{sortOrder === "asc" ? " ▲" : " ▼"}</span>
+                )}
               </th>
             ))}
           </tr>

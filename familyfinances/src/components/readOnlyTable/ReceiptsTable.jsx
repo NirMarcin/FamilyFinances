@@ -73,7 +73,7 @@ function ReceiptsTable() {
         footer={
           <tr>
             <td colSpan={3} className="px-4 py-2 text-right">
-              Razem:
+              Suma ostatnich 10 paragonów:
             </td>
             <td className="px-4 py-2 text-right text-red-600 font-semibold">
               {(-Math.abs(totalSum)).toFixed(2)} zł

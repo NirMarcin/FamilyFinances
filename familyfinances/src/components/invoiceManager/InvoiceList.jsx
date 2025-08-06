@@ -49,20 +49,21 @@ export default function InvoiceList() {
               </span>
             ),
           },
-          {
-            key: "isRecurring",
-            label: "Cykliczna?",
-            align: "text-center",
-            render: (item) => (
-              <input
-                type="checkbox"
-                checked={!!item.isRecurring}
-                readOnly
-                className="accent-orange-500 cursor-default"
-                aria-label="Cykliczna?"
-              />
-            ),
-          },
+          // temporary disabled!!!
+          // {
+          //   key: "isRecurring",
+          //   label: "Cykliczna?",
+          //   align: "text-center",
+          //   render: (item) => (
+          //     <input
+          //       type="checkbox"
+          //       checked={!!item.isRecurring}
+          //       readOnly
+          //       className="accent-orange-500 cursor-default"
+          //       aria-label="Cykliczna?"
+          //     />
+          //   ),
+          // },
         ]}
         editForm={(props) => (
           <InvoiceEditForm

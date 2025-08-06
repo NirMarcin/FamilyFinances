@@ -38,19 +38,19 @@ export default function InvoiceForm({ initialData, onCancel }) {
       type: "text",
       placeholder: "np. faktura za prąd, czynsz, zakupy",
     },
-    {
-      name: "isRecurring",
-      label: "Płatność cykliczna",
-      type: "checkbox",
-    },
-    {
-      name: "interval",
-      label: "Co ile miesięcy",
-      type: "number",
-      min: 1,
-      required: true,
-      showIf: (form) => form.isRecurring,
-    },
+    // {
+    //   name: "isRecurring",
+    //   label: "Płatność cykliczna", //temporary disabled
+    //   type: "checkbox",
+    // // },
+    // {
+    //   name: "interval",
+    //   label: "Co ile miesięcy",
+    //   type: "number",
+    //   min: 1,
+    //   required: true,
+    //   showIf: (form) => form.isRecurring,
+    // },
   ];
 
   function validate(form) {

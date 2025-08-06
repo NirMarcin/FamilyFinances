@@ -7,11 +7,16 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 export default function ChartsPie({ data, title }) {
   const options = {
     responsive: true,
+    maintainAspectRatio: false, // Dodane, aby wymusić rozmiar
     plugins: {
       legend: { position: "right" },
       title: { display: !!title, text: title },
     },
   };
 
-  return <Pie data={data} options={options} />;
+  return (
+    <div style={{ height: 350, width: "100%" }}>
+      <Pie data={data} options={options} />
+    </div>
+  );
 }

@@ -49,12 +49,9 @@ export default function ReceiptsChartsSummary() {
       // Zmieniony warunek filtrowania kategorii
       const categoryOk =
         selectedCategories.length === 0 ||
-        selectedCategories.every((selected) =>
-          (receipt.products || []).some(
-            (p) => (p.category || "Brak kategorii") === selected
-          )
+        (receipt.products || []).some(
+          (p) => selectedCategories.includes(p.category || "Brak kategorii")
         );
-
       return dateOk && shopOk && categoryOk;
     });
   }, [receipts, dateFrom, dateTo, selectedShops, selectedCategories]);
@@ -84,17 +81,31 @@ export default function ReceiptsChartsSummary() {
     return result;
   }, [filteredReceiptsWithAmount]);
 
-  // Kwoty według kategorii
+  // Kwoty według kategorii - tylko wybrane kategorie
   const amountByCategory = useMemo(() => {
     const result = {};
     filteredReceiptsWithAmount.forEach((receipt) => {
       (receipt.products || []).forEach((product) => {
         const cat = product.category || "Brak kategorii";
-        result[cat] = (result[cat] || 0) + Number(product.total || 0);
+        // Dodaj tylko jeśli jest wybrana lub nie wybrano żadnej
+        if (
+          selectedCategories.length === 0 ||
+          selectedCategories.includes(cat)
+        ) {
+          result[cat] = (result[cat] || 0) + Number(product.total || 0);
+        }
       });
     });
+    // Jeśli wybrano kategorie, pokazuj tylko wybrane
+    if (selectedCategories.length > 0) {
+      const filteredResult = {};
+      selectedCategories.forEach((cat) => {
+        if (result[cat]) filteredResult[cat] = result[cat];
+      });
+      return filteredResult;
+    }
     return result;
-  }, [filteredReceiptsWithAmount]);
+  }, [filteredReceiptsWithAmount, selectedCategories]);
 
   // Dane do wykresów
   const pieShopData = useMemo(

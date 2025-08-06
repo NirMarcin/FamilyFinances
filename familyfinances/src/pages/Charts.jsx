@@ -5,7 +5,7 @@ import ChartsMenu from "../components/ChartsMenu";
 import ReceiptsChartsSummary from "../components/chartsManager/ReceiptsChartsSummary";
 import InvoiceChartsSummary from "../components/chartsManager/InvoiceChartsSummary";
 import IncomeChartsSummary from "../components/chartsManager/IncomeChartsSummary";
-// import SubsChartsSummary from "../components/chartsManager/SubsChartsSummary";
+import SubsChartsSummary from "../components/chartsManager/SubsChartsSummary";
 // import AllSummary from "../components/chartsManager/AllSummary";
 
 export default function Charts() {
@@ -24,7 +24,7 @@ export default function Charts() {
         {activeTab === "ReceiptsChartsSummary" && <ReceiptsChartsSummary />}
         {activeTab === "InvoiceChartsSummary" && <InvoiceChartsSummary />}
         {activeTab === "IncomeChartsSummary" && <IncomeChartsSummary />}
-        {/* {activeTab === "SubsChartsSummary" && <SubsChartsSummary />} */}
+        {activeTab === "SubsChartsSummary" && <SubsChartsSummary />}
         {/* {activeTab === "AllSummary" && <AllSummary />} */}
       </div>
     </>

@@ -114,11 +114,11 @@ export function SubsProvider({ children, user }) {
       }));
       const added = [];
       for (const payment of payments) {
-        const docRef = await addDoc(
-          collection(db, "users", user.uid, "subs"),
-          payment
-        );
-        added.push({ ...payment, id: docRef.id });
+        const docRef = await addDoc(collection(db, "users", user.uid, "subs"), {
+          ...payment,
+          type: "ExpenseType",
+        });
+        added.push({ ...payment, type: "expenseType", id: docRef.id });
       }
       dispatch({ type: "ADD_SUBS", payload: added });
     },

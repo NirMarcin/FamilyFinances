@@ -1,4 +1,9 @@
-import React, { createContext, useReducer, useCallback, useEffect } from "react";
+import React, {
+  createContext,
+  useReducer,
+  useCallback,
+  useEffect,
+} from "react";
 import {
   collection,
   addDoc,
@@ -73,9 +78,12 @@ export function ReceiptsProvider({ children, user }) {
       if (!user) return;
       const docRef = await addDoc(
         collection(db, "users", user.uid, "receipts"),
-        { ...receipt, createdAt: new Date().toISOString() }
+        { ...receipt, type: "ExpenseType", createdAt: new Date().toISOString() }
       );
-      dispatch({ type: "ADD_RECEIPT", payload: { ...receipt, id: docRef.id } });
+      dispatch({
+        type: "ADD_RECEIPT",
+        payload: { ...receipt, type: "expenseType", id: docRef.id },
+      });
     },
     [user]
   );
@@ -111,7 +119,9 @@ export function ReceiptsProvider({ children, user }) {
           name: trimmed,
         });
         // Pobierz aktualne kategorie po dodaniu
-        const categoriesSnap = await getDocs(collection(db, "users", user.uid, "receiptsCategories"));
+        const categoriesSnap = await getDocs(
+          collection(db, "users", user.uid, "receiptsCategories")
+        );
         dispatch({
           type: "SET_RECEIPTS_CATEGORIES",
           payload: categoriesSnap.docs.map((doc) => doc.data().name),
@@ -136,7 +146,9 @@ export function ReceiptsProvider({ children, user }) {
         const snapshot = await getDocs(q);
         await Promise.all(snapshot.docs.map((docRef) => deleteDoc(docRef.ref)));
         // Pobierz aktualne kategorie po usunięciu
-        const categoriesSnap = await getDocs(collection(db, "users", user.uid, "receiptsCategories"));
+        const categoriesSnap = await getDocs(
+          collection(db, "users", user.uid, "receiptsCategories")
+        );
         dispatch({
           type: "SET_RECEIPTS_CATEGORIES",
           payload: categoriesSnap.docs.map((doc) => doc.data().name),
@@ -158,11 +170,15 @@ export function ReceiptsProvider({ children, user }) {
           name: trimmed,
         });
         // Pobierz aktualną listę sklepów po dodaniu
-        const shopsSnap = await getDocs(collection(db, "users", user.uid, "shopLists"));
+        const shopsSnap = await getDocs(
+          collection(db, "users", user.uid, "shopLists")
+        );
         dispatch({
           type: "SET_SHOPS",
           payload: Array.from(
-            new Set(shopsSnap.docs.map((doc) => capitalizeWords(doc.data().name)))
+            new Set(
+              shopsSnap.docs.map((doc) => capitalizeWords(doc.data().name))
+            )
           ),
         });
         return true;
@@ -185,11 +201,15 @@ export function ReceiptsProvider({ children, user }) {
         const snapshot = await getDocs(q);
         await Promise.all(snapshot.docs.map((docRef) => deleteDoc(docRef.ref)));
         // Pobierz aktualną listę sklepów po usunięciu
-        const shopsSnap = await getDocs(collection(db, "users", user.uid, "shopLists"));
+        const shopsSnap = await getDocs(
+          collection(db, "users", user.uid, "shopLists")
+        );
         dispatch({
           type: "SET_SHOPS",
           payload: Array.from(
-            new Set(shopsSnap.docs.map((doc) => capitalizeWords(doc.data().name)))
+            new Set(
+              shopsSnap.docs.map((doc) => capitalizeWords(doc.data().name))
+            )
           ),
         });
         return true;

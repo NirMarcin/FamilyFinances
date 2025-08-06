@@ -84,12 +84,13 @@ export function IncomeProvider({ children, user }) {
         collection(db, "users", user.uid, "incomes"),
         {
           ...income,
+          type: "incomeType",
           createdAt: new Date().toISOString(),
         }
       );
       dispatch({
         type: "ADD_INCOME",
-        payload: { ...income, id: docRef.id },
+        payload: { ...income, type: "incomeType", id: docRef.id },
       });
     },
     [user, state.categories]
@@ -115,7 +116,12 @@ export function IncomeProvider({ children, user }) {
       const categoriesData = categoriesSnap.docs.map((doc) => doc.data().name);
 
       dispatch({ type: "SET_INCOMES", payload: incomesData });
-      dispatch({ type: "SET_CATEGORIES", payload: categoriesData.length ? categoriesData : initialState.categories });
+      dispatch({
+        type: "SET_CATEGORIES",
+        payload: categoriesData.length
+          ? categoriesData
+          : initialState.categories,
+      });
     };
     fetchAll();
   }, [user]);

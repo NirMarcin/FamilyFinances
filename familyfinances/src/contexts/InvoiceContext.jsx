@@ -84,12 +84,13 @@ export function InvoiceProvider({ children, user }) {
         collection(db, "users", user.uid, "transactions"),
         {
           ...invoice,
+          type: "ExpenseType",
           createdAt: new Date().toISOString(),
         }
       );
       dispatch({
         type: "ADD_INVOICE",
-        payload: { ...invoice, id: docRef.id },
+        payload: { ...invoice, type: "ExpenseType", id: docRef.id },
       });
     },
     [user, state.categories]

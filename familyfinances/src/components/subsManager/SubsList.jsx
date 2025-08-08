@@ -50,18 +50,20 @@ export default function SubsList() {
 
   if (!uniqueSubs.length) {
     return (
-      <section className="mt-10 p-5 border border-gray-300 rounded-lg bg-orange-50 shadow-inner">
-        <h2 className="text-2xl font-extrabold mb-6 text-orange-700 text-center">
+      <section className="mt-10 p-5 border border-gray-300 dark:border-gray-800 rounded-lg bg-orange-50 dark:bg-black shadow-inner transition-colors duration-300">
+        <h2 className="text-2xl font-extrabold mb-6 text-orange-700 dark:text-orange-400 text-center">
           Aktywne subskrypcje
         </h2>
-        <p className="text-center text-gray-500">Brak aktywnych subskrypcji.</p>
+        <p className="text-center text-gray-500 dark:text-orange-300">
+          Brak aktywnych subskrypcji.
+        </p>
       </section>
     );
   }
 
   return (
-    <section className="mt-10 p-5 border border-gray-300 rounded-lg bg-orange-50 shadow-inner">
-      <h2 className="text-2xl font-extrabold mb-6 text-orange-700 text-center">
+    <section className="mt-10 p-5 border border-gray-300 dark:border-gray-800 rounded-lg bg-orange-50 dark:bg-black shadow-inner transition-colors duration-300 dark:text-orange-300">
+      <h2 className="text-2xl font-extrabold mb-6 text-orange-700 dark:text-orange-400 text-center">
         Aktywne subskrypcje
       </h2>
       <UniversalList
@@ -73,7 +75,7 @@ export default function SubsList() {
             render: (item) => (
               <div>
                 <div>
-                  <span className="font-semibold">Rozpoczęcie: </span>
+                  <span className="font-semibold ">Rozpoczęcie: </span>
                   {item.startDate
                     ? new Date(item.startDate).toLocaleDateString("pl-PL")
                     : "-"}
@@ -85,7 +87,7 @@ export default function SubsList() {
                     : "-"}
                 </div>
                 <div>
-                  <span className="font-semibold">Kolejna płatność: </span>
+                  <span className="font-semibold ">Kolejna płatność: </span>
                   {getNextPaymentDate(item.date, item.interval)}
                 </div>
               </div>
@@ -98,7 +100,7 @@ export default function SubsList() {
             label: "Kwota (zł)",
             align: "text-right",
             render: (item) => (
-              <span className="text-orange-700 font-semibold">
+              <span className="text-orange-700 dark:text-orange-300 font-semibold">
                 {Number(item.amount).toFixed(2)} zł
               </span>
             ),
@@ -114,13 +116,15 @@ export default function SubsList() {
             render: (item) =>
               item.active !== false ? (
                 <button
-                  className="bg-red-200 hover:bg-red-400 text-red-800 font-bold py-1 px-4 rounded shadow"
+                  className="bg-red-200 hover:bg-red-400 dark:bg-red-900 dark:hover:bg-red-700 text-red-800 dark:text-orange-300 font-bold py-1 px-4 rounded shadow transition-colors duration-300"
                   onClick={() => setModalDisable(item)}
                 >
                   Wyłącz
                 </button>
               ) : (
-                <span className="text-gray-400 font-semibold">Wyłączona</span>
+                <span className="text-gray-400 dark:text-gray-500 font-semibold dark:text-orange-300">
+                  Wyłączona
+                </span>
               ),
           },
         ]}
@@ -134,7 +138,7 @@ export default function SubsList() {
           <>
             Czy na pewno chcesz usunąć tę subskrypcję?
             <br />
-            <span className="pl-4 block text-gray-500">
+            <span className="pl-4 block text-gray-500 dark:text-orange-300">
               Usunięcie jest nieodwracalne i usunie wszystkie dodane płatności.
             </span>
           </>
@@ -150,18 +154,18 @@ export default function SubsList() {
           <div>
             Czy na pewno chcesz wyłączyć tę subskrypcję?
             <br />
-            <span className="pl-4 block text-gray-500">
+            <span className="pl-4 block text-gray-500 dark:text-orange-300">
               Wyłączona subskrypcja nie będzie już generować nowych płatności.
             </span>
             <div className="flex justify-end gap-4 mt-6">
               <button
-                className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded shadow"
+                className="bg-gray-300 hover:bg-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-orange-300 font-bold py-2 px-6 rounded shadow transition-colors duration-300"
                 onClick={() => setModalDisable(null)}
               >
                 Anuluj
               </button>
               <button
-                className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-6 rounded shadow"
+                className="bg-orange-500 hover:bg-orange-700 dark:bg-orange-700 dark:hover:bg-orange-800 text-white dark:text-orange-200 font-bold py-2 px-6 rounded shadow transition-colors duration-300"
                 onClick={() => {
                   disableSub(modalDisable.subscriptionId);
                   setModalDisable(null);

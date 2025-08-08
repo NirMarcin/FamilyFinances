@@ -49,13 +49,13 @@ export default function UniversalForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-6 mb-10 p-5 border border-orange-300 rounded-lg bg-orange-50 shadow-inner"
+      className="space-y-6 mb-10 p-5 border border-orange-300 dark:border-gray-800 rounded-lg bg-orange-50 dark:bg-black shadow-inner transition-colors duration-300"
     >
       {fields
         .filter((field) => !field.showIf || field.showIf(form))
         .map((field) => (
           <div key={field.name} className="mb-4">
-            <label className="block font-semibold mb-2 text-orange-800 tracking-wide">
+            <label className="block font-semibold mb-2 text-orange-800 dark:text-orange-300 tracking-wide">
               {field.label}
             </label>
             {field.type === "select" ? (
@@ -65,7 +65,7 @@ export default function UniversalForm({
                     name={field.name}
                     value={form[field.name] || ""}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white transition"
+                    className="w-full px-4 py-2 border border-orange-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 dark:focus:ring-orange-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 transition"
                     required={field.required}
                   >
                     {Array.isArray(options[field.name]) &&
@@ -127,7 +127,7 @@ export default function UniversalForm({
                           }))
                         }
                         placeholder={optionInputPlaceholder[field.name] || ""}
-                        className="px-4 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white transition"
+                        className="bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 border border-orange-200 dark:border-gray-700"
                         maxLength={32}
                       />
                       <Button
@@ -174,7 +174,7 @@ export default function UniversalForm({
                 max={field.max}
                 step={field.step}
                 placeholder={field.placeholder}
-                className="w-full px-4 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white transition"
+                className="w-full px-4 py-2 border border-orange-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 dark:focus:ring-orange-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 transition"
                 required={field.required}
               />
             )}

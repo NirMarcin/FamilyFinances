@@ -1,56 +1,58 @@
 import { Link, NavLink } from "react-router-dom";
 import { useState } from "react";
 import LogoutButton from "./buttons/LogoutButton";
+import DarkModeToggle from "./buttons/DarkModeToggle"; 
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleMenu = () => setIsOpen(!isOpen);
+  const toggleMenu = () => setIsOpen((prev) => !prev);
 
   const linkClass = ({ isActive }) =>
     isActive
-      ? "text-orange-600 font-semibold"
-      : "text-gray-700 hover:text-orange-500";
+      ? "text-orange-600 font-semibold dark:text-orange-400"
+      : "text-gray-700 hover:text-orange-500 dark:text-orange-300 dark:hover:text-orange-400";
+
+  const navLinks = [
+    { to: "/dashboard", label: "Podsumowanie" },
+    { to: "/expenses", label: "Zarządzanie wydatkami" },
+    { to: "/charts", label: "Wykresy i statystyki" },
+    { to: "/budget", label: "Budżet" },
+    { to: "/settings", label: "Ustawienia" },
+  ];
 
   return (
-    <nav className="bg-white shadow-md fixed top-0 left-0 w-full z-50">
+    <nav className="bg-white dark:bg-black shadow-md fixed top-0 left-0 w-full z-50 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <Link to="/" className="text-xl font-bold text-orange-600">
+            <Link
+              to="/"
+              className="text-xl font-bold text-orange-600 dark:text-orange-400 tracking-wide"
+            >
               FamilyFinances
             </Link>
           </div>
 
           {/* Desktop menu */}
           <div className="hidden md:flex space-x-6">
-            <NavLink to="/dashboard" className={linkClass}>
-              Podsumowanie
-            </NavLink>
-            <NavLink to="/expenses" className={linkClass}>
-              Zarządzanie wydatkami
-            </NavLink>
-            <NavLink to="/charts" className={linkClass}>
-              Wykresy i statystki
-            </NavLink>
-            <NavLink to="/budget" className={linkClass}>
-              Budżet
-            </NavLink>
-            <NavLink to="/settings" className={linkClass}>
-              Ustawienia
-            </NavLink>
+            {navLinks.map((link) => (
+              <NavLink key={link.to} to={link.to} className={linkClass}>
+                {link.label}
+              </NavLink>
+            ))}
           </div>
 
-          {/* User & Hamburger */}
+          {/* Dark mode toggle & User */}
           <div className="flex items-center space-x-4">
-            {/* Przycisk wylogowania lub użytkownik */}
+            
             <LogoutButton variant="desktop" />
-
+            <DarkModeToggle variant="desktop" />
             {/* Hamburger menu na mobile */}
             <button
               onClick={toggleMenu}
-              className="md:hidden text-gray-700 hover:text-orange-600 focus:outline-none"
+              className="md:hidden text-gray-700 hover:text-orange-600 dark:text-orange-300 dark:hover:text-orange-400 focus:outline-none"
               aria-label="Toggle menu"
             >
               <svg
@@ -82,46 +84,22 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200 shadow-inner">
-          <NavLink
-            onClick={() => setIsOpen(false)}
-            to="/dashboard"
-            className="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600"
-          >
-            Podsumowanie
-          </NavLink>
-          <NavLink
-            onClick={() => setIsOpen(false)}
-            to="/expenses"
-            className="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600"
-          >
-            Zarządzanie wydatkami
-          </NavLink>
-          <NavLink
-            onClick={() => setIsOpen(false)}
-            to="/income"
-            className="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600"
-          >
-            Przychody
-          </NavLink>
-          <NavLink
-            onClick={() => setIsOpen(false)}
-            to="/budget"
-            className="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600"
-          >
-            Budżet
-          </NavLink>
-          <NavLink
-            onClick={() => setIsOpen(false)}
-            to="/settings"
-            className="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600"
-          >
-            Ustawienia
-          </NavLink>
+        <div className="md:hidden bg-white dark:bg-black border-t border-gray-200 dark:border-gray-800 shadow-inner animate-fade-in transition-colors duration-300">
+          {navLinks.map((link) => (
+            <NavLink
+              key={link.to}
+              onClick={() => setIsOpen(false)}
+              to={link.to}
+              className="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 dark:text-orange-300 dark:hover:bg-gray-900 dark:hover:text-orange-400 transition"
+            >
+              {link.label}
+            </NavLink>
+          ))}
           <LogoutButton
             variant="mobile"
             onClickExtra={() => setIsOpen(false)}
           />
+          <DarkModeToggle variant="mobile" onClickExtra={() => setIsOpen(false)} />
         </div>
       )}
     </nav>

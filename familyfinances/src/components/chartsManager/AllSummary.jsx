@@ -134,42 +134,42 @@ export default function AllSummary() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-lg p-6 mb-10">
-      <h3 className="text-2xl font-bold text-orange-700 mb-6 text-center">
+    <div className="max-w-5xl mx-auto bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 mb-10 border border-orange-200 dark:border-gray-800 transition-colors duration-300">
+      <h3 className="text-2xl font-bold text-orange-700 dark:text-orange-400 mb-6 text-center">
         Podsumowanie całości
       </h3>
       {/* Filtry daty */}
       <div className="flex flex-col md:flex-row gap-6 mb-8 justify-center">
         <div className="flex flex-col">
-          <label className="block text-sm font-semibold text-gray-700 mb-1">
+          <label className="block text-sm font-semibold text-gray-700 dark:text-orange-300 mb-1">
             Data od:
           </label>
           <input
             type="date"
             value={dateFrom}
             onChange={(e) => setDateFrom(e.target.value)}
-            className="border border-orange-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-orange-200 transition"
+            className="border border-orange-300 dark:border-gray-700 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-orange-200 dark:focus:ring-orange-400 bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 transition-colors duration-300"
           />
         </div>
         <div className="flex flex-col">
-          <label className="block text-sm font-semibold text-gray-700 mb-1">
+          <label className="block text-sm font-semibold text-gray-700 dark:text-orange-300 mb-1">
             Data do:
           </label>
           <input
             type="date"
             value={dateTo}
             onChange={(e) => setDateTo(e.target.value)}
-            className="border border-orange-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-orange-200 transition"
+            className="border border-orange-300 dark:border-gray-700 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-orange-200 dark:focus:ring-orange-400 bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 transition-colors duration-300"
           />
         </div>
         <div className="flex flex-col">
-          <label className="block text-sm font-semibold text-gray-700 mb-1">
+          <label className="block text-sm font-semibold text-gray-700 dark:text-orange-300 mb-1">
             Źródło wydatków:
           </label>
           <select
             value={selectedExpenseSource}
             onChange={(e) => setSelectedExpenseSource(e.target.value)}
-            className="border border-orange-300 rounded px-2 py-1 w-full"
+            className="border border-orange-300 dark:border-gray-700 rounded px-2 py-1 w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 transition-colors duration-300"
           >
             {expenseSources.map((src) => (
               <option key={src.key} value={src.key}>
@@ -179,22 +179,26 @@ export default function AllSummary() {
           </select>
         </div>
       </div>
-      <div className="text-lg font-semibold mb-4 text-center">
+      <div className="text-lg font-semibold mb-4 text-center dark:text-orange-400">
         Suma przychodów:{" "}
-        <span className="text-green-700">{totalIncome.toFixed(2)} zł</span>
+        <span className="text-green-700 dark:text-green-700">
+          {totalIncome.toFixed(2)} zł
+        </span>
         <br />
         Suma wydatków:{" "}
-        <span className="text-red-700">{totalExpense.toFixed(2)} zł</span>
+        <span className="text-red-700 dark:text-red-700">
+          {totalExpense.toFixed(2)} zł
+        </span>
       </div>
       <div className="flex flex-col md:flex-row gap-8 justify-center mb-8">
         <div className="md:w-1/2 flex flex-col items-center">
-          <h4 className="text-lg font-bold text-gray-700 mb-2 text-center">
+          <h4 className="text-lg font-bold text-gray-700 dark:text-orange-300 mb-2 text-center">
             Wykres kołowy: Przychody vs Wydatki
           </h4>
           <ChartsPie data={pieData} title="Przychody vs Wydatki" />
         </div>
         <div className="md:w-1/2 flex flex-col items-center">
-          <h4 className="text-lg font-bold text-gray-700 mb-2 text-center">
+          <h4 className="text-lg font-bold text-gray-700 dark:text-orange-300 mb-2 text-center">
             Wykres słupkowy: Przychody vs Wydatki
           </h4>
           <ChartsBar data={barData} title="Przychody vs Wydatki" />

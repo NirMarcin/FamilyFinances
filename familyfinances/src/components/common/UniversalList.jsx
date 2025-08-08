@@ -8,11 +8,11 @@ export default function UniversalList({
   columns = [],
   onEdit,
   onDelete,
-  editForm: EditForm, // przekaz komponent formularza do edycji
+  editForm: EditForm,
   deleteConfirmTitle = "Potwierdź usunięcie",
   deleteConfirmMessage = "Czy na pewno chcesz usunąć ten element?",
   emptyText = "Brak danych.",
-  actions = ["edit", "delete"], // ["edit", "delete"] lub []
+  actions = ["edit", "delete"],
   onRowClick,
 }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -20,6 +20,35 @@ export default function UniversalList({
 
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [toEdit, setToEdit] = useState(null);
+
+  // Sortowanie
+  const [sortKey, setSortKey] = useState(null);
+  const [sortOrder, setSortOrder] = useState("asc");
+
+  const handleSort = (key) => {
+    if (sortKey === key) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortKey(key);
+      setSortOrder("asc");
+    }
+  };
+
+  const sortedData = React.useMemo(() => {
+    if (!sortKey) return data;
+    return [...data].sort((a, b) => {
+      const aValue = a[sortKey];
+      const bValue = b[sortKey];
+      if (aValue === undefined || bValue === undefined) return 0;
+      if (typeof aValue === "number" && typeof bValue === "number") {
+        return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
+      }
+      // Dla stringów i dat
+      return sortOrder === "asc"
+        ? String(aValue).localeCompare(String(bValue))
+        : String(bValue).localeCompare(String(aValue));
+    });
+  }, [data, sortKey, sortOrder]);
 
   const handleDeleteClick = (item) => {
     setToDelete(item);
@@ -53,43 +82,59 @@ export default function UniversalList({
     setToEdit(null);
   };
 
-  if (!data.length) {
-    return <p className="text-gray-600 italic text-center">{emptyText}</p>;
+  const shouldScroll = sortedData.length > 10;
+
+  if (!sortedData.length) {
+    return (
+      <p className="text-gray-600 dark:text-orange-300 italic text-center transition-colors duration-300">
+        {emptyText}
+      </p>
+    );
   }
 
   return (
-    <div className="border border-orange-300 rounded-lg shadow-md bg-white overflow-x-auto">
+    <div
+      className={`border border-orange-300 dark:border-gray-800 rounded-lg shadow-md bg-white dark:bg-gray-900 transition-colors duration-300 ${
+        shouldScroll ? "max-h-[600px] overflow-y-auto" : ""
+      }`}
+    >
       <table className="w-full text-sm">
-        <thead className="bg-orange-200 text-orange-900 font-semibold">
+        <thead className="bg-orange-200 dark:bg-black text-orange-900 dark:text-orange-400 font-semibold transition-colors duration-300">
           <tr>
             {columns.map((col) => (
               <th
                 key={col.key}
-                className={`border border-orange-300 p-2 ${
+                className={`border border-orange-300 dark:border-gray-800 p-2 cursor-pointer select-none ${
                   col.align || "text-left"
                 }`}
+                onClick={() => handleSort(col.key)}
               >
                 {col.label}
+                {sortKey === col.key && (
+                  <span className="ml-1">
+                    {sortOrder === "asc" ? "▲" : "▼"}
+                  </span>
+                )}
               </th>
             ))}
             {actions.length > 0 && (
-              <th className="border border-orange-300 p-2 text-center">
+              <th className="border border-orange-300 dark:border-gray-800 p-2 text-center">
                 Akcje
               </th>
             )}
           </tr>
         </thead>
         <tbody>
-          {data.map((row) => (
+          {sortedData.map((row) => (
             <tr
               key={row.id}
               onClick={() => onRowClick && onRowClick(row)}
-              className="hover:bg-orange-100 transition-colors"
+              className="hover:bg-orange-100 dark:hover:bg-gray-800 transition-colors"
             >
               {columns.map((col) => (
                 <td
                   key={col.key}
-                  className={`border border-orange-300 p-2 ${
+                  className={`border border-orange-300 dark:border-gray-800 p-2 ${
                     col.align || "text-left"
                   }`}
                 >
@@ -97,7 +142,7 @@ export default function UniversalList({
                 </td>
               ))}
               {actions.length > 0 && (
-                <td className="border border-orange-300 p-2 text-center">
+                <td className="border border-orange-300 dark:border-gray-800 p-2 text-center">
                   <div className="flex gap-1 justify-center">
                     {actions.includes("edit") && EditForm && (
                       <Button
@@ -106,7 +151,7 @@ export default function UniversalList({
                           e.stopPropagation();
                           handleEditClick(row);
                         }}
-                        className="hover:bg-orange-500 hover:text-white px-2 py-1 rounded transition text-xs"
+                        className="hover:bg-orange-500 hover:text-white dark:hover:bg-orange-700 dark:hover:text-orange-200 px-2 py-1 rounded transition text-xs"
                         aria-label="Edytuj"
                       >
                         Edytuj

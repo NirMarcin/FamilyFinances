@@ -278,60 +278,60 @@ export default function ReceiptsChartsSummary() {
   }, [receipts]);
 
   return (
-    <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-lg p-6 mb-10">
+    <div className="max-w-5xl mx-auto bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 mb-10 border border-orange-200 dark:border-gray-800 transition-colors duration-300">
       <ExportSubsButton
         data={filteredReceiptsWithAmount}
         columns={tableColumns}
         buttonLabel="Eksportuj paragony do CSV"
         filename="paragony.csv"
       />
-      <h3 className="text-2xl font-bold text-orange-700 mb-6 text-center">
+      <h3 className="text-2xl font-bold text-orange-700 dark:text-orange-400 mb-6 text-center">
         Podsumowanie paragonów
       </h3>
       {/* Filtry daty */}
       <div className="flex flex-col md:flex-row gap-6 mb-8 justify-center">
         <div className="flex flex-col">
-          <label className="block text-sm font-semibold text-gray-700 mb-1">
+          <label className="block text-sm font-semibold text-gray-700 dark:text-orange-300 mb-1">
             Data od:
           </label>
           <input
             type="date"
             value={dateFrom}
             onChange={(e) => setDateFrom(e.target.value)}
-            className="border border-orange-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-orange-200 transition"
+            className="border border-orange-300 dark:border-gray-700 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-orange-200 dark:focus:ring-orange-400 bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 transition-colors duration-300"
           />
         </div>
         <div className="flex flex-col">
-          <label className="block text-sm font-semibold text-gray-700 mb-1">
+          <label className="block text-sm font-semibold text-gray-700 dark:text-orange-300 mb-1">
             Data do:
           </label>
           <input
             type="date"
             value={dateTo}
             onChange={(e) => setDateTo(e.target.value)}
-            className="border border-orange-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-orange-200 transition"
+            className="border border-orange-300 dark:border-gray-700 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-orange-200 dark:focus:ring-orange-400 bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 transition-colors duration-300"
           />
         </div>
       </div>
-      <div className="text-lg font-semibold mb-8 text-center">
+      <div className="text-lg font-semibold mb-8 text-center dark:text-orange-400">
         Całkowita kwota:{" "}
-        <span className="text-orange-700">
+        <span className="text-orange-700 dark:text-orange-700">
           {totalReceiptsAmount.toFixed(2)} zł
         </span>
       </div>
       {/* Wykresy */}
       <div className="flex flex-col md:flex-row gap-8 mb-8">
         <div className="md:w-1/2 flex flex-col gap-8">
-          <div className="bg-gray-50 rounded-lg p-4 shadow-sm">
-            <h4 className="text-lg font-bold text-gray-700 mb-2">
+          <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 shadow-sm transition-colors duration-300">
+            <h4 className="text-lg font-bold text-gray-700 dark:text-orange-300 mb-2">
               Wykres wg sklepów
             </h4>
             <ChartsPie data={pieShopData} title="Kwoty paragonów wg sklepów" />
           </div>
         </div>
         <div className="md:w-1/2 flex flex-col gap-8">
-          <div className="bg-gray-50 rounded-lg p-4 shadow-sm">
-            <h4 className="text-lg font-bold text-gray-700 mb-2">
+          <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 shadow-sm transition-colors duration-300">
+            <h4 className="text-lg font-bold text-gray-700 dark:text-orange-300 mb-2">
               Wykres wg kategorii
             </h4>
             <ChartsPie
@@ -344,18 +344,18 @@ export default function ReceiptsChartsSummary() {
       {/* Listy do filtrowania */}
       <div className="flex flex-col md:flex-row gap-8 mb-8">
         <div className="md:w-1/2 flex flex-col gap-8">
-          <div className="bg-gray-50 rounded-lg p-4 shadow-sm">
-            <h4 className="text-lg font-bold text-gray-700 mb-2">
+          <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 shadow-sm transition-colors duration-300">
+            <h4 className="text-lg font-bold text-gray-700 dark:text-orange-300 mb-2">
               Filtrowanie po sklepach
             </h4>
-            <ul className="list-none text-gray-800">
+            <ul className="list-none text-gray-800 dark:text-orange-300">
               {allShops.map((shop) => (
                 <li
                   key={shop}
                   className={`flex items-center justify-between cursor-pointer mb-1 px-2 py-1 rounded transition ${
                     selectedShops.includes(shop)
-                      ? "bg-orange-100 text-orange-700 font-bold"
-                      : "hover:bg-orange-50"
+                      ? "bg-orange-100 dark:bg-gray-800 text-orange-700 dark:text-orange-400 font-bold"
+                      : "hover:bg-orange-50 dark:hover:bg-gray-800"
                   }`}
                   onClick={() => handleShopClick(shop)}
                   tabIndex={0}
@@ -364,7 +364,7 @@ export default function ReceiptsChartsSummary() {
                 >
                   <span className="font-semibold">{shop}</span>
                   {amountByShop[shop] !== undefined && (
-                    <span className="text-orange-700 font-medium">
+                    <span className="text-orange-700 dark:text-orange-400 font-medium">
                       {amountByShop[shop].toFixed(2)} zł
                     </span>
                   )}
@@ -374,18 +374,18 @@ export default function ReceiptsChartsSummary() {
           </div>
         </div>
         <div className="md:w-1/2 flex flex-col gap-8">
-          <div className="bg-gray-50 rounded-lg p-4 shadow-sm">
-            <h4 className="text-lg font-bold text-gray-700 mb-2">
+          <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 shadow-sm transition-colors duration-300">
+            <h4 className="text-lg font-bold text-gray-700 dark:text-orange-300 mb-2">
               Filtrowanie po kategoriach
             </h4>
-            <ul className="list-none text-gray-800">
+            <ul className="list-none text-gray-800 dark:text-orange-300">
               {allCategories.map((cat) => (
                 <li
                   key={cat}
                   className={`flex items-center justify-between cursor-pointer mb-1 px-2 py-1 rounded transition ${
                     selectedCategories.includes(cat)
-                      ? "bg-orange-100 text-orange-700 font-bold"
-                      : "hover:bg-orange-50"
+                      ? "bg-orange-100 dark:bg-gray-800 text-orange-700 dark:text-orange-400 font-bold"
+                      : "hover:bg-orange-50 dark:hover:bg-gray-800"
                   }`}
                   onClick={() => handleCategoryClick(cat)}
                   tabIndex={0}
@@ -394,7 +394,7 @@ export default function ReceiptsChartsSummary() {
                 >
                   <span className="font-semibold">{cat}</span>
                   {amountByCategory[cat] !== undefined && (
-                    <span className="text-orange-700 font-medium">
+                    <span className="text-orange-700 dark:text-orange-400 font-medium">
                       {amountByCategory[cat].toFixed(2)} zł
                     </span>
                   )}
@@ -406,11 +406,11 @@ export default function ReceiptsChartsSummary() {
       </div>
       {/* Tabela na dole */}
       <div className="mt-10">
-        <h4 className="text-lg font-bold text-gray-700 mb-4 text-center">
+        <h4 className="text-lg font-bold text-gray-700 dark:text-orange-300 mb-4 text-center">
           Tabela paragonów
         </h4>
         <div
-          className="bg-gray-50 rounded-lg overflow-auto shadow-sm"
+          className="bg-gray-50 dark:bg-gray-900 rounded-lg overflow-auto shadow-sm transition-colors duration-300"
           style={{ maxHeight: "400px" }}
         >
           <UniversalTable
@@ -432,7 +432,7 @@ export default function ReceiptsChartsSummary() {
           }`}
           onClose={() => setSelectedReceipt(null)}
         >
-          <div className="mb-4 text-gray-700">
+          <div className="mb-4 text-gray-700 dark:text-orange-300">
             <div>
               <span className="font-semibold">Sklep: </span>
               {selectedReceipt.store === "Inny"
@@ -449,19 +449,19 @@ export default function ReceiptsChartsSummary() {
           <table className="w-full mb-4">
             <thead>
               <tr>
-                <th className="border border-orange-300 p-3 text-left">
+                <th className="border border-orange-300 dark:border-gray-800 p-3 text-left bg-orange-100 dark:bg-gray-900 text-orange-700 dark:text-orange-400">
                   Produkt
                 </th>
-                <th className="border border-orange-300 p-3 text-left">
+                <th className="border border-orange-300 dark:border-gray-800 p-3 text-left bg-orange-100 dark:bg-gray-900 text-orange-700 dark:text-orange-400">
                   Kategoria
                 </th>
-                <th className="border border-orange-300 p-3 text-right">
+                <th className="border border-orange-300 dark:border-gray-800 p-3 text-right bg-orange-100 dark:bg-gray-900 text-orange-700 dark:text-orange-400">
                   Ilość
                 </th>
-                <th className="border border-orange-300 p-3 text-right">
+                <th className="border border-orange-300 dark:border-gray-800 p-3 text-right bg-orange-100 dark:bg-gray-900 text-orange-700 dark:text-orange-400">
                   Cena jednostkowa (zł)
                 </th>
-                <th className="border border-orange-300 p-3 text-right">
+                <th className="border border-orange-300 dark:border-gray-800 p-3 text-right bg-orange-100 dark:bg-gray-900 text-orange-700 dark:text-orange-400">
                   Suma produktu (zł)
                 </th>
               </tr>
@@ -470,19 +470,19 @@ export default function ReceiptsChartsSummary() {
               {(selectedReceipt.products || []).map((p, idx) => (
                 <tr
                   key={p.id ?? idx}
-                  className={idx % 2 === 1 ? "bg-orange-100" : ""}
+                  className={idx % 2 === 1 ? "bg-orange-100 dark:bg-gray-900" : ""}
                 >
-                  <td className="border border-orange-300 p-3">{p.name}</td>
-                  <td className="border border-orange-300 p-3">{p.category}</td>
-                  <td className="border border-orange-300 p-3 text-right">
+                  <td className="border border-orange-300 dark:border-gray-800 p-3 text-gray-900 dark:text-orange-300">{p.name}</td>
+                  <td className="border border-orange-300 dark:border-gray-800 p-3 text-gray-900 dark:text-orange-300">{p.category}</td>
+                  <td className="border border-orange-300 dark:border-gray-800 p-3 text-right text-gray-900 dark:text-orange-300">
                     {p.quantity}
                   </td>
-                  <td className="border border-orange-300 p-3 text-right">
+                  <td className="border border-orange-300 dark:border-gray-800 p-3 text-right text-gray-900 dark:text-orange-300">
                     {p.unitPrice !== undefined && p.unitPrice !== null
                       ? Number(p.unitPrice).toFixed(2)
                       : "-"}
                   </td>
-                  <td className="border border-orange-300 p-3 text-right">
+                  <td className="border border-orange-300 dark:border-gray-800 p-3 text-right text-gray-900 dark:text-orange-300">
                     {p.total !== undefined && p.total !== null
                       ? Number(p.total).toFixed(2)
                       : p.quantity && p.unitPrice
@@ -493,7 +493,7 @@ export default function ReceiptsChartsSummary() {
               ))}
             </tbody>
           </table>
-          <div className="text-right font-bold text-orange-700 mb-2">
+          <div className="text-right font-bold text-orange-700 dark:text-orange-400 mb-2">
             Suma całkowita rachunku:{" "}
             {(selectedReceipt.products || [])
               .reduce(

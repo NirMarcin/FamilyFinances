@@ -34,29 +34,44 @@ function IncomeTable() {
     year: "numeric",
   });
 
+  if (!incomes.length) {
+    return (
+      <p className="text-gray-600 dark:text-orange-300 italic text-center transition-colors duration-300">
+        Brak przychodów w tym miesiącu.
+      </p>
+    );
+  }
+
   return (
-    <div className="p-2">
-      <h2 className="text-xl font-bold mb-2 text-center text-orange-700">
+    <div className="p-2 bg-orange-50 dark:bg-black rounded-lg border border-orange-200 dark:border-gray-800 shadow-inner transition-colors duration-300">
+      <h2 className="text-xl font-bold mb-2 text-center text-orange-700 dark:text-orange-400">
         Przychody – {monthName.charAt(0).toUpperCase() + monthName.slice(1)}
       </h2>
       <UniversalTable
         columns={[
           {
-            label: <span className="text-orange-900">Data</span>,
+            label: (
+              <span className="text-orange-900 dark:text-orange-300">Data</span>
+            ),
             key: "date",
-            className: "",
             render: (row) =>
               row.date ? new Date(row.date).toLocaleDateString("pl-PL") : "-",
           },
           {
-            label: <span className="text-orange-900">Kategoria</span>,
+            label: (
+              <span className="text-orange-900 dark:text-orange-300">
+                Kategoria
+              </span>
+            ),
             key: "category",
-            className: "text-orange-700 font-medium",
+            className: "text-orange-700 dark:text-orange-300 font-medium",
           },
           {
-            label: <span className="text-orange-900">Kwota</span>,
+            label: (
+              <span className="text-orange-900 dark:text-orange-300">Kwota</span>
+            ),
             key: "amount",
-            className: "text-green-700 font-semibold",
+            className: "text-green-700 dark:text-orange-400 font-semibold",
             render: (row) => `${Number(row.amount).toFixed(2)} zł`,
           },
         ]}
@@ -66,10 +81,13 @@ function IncomeTable() {
         onRowClick={setSelectedIncome}
         footer={
           <tr>
-            <td colSpan={3} className="px-4 py-2 text-right">
+            <td
+              colSpan={3}
+              className="px-4 py-2 text-right text-orange-900 dark:text-orange-300"
+            >
               Suma ostatnich 10 przychodów:
             </td>
-            <td className="px-4 py-2 text-right text-green-700 font-semibold">
+            <td className="px-4 py-2 text-right text-green-700 dark:text-orange-400 font-semibold">
               {totalSum.toFixed(2)} zł
             </td>
           </tr>
@@ -80,7 +98,7 @@ function IncomeTable() {
           title={`Przychód: ${selectedIncome.category || "-"}`}
           onClose={() => setSelectedIncome(null)}
         >
-          <div className="mb-4 text-gray-700">
+          <div className="mb-4 text-gray-700 dark:text-orange-300">
             <div>
               <span className="font-semibold">Kategoria: </span>
               {selectedIncome.category || "-"}
@@ -95,9 +113,9 @@ function IncomeTable() {
               <span className="font-semibold">Opis: </span>
               {selectedIncome.description || "-"}
             </div>
-            <div className="text-right font-bold text-green-700 mt-4">
+            <div className="text-right font-bold text-green-700 dark:text-orange-400 mt-4">
               Kwota:{" "}
-              <span className="text-green-700">
+              <span className="text-green-700 dark:text-orange-400">
                 {Number(selectedIncome.amount).toFixed(2)} zł
               </span>
             </div>

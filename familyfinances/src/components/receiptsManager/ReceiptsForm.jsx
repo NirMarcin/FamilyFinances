@@ -29,6 +29,9 @@ export default function ReceiptsForm({ initialData, onCancel, onSubmit }) {
       type: "text",
       required: true,
       placeholder: "np. Chleb",
+      inputClassName:
+        "bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 border border-orange-200 dark:border-gray-700",
+      labelClassName: "text-orange-700 dark:text-orange-300",
     },
     {
       name: "category",
@@ -36,6 +39,9 @@ export default function ReceiptsForm({ initialData, onCancel, onSubmit }) {
       type: "select",
       options: receiptsCategories,
       required: true,
+      inputClassName:
+        "bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 border border-orange-200 dark:border-gray-700",
+      labelClassName: "text-orange-700 dark:text-orange-300",
     },
     {
       name: "quantity",
@@ -45,6 +51,9 @@ export default function ReceiptsForm({ initialData, onCancel, onSubmit }) {
       step: 1,
       required: true,
       placeholder: "np. 2",
+      inputClassName:
+        "bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 border border-orange-200 dark:border-gray-700",
+      labelClassName: "text-orange-700 dark:text-orange-300",
     },
     {
       name: "unitPrice",
@@ -54,6 +63,9 @@ export default function ReceiptsForm({ initialData, onCancel, onSubmit }) {
       step: 0.01,
       required: true,
       placeholder: "np. 4.99",
+      inputClassName:
+        "bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 border border-orange-200 dark:border-gray-700",
+      labelClassName: "text-orange-700 dark:text-orange-300",
     },
   ];
 
@@ -94,7 +106,6 @@ export default function ReceiptsForm({ initialData, onCancel, onSubmit }) {
   }
 
   const handleSubmit = (formData) => {
-    console.log("Dodawany paragon:", { ...formData, products });
     onSubmit({ ...formData, products });
     setProducts([]);
     if (onCancel) onCancel();
@@ -107,6 +118,9 @@ export default function ReceiptsForm({ initialData, onCancel, onSubmit }) {
       label: "Data",
       type: "date",
       required: true,
+      inputClassName:
+        "bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 border border-orange-200 dark:border-gray-700",
+      labelClassName: "text-orange-700 dark:text-orange-300",
     },
     {
       name: "store",
@@ -114,6 +128,9 @@ export default function ReceiptsForm({ initialData, onCancel, onSubmit }) {
       type: "select",
       options: [...shops, "Inny"],
       required: true,
+      inputClassName:
+        "bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 border border-orange-200 dark:border-gray-700",
+      labelClassName: "text-orange-700 dark:text-orange-300",
     },
     {
       name: "customStoreName",
@@ -122,6 +139,9 @@ export default function ReceiptsForm({ initialData, onCancel, onSubmit }) {
       required: true,
       showIf: (form) => form.store === "Inny",
       placeholder: "Wpisz nazwę sklepu",
+      inputClassName:
+        "bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 border border-orange-200 dark:border-gray-700",
+      labelClassName: "text-orange-700 dark:text-orange-300",
     },
   ];
 
@@ -153,6 +173,7 @@ export default function ReceiptsForm({ initialData, onCancel, onSubmit }) {
             category: receiptsCategories[0] || "",
             quantity: 1,
             unitPrice: "",
+            
           });
         }}
         submitLabel="Dodaj produkt"
@@ -199,7 +220,7 @@ export default function ReceiptsForm({ initialData, onCancel, onSubmit }) {
             <button
               type="button"
               onClick={onCancel}
-              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-8 rounded shadow ml-4"
+              className="bg-gray-300 hover:bg-gray-400 text-gray-800 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-orange-300 font-bold py-2 px-8 rounded shadow ml-4 transition-colors duration-300"
             >
               Anuluj
             </button>

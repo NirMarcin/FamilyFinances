@@ -9,18 +9,20 @@ export default function InvoiceList() {
 
   if (!invoices.length) {
     return (
-      <section className="mt-10 p-5 border border-gray-300 rounded-lg bg-orange-50 shadow-inner">
-        <h2 className="text-2xl font-extrabold mb-6 text-orange-700 text-center">
+      <section className="mt-10 p-5 border border-gray-300 dark:border-gray-800 rounded-lg bg-orange-50 dark:bg-black shadow-inner transition-colors duration-300">
+        <h2 className="text-2xl font-extrabold mb-6 text-orange-700 dark:text-orange-400 text-center">
           Ostatnie rachunki
         </h2>
-        <p className="text-center text-gray-500">Brak dodanych transakcji.</p>
+        <p className="text-center text-gray-500 dark:text-orange-300">
+          Brak dodanych transakcji.
+        </p>
       </section>
     );
   }
 
   return (
-    <section className="mt-10 p-5 border border-gray-300 rounded-lg bg-orange-50 shadow-inner">
-      <h2 className="text-2xl font-extrabold mb-6 text-orange-700 text-center">
+    <section className="mt-10 p-5 border border-gray-300 dark:border-gray-800 rounded-lg bg-orange-50 dark:bg-black shadow-inner transition-colors duration-300 dark:text-orange-300">
+      <h2 className="text-2xl font-extrabold mb-6 text-orange-700 dark:text-orange-400 text-center">
         Ostatnie rachunki
       </h2>
       <UniversalList
@@ -35,7 +37,7 @@ export default function InvoiceList() {
             label: "Kwota (zł)",
             align: "text-right",
             render: (item) => (
-              <span className="text-orange-700 font-semibold">
+              <span className="text-orange-700 dark:text-orange-300 font-semibold">
                 {Number(item.amount).toFixed(2)} zł
               </span>
             ),
@@ -44,7 +46,7 @@ export default function InvoiceList() {
             key: "description",
             label: "Opis",
             render: (item) => (
-              <span className="italic text-gray-600">
+              <span className="italic text-gray-600 dark:text-orange-300">
                 {item.description || "-"}
               </span>
             ),

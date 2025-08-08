@@ -46,7 +46,7 @@ export default function ChartsBar({ data }) {
 
   // Ustawienie stałej wysokości dla wykresu
   return (
-    <div style={{ height: 350, width: "100%" }}>
+    <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 shadow-sm transition-colors duration-300" style={{ height: 350, width: "100%" }}>
       <Bar data={positiveData} options={barOptions} />
     </div>
   );

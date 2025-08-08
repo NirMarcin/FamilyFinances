@@ -13,6 +13,9 @@ export default function SubsForm({ initialData, onCancel }) {
       label: "Nazwa subskrypcji",
       type: "text",
       required: true,
+      inputClassName:
+        "bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 border border-orange-200 dark:border-gray-700",
+      labelClassName: "text-orange-700 dark:text-orange-300",
     },
     {
       name: "category",
@@ -20,6 +23,9 @@ export default function SubsForm({ initialData, onCancel }) {
       type: "select",
       options: categoriesList,
       required: true,
+      inputClassName:
+        "bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 border border-orange-200 dark:border-gray-700",
+      labelClassName: "text-orange-700 dark:text-orange-300",
     },
     {
       name: "amount",
@@ -28,12 +34,18 @@ export default function SubsForm({ initialData, onCancel }) {
       min: 0,
       step: 0.01,
       required: true,
+      inputClassName:
+        "bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 border border-orange-200 dark:border-gray-700",
+      labelClassName: "text-orange-700 dark:text-orange-300",
     },
     {
       name: "startDate",
       label: "Data pierwszej płatności",
       type: "date",
       required: true,
+      inputClassName:
+        "bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 border border-orange-200 dark:border-gray-700",
+      labelClassName: "text-orange-700 dark:text-orange-300",
     },
     {
       name: "interval",
@@ -41,6 +53,9 @@ export default function SubsForm({ initialData, onCancel }) {
       type: "number",
       min: 1,
       required: true,
+      inputClassName:
+        "bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 border border-orange-200 dark:border-gray-700",
+      labelClassName: "text-orange-700 dark:text-orange-300",
     },
   ];
 
@@ -81,7 +96,7 @@ export default function SubsForm({ initialData, onCancel }) {
           <button
             type="button"
             onClick={onCancel}
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-8 rounded shadow ml-4"
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-orange-300 font-bold py-2 px-8 rounded shadow ml-4 transition-colors duration-300"
           >
             Anuluj
           </button>

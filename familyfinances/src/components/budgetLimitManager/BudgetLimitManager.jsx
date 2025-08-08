@@ -117,8 +117,8 @@ export default function BudgetLimitManager() {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-8">
-      <h2 className="text-xl font-bold text-orange-700 mb-4 text-center">
+    <div className="max-w-4xl mx-auto p-6 bg-white dark:bg-gray-900 rounded-lg shadow-lg mt-8 border border-orange-200 dark:border-gray-800 transition-colors duration-300">
+      <h2 className="text-xl font-bold text-orange-700 dark:text-orange-400 mb-4 text-center">
         Ustaw limity wydatków na miesiąc
       </h2>
       <form
@@ -130,24 +130,24 @@ export default function BudgetLimitManager() {
             handleAddLimit();
           }
         }}
-        className="space-y-6 mb-10 p-5 border border-orange-300 rounded-lg bg-orange-50 shadow-inner"
+        className="space-y-6 mb-10 p-5 border border-orange-300 dark:border-gray-800 rounded-lg bg-orange-50 dark:bg-black shadow-inner transition-colors duration-300"
       >
         <div className="mb-4">
-          <label className="block font-semibold mb-2 text-orange-800 tracking-wide">
+          <label className="block font-semibold mb-2 text-orange-800 dark:text-orange-300 tracking-wide">
             Wybierz miesiąc:
           </label>
           <input
             type="month"
             value={month}
             onChange={(e) => setMonth(e.target.value)}
-            className="w-full px-4 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white transition"
+            className="w-full px-4 py-2 border border-orange-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 dark:focus:ring-orange-400 bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 transition-colors duration-300"
             disabled={!!editMonth}
             required
           />
         </div>
         <div className="mb-4 flex flex-col md:flex-row md:items-center gap-4">
           <div className="flex-1">
-            <label className="block font-semibold mb-2 text-orange-800 tracking-wide">
+            <label className="block font-semibold mb-2 text-orange-800 dark:text-orange-300 tracking-wide">
               Limit faktur (zł):
             </label>
             <input
@@ -155,7 +155,7 @@ export default function BudgetLimitManager() {
               min="0"
               value={limits.invoices === "" ? "" : Math.abs(limits.invoices)}
               onChange={(e) => handleLimitChange("invoices", e.target.value)}
-              className="w-full px-4 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white transition"
+              className="w-full px-4 py-2 border border-orange-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 dark:focus:ring-orange-400 bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 transition-colors duration-300"
               placeholder="np. 1000"
               required
             />
@@ -171,7 +171,7 @@ export default function BudgetLimitManager() {
         </div>
         <div className="mb-4 flex flex-col md:flex-row md:items-center gap-4">
           <div className="flex-1">
-            <label className="block font-semibold mb-2 text-orange-800 tracking-wide">
+            <label className="block font-semibold mb-2 text-orange-800 dark:text-orange-300 tracking-wide">
               Limit paragonów (zł):
             </label>
             <input
@@ -179,7 +179,7 @@ export default function BudgetLimitManager() {
               min="0"
               value={limits.receipts === "" ? "" : Math.abs(limits.receipts)}
               onChange={(e) => handleLimitChange("receipts", e.target.value)}
-              className="w-full px-4 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white transition"
+              className="w-full px-4 py-2 border border-orange-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 dark:focus:ring-orange-400 bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 transition-colors duration-300"
               placeholder="np. 500"
               required
             />
@@ -195,7 +195,7 @@ export default function BudgetLimitManager() {
         </div>
         <div className="mb-4 flex flex-col md:flex-row md:items-center gap-4">
           <div className="flex-1">
-            <label className="block font-semibold mb-2 text-orange-800 tracking-wide">
+            <label className="block font-semibold mb-2 text-orange-800 dark:text-orange-300 tracking-wide">
               Limit subskrypcji (zł):
             </label>
             <input
@@ -203,7 +203,7 @@ export default function BudgetLimitManager() {
               min="0"
               value={limits.subs === "" ? "" : Math.abs(limits.subs)}
               onChange={(e) => handleLimitChange("subs", e.target.value)}
-              className="w-full px-4 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white transition"
+              className="w-full px-4 py-2 border border-orange-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 dark:focus:ring-orange-400 bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 transition-colors duration-300"
               placeholder="np. 200"
               required
             />
@@ -222,14 +222,14 @@ export default function BudgetLimitManager() {
         )}
         <button
           type="submit"
-          className="bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-4 rounded shadow w-full mt-2"
+          className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-700 dark:hover:bg-orange-800 text-white dark:text-orange-200 font-semibold py-2 px-4 rounded shadow w-full mt-2 transition-colors duration-300"
           disabled={loading}
         >
           {editMonth ? "Zapisz edycję" : "Zatwierdź limity"}
         </button>
       </form>
       <div className="mt-8">
-        <h3 className="text-lg font-bold mb-2 text-orange-700 text-center">
+        <h3 className="text-lg font-bold mb-2 text-orange-700 dark:text-orange-400 text-center">
           Limity miesięczne
         </h3>
         <UniversalTable

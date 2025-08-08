@@ -250,40 +250,40 @@ export default function AllTable() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto bg-white  p-6 mb-10">
-      <h3 className="text-2xl font-bold text-orange-700 mb-6 text-center">
+    <div className="max-w-5xl mx-auto bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 mb-10 border border-orange-200 dark:border-gray-800 transition-colors duration-300">
+      <h3 className="text-2xl font-bold text-orange-700 dark:text-orange-400 mb-6 text-center">
         Wszystkie transakcje
       </h3>
       {/* Filtry */}
       <div className="flex flex-col md:flex-row gap-8 mb-8 justify-center">
         <div className="flex flex-col gap-2">
-          <label className="font-semibold text-gray-700 mb-1">
+          <label className="font-semibold text-gray-700 dark:text-orange-300 mb-1">
             Miesiąc od:
           </label>
           <input
             type="date"
             value={dateFrom}
             onChange={(e) => setDateFrom(e.target.value)}
-            className="border border-orange-300 rounded px-2 py-1 w-full"
+            className="border border-orange-300 dark:border-gray-700 rounded px-2 py-1 w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 transition-colors duration-300"
           />
         </div>
         <div className="flex flex-col gap-2">
-          <label className="font-semibold text-gray-700 mb-1">
+          <label className="font-semibold text-gray-700 dark:text-orange-300 mb-1">
             Miesiąc do:
           </label>
           <input
             type="date"
             value={dateTo}
             onChange={(e) => setDateTo(e.target.value)}
-            className="border border-orange-300 rounded px-2 py-1 w-full"
+            className="border border-orange-300 dark:border-gray-700 rounded px-2 py-1 w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 transition-colors duration-300"
           />
         </div>
         <div className="flex flex-col gap-2">
-          <label className="font-semibold text-gray-700 mb-1">Typ:</label>
+          <label className="font-semibold text-gray-700 dark:text-orange-300 mb-1">Typ:</label>
           <select
             value={selectedTypes[0] || ""}
             onChange={handleTypeSelect}
-            className="border border-orange-300 rounded px-2 py-1 w-full"
+            className="border border-orange-300 dark:border-gray-700 rounded px-2 py-1 w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 transition-colors duration-300"
           >
             <option value="">Wszystkie</option>
             {allTypes.map((type) => (
@@ -294,11 +294,11 @@ export default function AllTable() {
           </select>
         </div>
         <div className="flex flex-col gap-2">
-          <label className="font-semibold text-gray-700 mb-1">Kategoria:</label>
+          <label className="font-semibold text-gray-700 dark:text-orange-300 mb-1">Kategoria:</label>
           <select
             value={selectedCategories[0] || ""}
             onChange={handleCategorySelect}
-            className="border border-orange-300 rounded px-2 py-1 w-full"
+            className="border border-orange-300 dark:border-gray-700 rounded px-2 py-1 w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 transition-colors duration-300"
           >
             <option value="">Wszystkie</option>
             {filteredCategories.map((cat) => (
@@ -309,11 +309,11 @@ export default function AllTable() {
           </select>
         </div>
         <div className="flex flex-col gap-2">
-          <label className="font-semibold text-gray-700 mb-1">Źródło:</label>
+          <label className="font-semibold text-gray-700 dark:text-orange-300 mb-1">Źródło:</label>
           <select
             value={selectedSources[0] || ""}
             onChange={handleSourceSelect}
-            className="border border-orange-300 rounded px-2 py-1 w-full"
+            className="border border-orange-300 dark:border-gray-700 rounded px-2 py-1 w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 transition-colors duration-300"
           >
             <option value="">Wszystkie</option>
             {allSources.map((source) => (
@@ -331,7 +331,7 @@ export default function AllTable() {
         filename="transakcje.csv"
       />
       <div
-        className="bg-gray-50 rounded-lg overflow-auto shadow-sm"
+        className="bg-gray-50 dark:bg-gray-900 rounded-lg overflow-auto shadow-sm transition-colors duration-300"
         style={{ maxHeight: "500px" }}
       >
         <UniversalTable
@@ -350,7 +350,7 @@ export default function AllTable() {
           title={`Szczegóły: ${selectedTransaction.type} (${selectedTransaction.source})`}
           onClose={() => setSelectedTransaction(null)}
         >
-          <div className="mb-4 text-gray-700">
+          <div className="mb-4 text-gray-700 dark:text-orange-300">
             <div>
               <span className="font-semibold">Data: </span>
               {selectedTransaction.date

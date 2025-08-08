@@ -1,6 +1,7 @@
 import Navbar from "../components/Navbar";
 import PagesBanner from "../components/PagesBanner";
-import AccountSettings from "../components/settings/AccountSettings";
+
+import DarkModeToggle from "../components/buttons/DarkModeToggle";
 
 export default function Settings() {
   return (
@@ -11,7 +12,6 @@ export default function Settings() {
         <br />
         W przyszłości pojawią się tu dodatkowe opcje personalizacji i bezpieczeństwa.
       </PagesBanner>
-      <AccountSettings />
     </div>
   );
 }

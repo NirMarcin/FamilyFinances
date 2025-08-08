@@ -39,30 +39,38 @@ function ReceiptsTable() {
     year: "numeric",
   });
 
+  if (!receipts.length) {
+    return (
+      <p className="text-gray-600 dark:text-orange-300 italic text-center transition-colors duration-300">
+        Brak paragonów w tym miesiącu.
+      </p>
+    );
+  }
+
   return (
-    <div className="p-2">
-      <h2 className="text-xl font-bold mb-2 text-center text-orange-700">
+    <div className="p-2 bg-orange-50 dark:bg-black rounded-lg border border-orange-200 dark:border-gray-800 shadow-inner transition-colors duration-300">
+      <h2 className="text-xl font-bold mb-2 text-center text-orange-700 dark:text-orange-400">
         Paragony - {monthName.charAt(0).toUpperCase() + monthName.slice(1)}
       </h2>
       <UniversalTable
         columns={[
           {
-            label: <span className="text-orange-900">Data</span>,
+            label: <span className="text-orange-900 dark:text-orange-300">Data</span>,
             key: "date",
             render: (row) =>
               row.date ? new Date(row.date).toLocaleDateString("pl-PL") : "-",
           },
           {
-            label: <span className="text-orange-900">Sklep</span>,
+            label: <span className="text-orange-900 dark:text-orange-300">Sklep</span>,
             key: "store",
-            className: "text-orange-700 font-medium",
+            className: "text-orange-700 dark:text-orange-300 font-medium",
             render: (row) =>
               row.store === "Inny" ? row.customStoreName : row.store || "-",
           },
           {
-            label: <span className="text-orange-900">Kwota</span>,
+            label: <span className="text-orange-900 dark:text-orange-300">Kwota</span>,
             key: "products",
-            className: "text-red-600 font-semibold",
+            className: "text-red-600 dark:text-orange-400 font-semibold",
             render: (row) =>
               `${(-Math.abs(calcProducts(row.products))).toFixed(2)} zł`,
           },
@@ -73,10 +81,10 @@ function ReceiptsTable() {
         onRowClick={setSelectedReceipt}
         footer={
           <tr>
-            <td colSpan={3} className="px-4 py-2 text-right">
+            <td colSpan={3} className="px-4 py-2 text-right text-orange-900 dark:text-orange-300">
               Suma ostatnich 10 paragonów:
             </td>
-            <td className="px-4 py-2 text-right text-red-600 font-semibold">
+            <td className="px-4 py-2 text-right text-red-600 dark:text-orange-400 font-semibold">
               {(-Math.abs(totalSum)).toFixed(2)} zł
             </td>
           </tr>
@@ -90,7 +98,7 @@ function ReceiptsTable() {
           }`}
           onClose={() => setSelectedReceipt(null)}
         >
-          <div className="mb-4 text-gray-700">
+          <div className="mb-4 text-gray-700 dark:text-orange-300">
             <div>
               <span className="font-semibold">Sklep: </span>
               {selectedReceipt.storeName ||
@@ -109,19 +117,19 @@ function ReceiptsTable() {
           <table className="w-full mb-4">
             <thead>
               <tr>
-                <th className="border border-orange-300 p-3 text-left">
+                <th className="border border-orange-300 dark:border-gray-800 p-3 text-left bg-orange-100 dark:bg-gray-900 text-orange-700 dark:text-orange-400">
                   Produkt
                 </th>
-                <th className="border border-orange-300 p-3 text-left">
+                <th className="border border-orange-300 dark:border-gray-800 p-3 text-left bg-orange-100 dark:bg-gray-900 text-orange-700 dark:text-orange-400">
                   Kategoria
                 </th>
-                <th className="border border-orange-300 p-3 text-right">
+                <th className="border border-orange-300 dark:border-gray-800 p-3 text-right bg-orange-100 dark:bg-gray-900 text-orange-700 dark:text-orange-400">
                   Ilość
                 </th>
-                <th className="border border-orange-300 p-3 text-right">
+                <th className="border border-orange-300 dark:border-gray-800 p-3 text-right bg-orange-100 dark:bg-gray-900 text-orange-700 dark:text-orange-400">
                   Cena jednostkowa (zł)
                 </th>
-                <th className="border border-orange-300 p-3 text-right">
+                <th className="border border-orange-300 dark:border-gray-800 p-3 text-right bg-orange-100 dark:bg-gray-900 text-orange-700 dark:text-orange-400">
                   Suma produktu (zł)
                 </th>
               </tr>
@@ -130,19 +138,19 @@ function ReceiptsTable() {
               {(selectedReceipt.products || []).map((p, idx) => (
                 <tr
                   key={p.id ?? idx}
-                  className={idx % 2 === 1 ? "bg-orange-100" : ""}
+                  className={idx % 2 === 1 ? "bg-orange-100 dark:bg-gray-900" : ""}
                 >
-                  <td className="border border-orange-300 p-3">{p.name}</td>
-                  <td className="border border-orange-300 p-3">{p.category}</td>
-                  <td className="border border-orange-300 p-3 text-right">
+                  <td className="border border-orange-300 dark:border-gray-800 p-3 text-gray-900 dark:text-orange-300">{p.name}</td>
+                  <td className="border border-orange-300 dark:border-gray-800 p-3 text-gray-900 dark:text-orange-300">{p.category}</td>
+                  <td className="border border-orange-300 dark:border-gray-800 p-3 text-right text-gray-900 dark:text-orange-300">
                     {p.quantity}
                   </td>
-                  <td className="border border-orange-300 p-3 text-right">
+                  <td className="border border-orange-300 dark:border-gray-800 p-3 text-right text-gray-900 dark:text-orange-300">
                     {p.unitPrice !== undefined && p.unitPrice !== null
                       ? Number(p.unitPrice).toFixed(2)
                       : "-"}
                   </td>
-                  <td className="border border-orange-300 p-3 text-right">
+                  <td className="border border-orange-300 dark:border-gray-800 p-3 text-right text-gray-900 dark:text-orange-300">
                     {p.total !== undefined && p.total !== null
                       ? Number(p.total).toFixed(2)
                       : p.quantity && p.unitPrice
@@ -153,7 +161,7 @@ function ReceiptsTable() {
               ))}
             </tbody>
           </table>
-          <div className="text-right font-bold text-orange-700 mb-2">
+          <div className="text-right font-bold text-orange-700 dark:text-orange-400 mb-2">
             Suma całkowita rachunku:{" "}
             {(selectedReceipt.products || [])
               .reduce(

@@ -71,7 +71,7 @@ export default function ExportSubsButton({
   return (
     <button
       onClick={handleExport}
-      className="bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-4 rounded shadow mb-4"
+      className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-700 dark:hover:bg-orange-800 text-white dark:text-orange-200 font-semibold py-2 px-4 rounded shadow mb-4 transition-colors duration-300"
     >
       {buttonLabel}
     </button>

@@ -10,7 +10,7 @@ export default function ModalDetails({ title, children, onClose }) {
       aria-labelledby="modal-title"
     >
       <div
-        className="bg-white rounded-xl max-w-3xl w-full max-h-screen overflow-y-auto shadow-2xl p-8 relative"
+        className="bg-white dark:bg-gray-900 rounded-xl max-w-3xl w-full max-h-screen overflow-y-auto shadow-2xl p-8 relative border border-orange-200 dark:border-gray-800 transition-colors duration-300"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -18,7 +18,7 @@ export default function ModalDetails({ title, children, onClose }) {
             e.stopPropagation();
             onClose();
           }}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-900 text-3xl font-bold leading-none focus:outline-none"
+          className="absolute top-4 right-4 text-gray-500 dark:text-orange-300 hover:text-gray-900 dark:hover:text-orange-400 text-3xl font-bold leading-none focus:outline-none"
           aria-label="Zamknij modal"
         >
           &times;
@@ -26,7 +26,7 @@ export default function ModalDetails({ title, children, onClose }) {
         {title && (
           <h3
             id="modal-title"
-            className="text-2xl font-bold mb-6 text-orange-700"
+            className="text-2xl font-bold mb-6 text-orange-700 dark:text-orange-400"
           >
             {title}
           </h3>

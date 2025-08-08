@@ -16,6 +16,9 @@ export default function InvoiceForm({ initialData, onCancel }) {
       label: "Data",
       type: "date",
       required: true,
+      inputClassName:
+        "bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 border border-orange-200 dark:border-gray-700",
+      labelClassName: "text-orange-700 dark:text-orange-300",
     },
     {
       name: "category",
@@ -23,6 +26,9 @@ export default function InvoiceForm({ initialData, onCancel }) {
       type: "select",
       options: categoryNames,
       required: true,
+      inputClassName:
+        "bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 border border-orange-200 dark:border-gray-700",
+      labelClassName: "text-orange-700 dark:text-orange-300",
     },
     {
       name: "amount",
@@ -31,12 +37,18 @@ export default function InvoiceForm({ initialData, onCancel }) {
       min: 0,
       step: 0.01,
       required: true,
+      inputClassName:
+        "bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 border border-orange-200 dark:border-gray-700",
+      labelClassName: "text-orange-700 dark:text-orange-300",
     },
     {
       name: "description",
       label: "Opis",
       type: "text",
       placeholder: "np. faktura za prąd, czynsz, zakupy",
+      inputClassName:
+        "bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 border border-orange-200 dark:border-gray-700",
+      labelClassName: "text-orange-700 dark:text-orange-300",
     },
     // {
     //   name: "isRecurring",
@@ -97,7 +109,7 @@ export default function InvoiceForm({ initialData, onCancel }) {
           <button
             type="button"
             onClick={onCancel}
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-8 rounded shadow ml-4"
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-orange-300 font-bold py-2 px-8 rounded shadow ml-4 transition-colors duration-300"
           >
             Anuluj
           </button>

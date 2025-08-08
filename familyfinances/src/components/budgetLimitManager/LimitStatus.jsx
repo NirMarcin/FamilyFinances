@@ -23,22 +23,32 @@ export default function LimitStatus({ type, limit, spent, month }) {
   }
   if (!finalMonth) finalMonth = context.currentMonth ?? "";
 
-  if (!finalLimit || finalLimit <= 0) return null;
-  const percent = (finalSpent / finalLimit) * 100;
-  let color = "text-green-700";
+  const numericLimit = Number(finalLimit) || 0;
+  const numericSpent = Number(finalSpent) || 0;
+
+  if (!numericLimit || numericLimit <= 0) return null;
+  const percent = numericLimit > 0 ? Math.abs(numericSpent) / Math.abs(numericLimit) * 100 : 0;
+  let color = "text-green-700 dark:text-orange-400";
   let warning = null;
 
-  if (percent > 100) {
-    color = "text-red-700 font-bold";
+  if (Math.abs(numericSpent) === Math.abs(numericLimit)) {
+    color = "text-yellow-600 font-bold dark:text-orange-400";
     warning = (
-      <span className="block mt-1 text-red-700 font-bold">
+      <span className="block mt-1 text-yellow-600 font-bold dark:text-orange-400">
+        Osiągnąłeś limit!
+      </span>
+    );
+  } else if (percent > 100) {
+    color = "text-red-700 font-bold dark:text-orange-400";
+    warning = (
+      <span className="block mt-1 text-red-700 font-bold dark:text-orange-400">
         Uwaga!!! Przekroczono limit!
       </span>
     );
   } else if (percent > 75) {
-    color = "text-yellow-600 font-bold";
+    color = "text-yellow-600 font-bold dark:text-orange-400";
     warning = (
-      <span className="block mt-1 text-yellow-600 font-bold">
+      <span className="block mt-1 text-yellow-600 font-bold dark:text-orange-400">
         Uwaga! Limit wypełniony w ponad 75%! Zwolnij!
       </span>
     );
@@ -46,15 +56,15 @@ export default function LimitStatus({ type, limit, spent, month }) {
 
   return (
     <div
-      className={`mt-4 p-4 rounded-lg shadow bg-orange-50 border border-orange-200 flex flex-col items-center ${color}`}
+      className={`mt-4 p-4 rounded-lg shadow bg-orange-50 dark:bg-gray-900 border border-orange-200 dark:border-gray-800 flex flex-col items-center transition-colors duration-300 ${color}`}
     >
       <div className="flex flex-row gap-6 mb-2">
         <span className="font-semibold">
-          <span className="text-gray-600">Limit:</span> {finalLimit.toFixed(2)}{" "}
+          <span className="text-gray-600 dark:text-orange-300">Limit:</span> {numericLimit.toFixed(2)}{" "}
           zł
         </span>
         <span className="font-semibold">
-          <span className="text-gray-600">Wydano:</span> {finalSpent.toFixed(2)}{" "}
+          <span className="text-gray-600 dark:text-orange-300">Wydano:</span> {numericSpent.toFixed(2)}{" "}
           zł
         </span>
       </div>

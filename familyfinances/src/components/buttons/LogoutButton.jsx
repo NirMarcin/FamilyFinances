@@ -16,10 +16,10 @@ export default function LogoutButton({ variant = "desktop", onClickExtra }) {
   }
 
   // Definicja klas dla obu wariantów
-  const baseClasses = "text-orange-600 font-semibold hover:text-orange-800"
+  const baseClasses = "text-orange-600 dark:text-orange-300 font-semibold hover:text-orange-800 dark:hover:text-orange-400 transition-colors duration-300"
   const variants = {
     desktop: "hidden md:block px-4 py-2 rounded",
-    mobile: "block w-full text-left px-4 py-2 hover:bg-orange-100",
+    mobile: "block w-full text-left px-4 py-2 hover:bg-orange-100 dark:hover:bg-gray-800",
   }
 
   return (

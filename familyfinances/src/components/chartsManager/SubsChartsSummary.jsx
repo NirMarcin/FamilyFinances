@@ -246,52 +246,52 @@ export default function SubsChartsSummary() {
   }, [subs]);
 
   return (
-    <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-lg p-6 mb-10">
+    <div className="max-w-5xl mx-auto bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 mb-10 border border-orange-200 dark:border-gray-800 transition-colors duration-300">
       <ExportSubsButton
         data={filteredSubs}
         columns={tableColumns}
         buttonLabel="Eksportuj subskrypcje do CSV"
         filename="subskrypcje.csv"
       />
-      <h3 className="text-2xl font-bold text-orange-700 mb-6 text-center">
+      <h3 className="text-2xl font-bold text-orange-700 dark:text-orange-400 mb-6 text-center">
         Podsumowanie subskrypcji
       </h3>
       {/* Filtry daty */}
       <div className="flex flex-col md:flex-row gap-6 mb-8 justify-center">
         <div className="flex flex-col">
-          <label className="block text-sm font-semibold text-gray-700 mb-1">
+          <label className="block text-sm font-semibold text-gray-700 dark:text-orange-300 mb-1">
             Data od:
           </label>
           <input
             type="date"
             value={dateFrom}
             onChange={(e) => setDateFrom(e.target.value)}
-            className="border border-orange-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-orange-200 transition"
+            className="border border-orange-300 dark:border-gray-700 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-orange-200 dark:focus:ring-orange-400 bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 transition-colors duration-300"
           />
         </div>
         <div className="flex flex-col">
-          <label className="block text-sm font-semibold text-gray-700 mb-1">
+          <label className="block text-sm font-semibold text-gray-700 dark:text-orange-300 mb-1">
             Data do:
           </label>
           <input
             type="date"
             value={dateTo}
             onChange={(e) => setDateTo(e.target.value)}
-            className="border border-orange-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-orange-200 transition"
+            className="border border-orange-300 dark:border-gray-700 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-orange-200 dark:focus:ring-orange-400 bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 transition-colors duration-300"
           />
         </div>
       </div>
-      <div className="text-lg font-semibold mb-8 text-center">
+      <div className="text-lg font-semibold mb-8 text-center dark:text-orange-400">
         Całkowita kwota:{" "}
-        <span className="text-orange-700">{totalSubsAmount.toFixed(2)} zł</span>
+        <span className="text-orange-700 dark:text-orange-700">{totalSubsAmount.toFixed(2)} zł</span>
       </div>
       {/* Wykresy */}
       <div className="flex flex-col md:flex-row gap-8 mb-8 justify-center">
         <div className="md:w-1/2 flex flex-col gap-8">
-          <div className="bg-gray-50 rounded-lg p-4 shadow-sm flex justify-center">
+          <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 shadow-sm flex justify-center transition-colors duration-300">
             <div className="w-full flex justify-center">
               <div>
-                <h4 className="text-lg font-bold text-gray-700 mb-2 text-center">
+                <h4 className="text-lg font-bold text-gray-700 dark:text-orange-300 mb-2 text-center">
                   Wykres wg kategorii
                 </h4>
                 <ChartsPie
@@ -303,10 +303,10 @@ export default function SubsChartsSummary() {
           </div>
         </div>
         <div className="md:w-1/2 flex flex-col gap-8">
-          <div className="bg-gray-50 rounded-lg p-4 shadow-sm flex justify-center">
+          <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 shadow-sm flex justify-center transition-colors duration-300">
             <div className="w-full flex justify-center">
               <div>
-                <h4 className="text-lg font-bold text-gray-700 mb-2 text-center">
+                <h4 className="text-lg font-bold text-gray-700 dark:text-orange-300 mb-2 text-center">
                   Wykres wg nazwy
                 </h4>
                 <ChartsPie
@@ -322,18 +322,18 @@ export default function SubsChartsSummary() {
       {/* Listy do filtrowania */}
       <div className="flex flex-col md:flex-row gap-8 mb-8">
         <div className="md:w-1/2 flex flex-col gap-8">
-          <div className="bg-gray-50 rounded-lg p-4 shadow-sm">
-            <h4 className="text-lg font-bold text-gray-700 mb-2">
+          <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 shadow-sm transition-colors duration-300">
+            <h4 className="text-lg font-bold text-gray-700 dark:text-orange-300 mb-2">
               Filtrowanie po kategoriach
             </h4>
-            <ul className="list-none text-gray-800">
+            <ul className="list-none text-gray-800 dark:text-orange-300">
               {allCategories.map((cat) => (
                 <li
                   key={cat}
                   className={`flex items-center justify-between cursor-pointer mb-1 px-2 py-1 rounded transition ${
                     selectedCategories.includes(cat)
-                      ? "bg-orange-100 text-orange-700 font-bold"
-                      : "hover:bg-orange-50"
+                      ? "bg-orange-100 dark:bg-gray-800 text-orange-700 dark:text-orange-400 font-bold"
+                      : "hover:bg-orange-50 dark:hover:bg-gray-800"
                   }`}
                   onClick={() => handleCategoryClick(cat)}
                   tabIndex={0}
@@ -342,7 +342,7 @@ export default function SubsChartsSummary() {
                 >
                   <span className="font-semibold">{cat}</span>
                   {amountByCategory[cat] !== undefined && (
-                    <span className="text-orange-700 font-medium">
+                    <span className="text-orange-700 dark:text-orange-400 font-medium">
                       {amountByCategory[cat].toFixed(2)} zł
                     </span>
                   )}
@@ -352,18 +352,18 @@ export default function SubsChartsSummary() {
           </div>
         </div>
         <div className="md:w-1/2 flex flex-col gap-8">
-          <div className="bg-gray-50 rounded-lg p-4 shadow-sm">
-            <h4 className="text-lg font-bold text-gray-700 mb-2">
+          <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 shadow-sm transition-colors duration-300">
+            <h4 className="text-lg font-bold text-gray-700 dark:text-orange-300 mb-2">
               Filtrowanie po nazwie
             </h4>
-            <ul className="list-none text-gray-800">
+            <ul className="list-none text-gray-800 dark:text-orange-300">
               {allNames.map((name) => (
                 <li
                   key={name}
                   className={`flex items-center justify-between cursor-pointer mb-1 px-2 py-1 rounded transition ${
                     selectedNames.includes(name)
-                      ? "bg-orange-100 text-orange-700 font-bold"
-                      : "hover:bg-orange-50"
+                      ? "bg-orange-100 dark:bg-gray-800 text-orange-700 dark:text-orange-400 font-bold"
+                      : "hover:bg-orange-50 dark:hover:bg-gray-800"
                   }`}
                   onClick={() => handleNameClick(name)}
                   tabIndex={0}
@@ -372,7 +372,7 @@ export default function SubsChartsSummary() {
                 >
                   <span className="font-semibold">{name}</span>
                   {amountByName[name] !== undefined && (
-                    <span className="text-orange-700 font-medium">
+                    <span className="text-orange-700 dark:text-orange-400 font-medium">
                       {amountByName[name].toFixed(2)} zł
                     </span>
                   )}
@@ -384,11 +384,11 @@ export default function SubsChartsSummary() {
       </div>
       {/* Tabela na dole */}
       <div className="mt-10">
-        <h4 className="text-lg font-bold text-gray-700 mb-4 text-center">
+        <h4 className="text-lg font-bold text-gray-700 dark:text-orange-300 mb-4 text-center">
           Tabela subskrypcji
         </h4>
         <div
-          className="bg-gray-50 rounded-lg overflow-auto shadow-sm"
+          className="bg-gray-50 dark:bg-gray-900 rounded-lg overflow-auto shadow-sm transition-colors duration-300"
           style={{ maxHeight: "400px" }}
         >
           <UniversalTable
@@ -408,7 +408,7 @@ export default function SubsChartsSummary() {
           title={`Subskrypcja: ${selectedSub.type || "-"}`}
           onClose={() => setSelectedSub(null)}
         >
-          <div className="mb-4 text-gray-700">
+          <div className="mb-4 text-gray-700 dark:text-orange-300">
             <div>
               <span className="font-semibold">Data: </span>
               {selectedSub.date

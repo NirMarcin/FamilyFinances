@@ -63,6 +63,8 @@ export default function Login() {
             },
           })}
           error={errors.email}
+          inputClassName="bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 border border-orange-200 dark:border-gray-700"
+          labelClassName="text-orange-700 dark:text-orange-300"
         />
         <PasswordField
           id="password"
@@ -72,13 +74,15 @@ export default function Login() {
             required: "Hasło jest wymagane",
           })}
           error={errors.password}
+          inputClassName="bg-white dark:bg-gray-900 text-gray-900 dark:text-orange-300 border border-orange-200 dark:border-gray-700"
+          labelClassName="text-orange-700 dark:text-orange-300"
         />
 
         <Button
           type="submit"
           variant="primary"
           disabled={isSubmitting}
-          className="w-full"
+          className="w-full bg-orange-600 dark:bg-orange-700 text-white dark:text-orange-200"
         >
           {isSubmitting ? "Logowanie..." : "Zaloguj się"}
         </Button>
@@ -86,7 +90,7 @@ export default function Login() {
 
       {/* Komunikat z błędem logowania */}
       {(localError || authError) && (
-        <p className="mt-4 text-red-700 text-center">
+        <p className="mt-4 text-red-700 dark:text-red-400 text-center">
           {localError || authError}
         </p>
       )}
@@ -94,11 +98,11 @@ export default function Login() {
         <SuccessMessage message="Logowanie zakończone sukcesem!" />
       )}
 
-      <p className="mt-6 text-center text-orange-700">
+      <p className="mt-6 text-center text-orange-700 dark:text-orange-300">
         Nie masz konta?{" "}
         <Link
           to="/register"
-          className="font-semibold underline hover:text-orange-500"
+          className="font-semibold underline hover:text-orange-500 dark:hover:text-orange-400"
         >
           Zarejestruj się
         </Link>

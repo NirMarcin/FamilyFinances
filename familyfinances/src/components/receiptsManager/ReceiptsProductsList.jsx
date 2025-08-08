@@ -27,13 +27,15 @@ export default function ReceiptsProductsList({ products, onDelete }) {
             ]}
             onDelete={onDelete}
           />
-          <div className="text-right font-bold mt-2 mb-6">
+          <div className="text-right font-bold mt-2 mb-6 text-orange-700 dark:text-orange-300">
             Suma paragonu:{" "}
-            <span className="text-orange-700">{totalSum.toFixed(2)} zł</span>
+            <span className="text-orange-700 dark:text-orange-400">
+              {totalSum.toFixed(2)} zł
+            </span>
           </div>
         </>
       ) : (
-        <div className="text-center text-gray-500 my-4">
+        <div className="text-center text-gray-500 dark:text-orange-300 my-4">
           Brak dodanych produktów.
         </div>
       )}

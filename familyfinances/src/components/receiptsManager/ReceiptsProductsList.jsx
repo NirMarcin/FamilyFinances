@@ -2,7 +2,6 @@ import React from "react";
 import UniversalList from "../common/UniversalList";
 import Button from "../buttons/Button";
 
-
 export default function ReceiptsProductsList({ products, onDelete }) {
   const totalSum = products.reduce((sum, p) => sum + (p.total || 0), 0);
 

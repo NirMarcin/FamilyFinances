@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 import { useState } from "react";
 import LogoutButton from "./buttons/LogoutButton";
-import DarkModeToggle from "./buttons/DarkModeToggle"; 
+import DarkModeToggle from "./buttons/DarkModeToggle";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,12 +43,12 @@ export default function Navbar() {
               </NavLink>
             ))}
           </div>
-
+          <div className="hidden md:flex items-center space-x-4">
+            <LogoutButton variant="desktop" />
+            <DarkModeToggle variant="desktop" className="hidden md:block" />
+          </div>
           {/* Dark mode toggle & User */}
           <div className="flex items-center space-x-4">
-            
-            <LogoutButton variant="desktop" />
-            <DarkModeToggle variant="desktop" />
             {/* Hamburger menu na mobile */}
             <button
               onClick={toggleMenu}
@@ -99,7 +99,11 @@ export default function Navbar() {
             variant="mobile"
             onClickExtra={() => setIsOpen(false)}
           />
-          <DarkModeToggle variant="mobile" onClickExtra={() => setIsOpen(false)} />
+          <DarkModeToggle
+            variant="mobile"
+            className="md:hidden"
+            onClickExtra={() => setIsOpen(false)}
+          />
         </div>
       )}
     </nav>

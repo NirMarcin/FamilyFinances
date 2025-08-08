@@ -1,6 +1,6 @@
 export default function ChartsMenu({ activeTab, setActiveTab }) {
   return (
-    <div className="w-[250px] self-start mt-8">
+    <div className="w-[300px] self-start mt-8">
       <div className="bg-gray-100 rounded-lg shadow py-4 px-3 flex flex-col gap-2 sticky top-24">
         <button
           type="button"

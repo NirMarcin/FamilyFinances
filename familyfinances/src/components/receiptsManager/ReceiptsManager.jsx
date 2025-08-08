@@ -30,7 +30,7 @@ export default function ReceiptsManager() {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-8">
       <h1 className="text-3xl font-extrabold mb-6 text-center text-orange-700">
-        {editedReceiptId ? "Edytuj paragon" : "Dodaj paragon"}
+        Dodaj/Usuń paragon
       </h1>
 
       <ReceiptsForm

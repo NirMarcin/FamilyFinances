@@ -1,6 +1,6 @@
 export default function ExpansesMenu({ activeTab, setActiveTab }) {
   return (
-    <div className="w-[250px] self-start mt-8">
+    <div className="w-[300px] self-start mt-8">
       <div className="bg-gray-100 rounded-lg shadow py-4 px-3 flex flex-col gap-2 sticky top-24">
         <button
           type="button"
@@ -14,7 +14,7 @@ export default function ExpansesMenu({ activeTab, setActiveTab }) {
               : "hover:bg-gray-200 text-gray-700"
           }`}
         >
-          Dodaj przychód
+          Dodaj/Usuń przychód
         </button>
         <button
           type="button"
@@ -28,7 +28,7 @@ export default function ExpansesMenu({ activeTab, setActiveTab }) {
               : "hover:bg-gray-200 text-gray-700"
           }`}
         >
-          Dodaj rachunek
+          Dodaj/Usuń rachunek
         </button>
         <button
           type="button"
@@ -42,7 +42,7 @@ export default function ExpansesMenu({ activeTab, setActiveTab }) {
               : "hover:bg-gray-200 text-gray-700"
           }`}
         >
-          Dodaj paragon
+          Dodaj/Usuń paragon
         </button>
         <button
           type="button"
@@ -56,7 +56,7 @@ export default function ExpansesMenu({ activeTab, setActiveTab }) {
               : "hover:bg-gray-200 text-gray-700"
           }`}
         >
-          Dodaj subskrypcję
+          Dodaj/Usuń subskrypcję
         </button>
       </div>
     </div>

@@ -5,6 +5,8 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  setPersistence,
+  browserSessionPersistence,
 } from "firebase/auth";
 
 const AuthContext = createContext();
@@ -25,6 +27,9 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     setAuthError(null);
     try {
+      // Ustaw sesję tylko na czas otwartej karty/przeglądarki
+      await setPersistence(auth, browserSessionPersistence);
+
       const result = await signInWithEmailAndPassword(auth, email, password);
       setUser(result.user);
       return { success: true };

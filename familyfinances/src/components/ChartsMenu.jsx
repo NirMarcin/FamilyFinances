@@ -1,14 +1,28 @@
 export default function ChartsMenu({ activeTab, setActiveTab }) {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-10 py-8 bg-transparent">
-      <div className="bg-gray-100 rounded-lg shadow py-2 px-4 flex flex-row gap-4">
+    <div className="w-[250px] self-start mt-8">
+      <div className="bg-gray-100 rounded-lg shadow py-4 px-3 flex flex-col gap-2 sticky top-24">
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab("AllSummary");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          className={`text-lg py-2 px-4 rounded transition font-medium text-right ${
+            activeTab === "AllSummary"
+              ? "bg-orange-500 text-white shadow"
+              : "hover:bg-gray-200 text-gray-700"
+          }`}
+        >
+          Podsumowanie całości
+        </button>
         <button
           type="button"
           onClick={() => {
             setActiveTab("IncomeChartsSummary");
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
-          className={`text-lg py-2 px-6 rounded transition font-medium ${
+          className={`text-lg py-2 px-4 rounded transition font-medium text-right ${
             activeTab === "IncomeChartsSummary"
               ? "bg-orange-500 text-white shadow"
               : "hover:bg-gray-200 text-gray-700"
@@ -22,7 +36,7 @@ export default function ChartsMenu({ activeTab, setActiveTab }) {
             setActiveTab("InvoiceChartsSummary");
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
-          className={`text-lg py-2 px-6 rounded transition font-medium ${
+          className={`text-lg py-2 px-4 rounded transition font-medium text-right ${
             activeTab === "InvoiceChartsSummary"
               ? "bg-orange-500 text-white shadow"
               : "hover:bg-gray-200 text-gray-700"
@@ -30,14 +44,13 @@ export default function ChartsMenu({ activeTab, setActiveTab }) {
         >
           Podsumowanie faktur
         </button>
-
         <button
           type="button"
           onClick={() => {
             setActiveTab("ReceiptsChartsSummary");
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
-          className={`text-lg py-2 px-6 rounded transition font-medium ${
+          className={`text-lg py-2 px-4 rounded transition font-medium text-right ${
             activeTab === "ReceiptsChartsSummary"
               ? "bg-orange-500 text-white shadow"
               : "hover:bg-gray-200 text-gray-700"
@@ -45,34 +58,19 @@ export default function ChartsMenu({ activeTab, setActiveTab }) {
         >
           Podsumowanie paragonów
         </button>
-
         <button
           type="button"
           onClick={() => {
             setActiveTab("SubsChartsSummary");
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
-          className={`text-lg py-2 px-6 rounded transition font-medium ${
+          className={`text-lg py-2 px-4 rounded transition font-medium text-right ${
             activeTab === "SubsChartsSummary"
               ? "bg-orange-500 text-white shadow"
               : "hover:bg-gray-200 text-gray-700"
           }`}
         >
           Podsumowanie subskrypcji
-        </button>
-           <button
-          type="button"
-          onClick={() => {
-            setActiveTab("AllSummary");
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-          className={`text-lg py-2 px-6 rounded transition font-medium ${
-            activeTab === "AllSummary"
-              ? "bg-orange-500 text-white shadow"
-              : "hover:bg-gray-200 text-gray-700"
-          }`}
-        >
-          Podsumowanie
         </button>
       </div>
     </div>

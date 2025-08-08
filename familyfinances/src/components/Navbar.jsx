@@ -37,9 +37,6 @@ export default function Navbar() {
             <NavLink to="/budget" className={linkClass}>
               Budżet
             </NavLink>
-            <NavLink to="/reports" className={linkClass}>
-              Raporty
-            </NavLink>
             <NavLink to="/settings" className={linkClass}>
               Ustawienia
             </NavLink>
@@ -113,13 +110,6 @@ export default function Navbar() {
             className="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600"
           >
             Budżet
-          </NavLink>
-          <NavLink
-            onClick={() => setIsOpen(false)}
-            to="/reports"
-            className="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600"
-          >
-            Raporty
           </NavLink>
           <NavLink
             onClick={() => setIsOpen(false)}

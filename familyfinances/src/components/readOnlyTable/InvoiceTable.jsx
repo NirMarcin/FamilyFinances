@@ -2,6 +2,7 @@ import React, { useContext, useMemo, useState } from "react";
 import InvoiceContext from "../../contexts/InvoiceContext";
 import ModalDetails from "../modals/ModalDetails";
 import UniversalTable from "../common/UniversalTable";
+import LimitStatus from "../budgetLimitManager/LimitStatus";
 
 function InvoiceTable() {
   const { invoices } = useContext(InvoiceContext);
@@ -41,6 +42,7 @@ function InvoiceTable() {
       <h2 className="text-xl font-bold mb-2 text-center text-orange-700">
         Rachunki - {monthName.charAt(0).toUpperCase() + monthName.slice(1)}
       </h2>
+
       <UniversalTable
         columns={[
           {
@@ -76,6 +78,7 @@ function InvoiceTable() {
           </tr>
         }
       />
+      <LimitStatus type="invoices" label="Faktury" />
       {selectedInvoice && (
         <ModalDetails
           title={`Rachunek: ${selectedInvoice.category || "-"}`}

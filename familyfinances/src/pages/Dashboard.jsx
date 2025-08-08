@@ -24,7 +24,9 @@ export default function Dashboard() {
           Witaj w panelu podsumowania!
         </span>
         Na tej stronie znajdziesz po 10 ostatnich transakcji z bieżącego
-        miesiąca: rachunki, paragony, przychody oraz subskrypcje.
+        miesiąca: rachunki, paragony, przychody, subskrypcje. Dodatkowo znajdują
+        się tu limity miesięczne na aktualny miesiąc oraz ostrzeżenia o ich
+        przekroczeniu.
         <br />
         <span className="block mt-2">
           Kliknij wybraną pozycję w tabeli, aby zobaczyć szczegóły.

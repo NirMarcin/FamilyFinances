@@ -1,5 +1,6 @@
 import PagesBanner from "../components/PagesBanner";
 import Navbar from "../components/Navbar";
+import BudgetLimitManager from "../components/budgetLimitManager/BudgetLimitManager";
 
 export default function Budget() {
   return (
@@ -11,6 +12,7 @@ export default function Budget() {
         <br />W przyszłości pojawią się tu narzędzia do planowania i kontroli
         domowych finansów.
       </PagesBanner>
+      <BudgetLimitManager />
     </div>
   );
 }

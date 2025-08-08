@@ -3,6 +3,7 @@ import ReceiptsContext from "../../contexts/ReceiptsContext";
 import ModalDetails from "../modals/ModalDetails";
 import calcProducts from "../../utils/calcProducts";
 import UniversalTable from "../common/UniversalTable";
+import LimitStatus from "../budgetLimitManager/LimitStatus";
 
 function ReceiptsTable() {
   const { receipts } = useContext(ReceiptsContext);
@@ -81,6 +82,7 @@ function ReceiptsTable() {
           </tr>
         }
       />
+      <LimitStatus type="receipts" label="Paragony" />
       {selectedReceipt && (
         <ModalDetails
           title={`Paragon: ${

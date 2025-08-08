@@ -3,7 +3,6 @@ export default function SuccessMessage({ message }) {
 
   return (
     <div className="mt-4 flex items-center justify-center gap-2 bg-green-50 border border-green-200 text-green-800 rounded px-4 py-3 text-center">
-      {/* Ikona sukcesu */}
       <svg
         className="h-6 w-6 flex-shrink-0 text-green-500"
         fill="none"

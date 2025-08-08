@@ -2,6 +2,7 @@ import React, { useContext, useMemo, useState } from "react";
 import SubsContext from "../../contexts/SubsContext";
 import UniversalTable from "../common/UniversalTable";
 import ModalDetails from "../modals/ModalDetails";
+import LimitStatus from "../budgetLimitManager/LimitStatus";
 
 function SubsTable() {
   const { subs } = useContext(SubsContext);
@@ -74,6 +75,7 @@ function SubsTable() {
           </tr>
         }
       />
+      <LimitStatus type="subs" label="Subskrypcje" />
       {selectedSub && (
         <ModalDetails
           title={`Subskrypcja: ${selectedSub.name || "-"}`}

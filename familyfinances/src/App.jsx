@@ -44,6 +44,7 @@ function App() {
               <IncomeProvider user={user}>
                 <Routes>
                   {/* Publiczne */}
+                  <Route path="/" element={<Home />} />
                   <Route
                     path="/login"
                     element={user ? <Navigate to="/dashboard" /> : <Login />}
@@ -54,10 +55,7 @@ function App() {
                   />
 
                   {/* Chronione */}
-                  <Route
-                    path="/"
-                    element={user ? <Home /> : <Navigate to="/login" />}
-                  />
+
                   <Route
                     path="/dashboard"
                     element={user ? <Dashboard /> : <Navigate to="/login" />}
@@ -81,11 +79,6 @@ function App() {
                   <Route
                     path="/settings"
                     element={user ? <Settings /> : <Navigate to="/login" />}
-                  />
-                  {/* Możesz dodać też Route na 404 */}
-                  <Route
-                    path="*"
-                    element={<Navigate to={user ? "/" : "/login"} />}
                   />
                 </Routes>
               </IncomeProvider>

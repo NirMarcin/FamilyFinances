@@ -3,7 +3,7 @@ import IncomeContext from "../../contexts/IncomeContext";
 import ChartsPie from "./ChartsPie";
 import UniversalTable from "../common/UniversalTable";
 import ModalDetails from "../modals/ModalDetails";
-import ExportSubsButton from "../../utils/ExportSubsButton";
+import ExportSubsButton from "../buttons/ExportSubsButton";
 
 function pad(n) {
   return n < 10 ? "0" + n : n;
@@ -198,7 +198,12 @@ export default function IncomeChartsSummary() {
 
   return (
     <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-lg p-6 mb-10">
-      <ExportSubsButton data={sortedIncomes} columns={tableColumns} buttonLabel="Eksportuj przychody do CSV" filename="przychody.csv" />
+      <ExportSubsButton
+        data={sortedIncomes}
+        columns={tableColumns}
+        buttonLabel="Eksportuj przychody do CSV"
+        filename="przychody.csv"
+      />
       <h3 className="text-2xl font-bold text-green-700 mb-6 text-center">
         Podsumowanie przychodów
       </h3>

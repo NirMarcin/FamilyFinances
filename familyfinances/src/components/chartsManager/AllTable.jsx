@@ -5,7 +5,7 @@ import InvoiceContext from "../../contexts/InvoiceContext";
 import SubsContext from "../../contexts/SubsContext";
 import UniversalTable from "../common/UniversalTable";
 import ModalDetails from "../modals/ModalDetails";
-import ExportSubsButton from "../../utils/ExportSubsButton";
+import ExportSubsButton from "../buttons/ExportSubsButton";
 
 // Pomocnicze funkcje do dat
 function pad(n) {

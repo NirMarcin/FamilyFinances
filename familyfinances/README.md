@@ -1,12 +1,87 @@
-# React + Vite
+# FamilyFinances
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplikacja webowa do zarządzania budżetem domowym, wydatkami, przychodami, paragonami oraz subskrypcjami.  
+Projekt stworzony w React z wykorzystaniem Tailwind CSS.
 
-Currently, two official plugins are available:
+## Funkcje
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Dodawanie, edycja i usuwanie wydatków, przychodów, paragonów i subskrypcji
+- Przeglądanie statystyk i wykresów finansowych
+- Zarządzanie budżetem miesięcznym
+- Tryb jasny/ciemny (Dark Mode Toggle)
+- Responsywny interfejs (działa na desktopie i mobile)
+- Bezpieczne wylogowywanie użytkownika
 
-## Expanding the ESLint configuration
+## Instalacja
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Sklonuj repozytorium:
+
+   ```bash
+   git clone <adres_repozytorium>
+   cd FamilyFinances/familyfinances
+   ```
+
+2. Zainstaluj zależności:
+
+   ```bash
+   npm install
+   ```
+
+3. Uruchom aplikację developerską:
+
+   ```bash
+   npm run dev
+   ```
+
+4. Otwórz [http://localhost:5173] w przeglądarce.
+
+## Technologie
+
+- React
+- Tailwind CSS
+- Vite
+- React Router
+
+## Struktura projektu
+
+```
+familyfinances/
+├── src/
+│   ├── components/
+│   │   ├── buttons/
+│   │   ├── common/
+│   │   ├── incomeManager/
+│   │   ├── modals/
+│   │   ├── receiptsManager/
+│   │   ├── readOnlyTable/
+│   │   └── settings/
+│   ├── contexts/
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── index.css
+├── index.html
+├── tailwind.config.js
+└── package.json
+```
+
+## Konfiguracja Tailwind
+
+W pliku `tailwind.config.js`:
+
+```js
+module.exports = {
+  darkMode: "class",
+  content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
+  theme: { extend: {} },
+  plugins: [],
+};
+```
+
+## Autor
+
+Twórcą projektu jest Marcin Nir.
+
+---
+
+**Uwaga:**  
+Aplikacja jest w fazie rozwoju. Wszelkie uwagi i sugestie są mile widziane!

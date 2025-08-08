@@ -3,7 +3,7 @@ import SubsContext from "../../contexts/SubsContext";
 import ChartsPie from "./ChartsPie";
 import UniversalTable from "../common/UniversalTable";
 import ModalDetails from "../modals/ModalDetails";
-import ExportSubsButton from "../../utils/arrayToCsv";
+import ExportSubsButton from "../../utils/ExportSubsButton";
 
 // Pomocnicze funkcje do dat
 function pad(n) {
@@ -203,14 +203,16 @@ export default function SubsChartsSummary() {
       sortable: true,
       render: (s) => Number(s.amount || 0).toFixed(2) + " zł",
     },
-        {
+    {
       key: "active",
       label: "Status aktywności",
       sortable: false,
       render: (s) =>
-        s.active
-          ? <span className="text-green-600 font-semibold">Aktywna</span>
-          : <span className="text-red-600 font-semibold">Nieaktywna</span>,
+        s.active ? (
+          <span className="text-green-600 font-semibold">Aktywna</span>
+        ) : (
+          <span className="text-red-600 font-semibold">Nieaktywna</span>
+        ),
     },
   ];
 
@@ -245,10 +247,7 @@ export default function SubsChartsSummary() {
 
   return (
     <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-lg p-6 mb-10">
-         <ExportSubsButton
-          data={filteredSubs}
-          columns={tableColumns}
-        />
+      <ExportSubsButton data={filteredSubs} columns={tableColumns} buttonLabel="Eksportuj subskrypcje do CSV" filename="subskrypcje.csv" />
       <h3 className="text-2xl font-bold text-orange-700 mb-6 text-center">
         Podsumowanie subskrypcji
       </h3>
@@ -276,7 +275,6 @@ export default function SubsChartsSummary() {
             className="border border-orange-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-orange-200 transition"
           />
         </div>
-
       </div>
       <div className="text-lg font-semibold mb-8 text-center">
         Całkowita kwota:{" "}

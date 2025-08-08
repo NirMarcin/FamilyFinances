@@ -4,6 +4,7 @@ import ChartsPie from "./ChartsPie";
 import ChartsBar from "./ChartsBar";
 import UniversalTable from "../common/UniversalTable";
 import ModalDetails from "../modals/ModalDetails";
+import ExportSubsButton from "../../utils/ExportSubsButton";
 
 function pad(n) {
   return n < 10 ? "0" + n : n;
@@ -203,6 +204,7 @@ export default function InvoiceChartsSummary() {
 
   return (
     <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-lg p-6 mb-10">
+      <ExportSubsButton data={sortedInvoices} columns={tableColumns} buttonLabel="Eksportuj faktury do CSV" filename="faktury.csv" />
       <h3 className="text-2xl font-bold text-orange-700 mb-6 text-center">
         Podsumowanie faktur
       </h3>

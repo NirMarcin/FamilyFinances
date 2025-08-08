@@ -3,6 +3,7 @@ import ReceiptsContext from "../../contexts/ReceiptsContext";
 import ChartsPie from "./ChartsPie";
 import UniversalTable from "../common/UniversalTable";
 import ModalDetails from "../modals/ModalDetails";
+import ExportSubsButton from "../../utils/ExportSubsButton";
 
 // Pomocnicze funkcje do dat
 function pad(n) {
@@ -278,6 +279,7 @@ export default function ReceiptsChartsSummary() {
 
   return (
     <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-lg p-6 mb-10">
+      <ExportSubsButton data={filteredReceiptsWithAmount} columns={tableColumns} buttonLabel="Eksportuj paragony do CSV" filename="paragony.csv" />
       <h3 className="text-2xl font-bold text-orange-700 mb-6 text-center">
         Podsumowanie paragonów
       </h3>

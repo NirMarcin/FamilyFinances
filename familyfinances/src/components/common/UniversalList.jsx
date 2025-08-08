@@ -98,85 +98,92 @@ export default function UniversalList({
         shouldScroll ? "max-h-[600px] overflow-y-auto" : ""
       }`}
     >
-      <table className="w-full text-sm">
-        <thead className="bg-orange-200 dark:bg-black text-orange-900 dark:text-orange-400 font-semibold transition-colors duration-300">
-          <tr>
-            {columns.map((col) => (
-              <th
-                key={col.key}
-                className={`border border-orange-300 dark:border-gray-800 p-2 cursor-pointer select-none ${
-                  col.align || "text-left"
-                }`}
-                onClick={() => handleSort(col.key)}
-              >
-                {col.label}
-                {sortKey === col.key && (
-                  <span className="ml-1">
-                    {sortOrder === "asc" ? "▲" : "▼"}
-                  </span>
-                )}
-              </th>
-            ))}
-            {actions.length > 0 && (
-              <th className="border border-orange-300 dark:border-gray-800 p-2 text-center">
-                Akcje
-              </th>
-            )}
-          </tr>
-        </thead>
-        <tbody>
-          {sortedData.map((row) => (
-            <tr
-              key={row.id}
-              onClick={() => onRowClick && onRowClick(row)}
-              className="hover:bg-orange-100 dark:hover:bg-gray-800 transition-colors"
-            >
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm min-w-[400px] md:min-w-0">
+          <thead className="bg-orange-200 dark:bg-black text-orange-900 dark:text-orange-400 font-semibold transition-colors duration-300">
+            <tr>
               {columns.map((col) => (
-                <td
+                <th
                   key={col.key}
-                  className={`border border-orange-300 dark:border-gray-800 p-2 ${
+                  className={`border border-orange-300 dark:border-gray-800 p-2 cursor-pointer select-none ${
                     col.align || "text-left"
-                  }`}
+                  } whitespace-nowrap text-xs md:text-sm`}
+                  onClick={() => handleSort(col.key)}
                 >
-                  {col.render ? col.render(row) : row[col.key]}
-                </td>
+                  <span className="flex items-center gap-1">
+                    {col.label}
+                    {sortKey === col.key && (
+                      <span>{sortOrder === "asc" ? "▲" : "▼"}</span>
+                    )}
+                  </span>
+                </th>
               ))}
               {actions.length > 0 && (
-                <td className="border border-orange-300 dark:border-gray-800 p-2 text-center">
-                  <div className="flex gap-1 justify-center">
-                    {actions.includes("edit") && EditForm && (
-                      <Button
-                        variant="secondary"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEditClick(row);
-                        }}
-                        className="hover:bg-orange-500 hover:text-white dark:hover:bg-orange-700 dark:hover:text-orange-200 px-2 py-1 rounded transition text-xs"
-                        aria-label="Edytuj"
-                      >
-                        Edytuj
-                      </Button>
-                    )}
-                    {actions.includes("delete") && onDelete && (
-                      <Button
-                        variant="deleted"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteClick(row);
-                        }}
-                        className="px-2 py-1 text-xs"
-                        aria-label="Usuń"
-                      >
-                        Usuń
-                      </Button>
-                    )}
-                  </div>
-                </td>
+                <th className="border border-orange-300 dark:border-gray-800 p-2 text-center whitespace-nowrap text-xs md:text-sm">
+                  Akcje
+                </th>
               )}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {sortedData.map((row) => (
+              <tr
+                key={row.id}
+                onClick={() => onRowClick && onRowClick(row)}
+                className="hover:bg-orange-100 dark:hover:bg-gray-800 transition-colors"
+              >
+                {columns.map((col, colIdx) => (
+                  <td
+                    key={col.key + "_" + row.id + "_" + colIdx}
+                    className={`border border-orange-300 dark:border-gray-800 p-2 ${
+                      col.align || "text-left"
+                    } whitespace-nowrap text-xs md:text-sm ${
+                      col.cellClass || ""
+                    }`}
+                  >
+                    {col.render ? col.render(row) : row[col.key]}
+                  </td>
+                ))}
+                {actions.length > 0 && (
+                  <td
+                    key={"actions_" + row.id}
+                    className="border border-orange-300 dark:border-gray-800 p-2 text-center whitespace-nowrap text-xs md:text-sm"
+                  >
+                    <div className="flex gap-1 justify-center flex-wrap">
+                      {actions.includes("edit") && EditForm && (
+                        <Button
+                          variant="secondary"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEditClick(row);
+                          }}
+                          className="hover:bg-orange-500 hover:text-white dark:hover:bg-orange-700 dark:hover:text-orange-200 px-2 py-1 rounded transition text-xs"
+                          aria-label="Edytuj"
+                        >
+                          Edytuj
+                        </Button>
+                      )}
+                      {actions.includes("delete") && onDelete && (
+                        <Button
+                          variant="deleted"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteClick(row);
+                          }}
+                          className="px-2 py-1 text-xs"
+                          aria-label="Usuń"
+                        >
+                          Usuń
+                        </Button>
+                      )}
+                    </div>
+                  </td>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <ModalConfirm
         isOpen={modalOpen}
         title={deleteConfirmTitle}

@@ -34,14 +34,6 @@ function IncomeTable() {
     year: "numeric",
   });
 
-  if (!incomes.length) {
-    return (
-      <p className="text-gray-600 dark:text-orange-300 italic text-center transition-colors duration-300">
-        Brak przychodów w tym miesiącu.
-      </p>
-    );
-  }
-
   return (
     <div className="p-2 bg-orange-50 dark:bg-black rounded-lg border border-orange-200 dark:border-gray-800 shadow-inner transition-colors duration-300">
       <h2 className="text-xl font-bold mb-2 text-center text-orange-700 dark:text-orange-400">
@@ -68,7 +60,9 @@ function IncomeTable() {
           },
           {
             label: (
-              <span className="text-orange-900 dark:text-orange-300">Kwota</span>
+              <span className="text-orange-900 dark:text-orange-300">
+                Kwota
+              </span>
             ),
             key: "amount",
             className: "text-green-700 dark:text-orange-400 font-semibold",

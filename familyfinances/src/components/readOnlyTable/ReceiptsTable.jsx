@@ -39,13 +39,6 @@ function ReceiptsTable() {
     year: "numeric",
   });
 
-  if (!receipts.length) {
-    return (
-      <p className="text-gray-600 dark:text-orange-300 italic text-center transition-colors duration-300">
-        Brak paragonów w tym miesiącu.
-      </p>
-    );
-  }
 
   return (
     <div className="p-2 bg-orange-50 dark:bg-black rounded-lg border border-orange-200 dark:border-gray-800 shadow-inner transition-colors duration-300">

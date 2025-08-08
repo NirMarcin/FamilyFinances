@@ -11,7 +11,7 @@ export default function ModalEdit({
   return (
     <div className="fixed inset-0 bg-transparent backdrop-blur-sm flex justify-center items-center z-50">
       <div
-        className="bg-white dark:bg-gray-900 rounded-xl max-w-lg w-full p-8 shadow-2xl relative border border-orange-200 dark:border-gray-800 transition-colors duration-300"
+        className="bg-white dark:bg-gray-900 rounded-xl max-w-2xl w-full p-8 shadow-2xl relative border border-orange-200 dark:border-gray-800 transition-colors duration-300"
         onClick={(e) => e.stopPropagation()}
       >
         <button

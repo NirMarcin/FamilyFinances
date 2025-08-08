@@ -37,13 +37,7 @@ function InvoiceTable() {
     year: "numeric",
   });
 
-  if (!invoices.length) {
-    return (
-      <p className="text-gray-600 dark:text-orange-300 italic text-center transition-colors duration-300">
-        Brak rachunków w tym miesiącu.
-      </p>
-    );
-  }
+
 
   return (
     <div className="p-2 bg-orange-50 dark:bg-black rounded-lg border border-orange-200 dark:border-gray-800 shadow-inner transition-colors duration-300">
@@ -81,7 +75,7 @@ function InvoiceTable() {
               Suma ostatnich 10 rachunków:
             </td>
             <td className="px-4 py-2 text-right text-red-600 dark:text-orange-400 font-semibold">
-              {totalAmount.toFixed(2)} zł
+              {(-Math.abs(totalAmount)).toFixed(2)} zł
             </td>
           </tr>
         }

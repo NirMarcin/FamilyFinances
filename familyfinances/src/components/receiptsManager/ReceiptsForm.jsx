@@ -173,7 +173,7 @@ export default function ReceiptsForm({ initialData, onCancel, onSubmit }) {
             category: receiptsCategories[0] || "",
             quantity: 1,
             unitPrice: "",
-            
+            uniqueId: Date.now() + Math.random(),
           });
         }}
         submitLabel="Dodaj produkt"

@@ -63,7 +63,7 @@ export default function IncomeEditForm({
       initialValues={initialValues}
       onSubmit={(data) => {
         onSubmit({ ...initialData, ...data, amount: Number(data.amount) });
-        if (onCancel) onCancel(); // zamyka modal po zapisie
+        if (onCancel) onCancel();
       }}
       submitLabel={null}
       validate={validate}

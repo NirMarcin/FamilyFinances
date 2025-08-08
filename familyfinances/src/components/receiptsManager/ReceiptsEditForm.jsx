@@ -100,10 +100,8 @@ export default function ReceiptsEditForm({ initialData, onSubmit, onCancel }) {
     });
   }
 
-  function handleRemoveProduct(idx) {
-    const updated = [...products];
-    updated.splice(idx, 1);
-    setProducts(updated);
+  function handleRemoveProduct(id) {
+    setProducts(products.filter((p) => p.id !== id));
   }
 
   // Pola paragonu
@@ -216,16 +214,23 @@ export default function ReceiptsEditForm({ initialData, onSubmit, onCancel }) {
         }}
         optionFieldName={{ store: "store" }}
         optionInputPlaceholder={{ store: "Dodaj sklep" }}
+        submitLabel={null}
         extraContent={
-          onCancel && (
+          <div className="flex justify-end gap-4 mt-4">
             <button
               type="button"
               onClick={onCancel}
-              className="bg-gray-300 hover:bg-gray-400 text-gray-800 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-orange-300 font-bold py-2 px-8 rounded shadow ml-4 transition-colors duration-300"
+              className="bg-gray-300 hover:bg-gray-400 text-gray-800 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-orange-300 font-bold py-2 px-8 rounded shadow transition-colors duration-300"
             >
               Anuluj
             </button>
-          )
+            <button
+              type="submit"
+              className="bg-orange-500 hover:bg-orange-600 dark:bg-orange-700 dark:hover:bg-orange-800 text-white dark:text-orange-200 font-bold py-2 px-8 rounded shadow transition-colors duration-300"
+            >
+              Zapisz
+            </button>
+          </div>
         }
       />
     </div>
